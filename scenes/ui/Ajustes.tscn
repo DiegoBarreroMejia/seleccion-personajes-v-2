@@ -1,6 +1,6 @@
 [gd_scene load_steps=2 format=3 uid="uid://b5yqk8m3nxrpt"]
 
-[ext_resource type="Script" uid="uid://dpf7w2xnqk5hs" path="res://scripts/ui/ajustes.gd" id="1_ajustes"]
+[ext_resource type="Script" uid="uid://ctkvd7s3ia07f" path="res://scripts/ui/ajustes.gd" id="1_ajustes"]
 
 [node name="Ajustes" type="Control"]
 layout_mode = 3
@@ -20,46 +20,150 @@ grow_horizontal = 2
 grow_vertical = 2
 color = Color(0.12, 0.12, 0.18, 1)
 
-[node name="ContenedorCentral" type="VBoxContainer" parent="."]
+[node name="ContenedorPrincipal" type="VBoxContainer" parent="."]
 layout_mode = 1
 anchors_preset = 8
 anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-offset_left = -150.0
-offset_top = -120.0
-offset_right = 150.0
-offset_bottom = 120.0
+offset_left = -300.0
+offset_top = -250.0
+offset_right = 300.0
+offset_bottom = 250.0
 grow_horizontal = 2
 grow_vertical = 2
-theme_override_constants/separation = 30
+theme_override_constants/separation = 20
 
-[node name="Titulo" type="Label" parent="ContenedorCentral"]
+[node name="Titulo" type="Label" parent="ContenedorPrincipal"]
 layout_mode = 2
 theme_override_font_sizes/font_size = 48
 text = "Ajustes"
 horizontal_alignment = 1
-vertical_alignment = 1
 
-[node name="Espaciador" type="Control" parent="ContenedorCentral"]
-custom_minimum_size = Vector2(0, 20)
+[node name="Pestanas" type="HBoxContainer" parent="ContenedorPrincipal"]
+layout_mode = 2
+alignment = 1
+theme_override_constants/separation = 10
+
+[node name="BtnVideo" type="Button" parent="ContenedorPrincipal/Pestanas"]
+custom_minimum_size = Vector2(120, 40)
+layout_mode = 2
+text = "Video"
+
+[node name="BtnControles" type="Button" parent="ContenedorPrincipal/Pestanas"]
+custom_minimum_size = Vector2(120, 40)
+layout_mode = 2
+text = "Controles"
+
+[node name="Separador" type="HSeparator" parent="ContenedorPrincipal"]
 layout_mode = 2
 
-[node name="LabelPlaceholder" type="Label" parent="ContenedorCentral"]
+[node name="ContenedorVideo" type="VBoxContainer" parent="ContenedorPrincipal"]
 layout_mode = 2
-theme_override_font_sizes/font_size = 18
-text = "Próximamente..."
+size_flags_vertical = 3
+theme_override_constants/separation = 20
+
+[node name="FilaResolucion" type="HBoxContainer" parent="ContenedorPrincipal/ContenedorVideo"]
+layout_mode = 2
+alignment = 1
+theme_override_constants/separation = 20
+
+[node name="LabelResolucion" type="Label" parent="ContenedorPrincipal/ContenedorVideo/FilaResolucion"]
+custom_minimum_size = Vector2(150, 0)
+layout_mode = 2
+text = "Resolución:"
+horizontal_alignment = 2
+
+[node name="OptionResolucion" type="OptionButton" parent="ContenedorPrincipal/ContenedorVideo/FilaResolucion"]
+custom_minimum_size = Vector2(180, 40)
+layout_mode = 2
+
+[node name="FilaPantalla" type="HBoxContainer" parent="ContenedorPrincipal/ContenedorVideo"]
+layout_mode = 2
+alignment = 1
+theme_override_constants/separation = 20
+
+[node name="LabelPantalla" type="Label" parent="ContenedorPrincipal/ContenedorVideo/FilaPantalla"]
+custom_minimum_size = Vector2(150, 0)
+layout_mode = 2
+text = "Pantalla completa:"
+horizontal_alignment = 2
+
+[node name="CheckPantallaCompleta" type="CheckButton" parent="ContenedorPrincipal/ContenedorVideo/FilaPantalla"]
+custom_minimum_size = Vector2(180, 0)
+layout_mode = 2
+
+[node name="ContenedorControles" type="HBoxContainer" parent="ContenedorPrincipal"]
+visible = false
+layout_mode = 2
+size_flags_vertical = 3
+alignment = 1
+theme_override_constants/separation = 40
+
+[node name="PanelJ1" type="VBoxContainer" parent="ContenedorPrincipal/ContenedorControles"]
+layout_mode = 2
+theme_override_constants/separation = 10
+
+[node name="TituloJ1" type="Label" parent="ContenedorPrincipal/ContenedorControles/PanelJ1"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 20
+text = "JUGADOR 1"
 horizontal_alignment = 1
 
-[node name="Espaciador2" type="Control" parent="ContenedorCentral"]
-custom_minimum_size = Vector2(0, 20)
+[node name="SeparadorJ1" type="HSeparator" parent="ContenedorPrincipal/ContenedorControles/PanelJ1"]
 layout_mode = 2
 
-[node name="BtnVolver" type="Button" parent="ContenedorCentral"]
-custom_minimum_size = Vector2(200, 50)
+[node name="GridJ1" type="GridContainer" parent="ContenedorPrincipal/ContenedorControles/PanelJ1"]
 layout_mode = 2
-size_flags_horizontal = 4
+theme_override_constants/h_separation = 10
+theme_override_constants/v_separation = 8
+columns = 2
+
+[node name="PanelJ2" type="VBoxContainer" parent="ContenedorPrincipal/ContenedorControles"]
+layout_mode = 2
+theme_override_constants/separation = 10
+
+[node name="TituloJ2" type="Label" parent="ContenedorPrincipal/ContenedorControles/PanelJ2"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 20
+text = "JUGADOR 2"
+horizontal_alignment = 1
+
+[node name="SeparadorJ2" type="HSeparator" parent="ContenedorPrincipal/ContenedorControles/PanelJ2"]
+layout_mode = 2
+
+[node name="GridJ2" type="GridContainer" parent="ContenedorPrincipal/ContenedorControles/PanelJ2"]
+layout_mode = 2
+theme_override_constants/h_separation = 10
+theme_override_constants/v_separation = 8
+columns = 2
+
+[node name="Espaciador" type="Control" parent="ContenedorPrincipal"]
+custom_minimum_size = Vector2(0, 10)
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="BotonesInferiores" type="HBoxContainer" parent="ContenedorPrincipal"]
+layout_mode = 2
+alignment = 1
+theme_override_constants/separation = 20
+
+[node name="BtnRestablecer" type="Button" parent="ContenedorPrincipal/BotonesInferiores"]
+custom_minimum_size = Vector2(150, 50)
+layout_mode = 2
+text = "Restablecer"
+
+[node name="BtnAplicar" type="Button" parent="ContenedorPrincipal/BotonesInferiores"]
+custom_minimum_size = Vector2(150, 50)
+layout_mode = 2
+text = "Aplicar"
+
+[node name="BtnVolver" type="Button" parent="ContenedorPrincipal/BotonesInferiores"]
+custom_minimum_size = Vector2(150, 50)
+layout_mode = 2
 text = "Volver"
 
-[connection signal="pressed" from="ContenedorCentral/BtnVolver" to="." method="_on_btn_volver_pressed"]
+[connection signal="pressed" from="ContenedorPrincipal/BotonesInferiores/BtnRestablecer" to="." method="_on_btn_restablecer_pressed"]
+[connection signal="pressed" from="ContenedorPrincipal/BotonesInferiores/BtnAplicar" to="." method="_on_btn_aplicar_pressed"]
+[connection signal="pressed" from="ContenedorPrincipal/BotonesInferiores/BtnVolver" to="." method="_on_btn_volver_pressed"]
