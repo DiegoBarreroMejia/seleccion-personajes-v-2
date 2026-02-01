@@ -14,6 +14,12 @@ signal arma_soltada()
 # === CONSTANTES ===
 const MAX_CANDIDATOS_RECOGIDA: int = 4
 
+# === CONSTANTES DE LANZAMIENTO ===
+const GRAVEDAD_ARMA: float = 800.0
+const VELOCIDAD_LANZAMIENTO: float = 600.0
+const VELOCIDAD_CAIDA_INICIAL: float = -250.0
+const VELOCIDAD_ROTACION: float = 12.0
+
 # === VARIABLES EXPORTADAS ===
 @export_group("Estadísticas Arma")
 @export var bala_scene: PackedScene
@@ -29,6 +35,12 @@ var _candidatos_a_recoger: Array[CharacterBody2D] = []
 var _temporizador_disparo: Timer
 var _desaparicion_activa: bool = false
 
+# === VARIABLES DE VUELO/LANZAMIENTO ===
+var _esta_en_vuelo: bool = false
+var _fue_lanzada: bool = false  # true = lanzada (daña y desaparece), false = soltada (recogible)
+var _velocidad_arma: Vector2 = Vector2.ZERO
+var _ultimo_dueno_id: int = 0  # Para no dañar al que la lanzó
+
 # === NODOS ===
 @onready var _punta: Marker2D = $Punta if has_node("Punta") else null
 @onready var _area_recogida: Area2D = $AreaRecogida if has_node("AreaRecogida") else null
@@ -40,11 +52,29 @@ func _ready() -> void:
 	_configurar_area_recogida()
 
 func _process(_delta: float) -> void:
-	if not _esta_recogida:
+	if not _esta_recogida and not _esta_en_vuelo:
 		_verificar_input_recogida()
-	else:
+	elif _esta_recogida:
 		_verificar_input_disparo()
 		_verificar_input_soltar()
+
+func _physics_process(delta: float) -> void:
+	if not _esta_en_vuelo:
+		return
+
+	# Aplicar gravedad
+	_velocidad_arma.y += GRAVEDAD_ARMA * delta
+
+	# Mover arma
+	position += _velocidad_arma * delta
+
+	# Rotar visualmente si fue lanzada
+	if _fue_lanzada:
+		rotation += VELOCIDAD_ROTACION * delta
+
+	# Detectar colisión con suelo
+	if _detectar_suelo():
+		_al_tocar_suelo()
 
 # === CONFIGURACIÓN INICIAL ===
 
@@ -83,7 +113,12 @@ func _verificar_input_recogida() -> void:
 func equipar(nuevo_dueno: CharacterBody2D) -> void:
 	if not _puede_ser_equipada_por(nuevo_dueno):
 		return
-	
+
+	# Cancelar vuelo si estaba en el aire
+	_esta_en_vuelo = false
+	_fue_lanzada = false
+	_velocidad_arma = Vector2.ZERO
+
 	_esta_recogida = true
 	_id_jugador = nuevo_dueno.player_id
 	_candidatos_a_recoger.clear()
@@ -114,9 +149,22 @@ func _puede_ser_equipada_por(personaje: CharacterBody2D) -> bool:
 	return true
 
 func _on_area_recogida_body_entered(body: Node2D) -> void:
-	if body is CharacterBody2D and body.is_in_group("jugadores"):
-		if _candidatos_a_recoger.size() < MAX_CANDIDATOS_RECOGIDA:
-			_candidatos_a_recoger.append(body)
+	# Si está en vuelo y fue lanzada, puede hacer daño
+	if _esta_en_vuelo and _fue_lanzada:
+		if body is CharacterBody2D and body.is_in_group("jugadores"):
+			# No dañar al que la lanzó
+			if "player_id" in body and body.player_id != _ultimo_dueno_id:
+				if body.has_method("recibir_dano"):
+					body.recibir_dano(dano)
+					print("Arma lanzada golpeó a Jugador %d" % body.player_id)
+					queue_free()
+					return
+
+	# Comportamiento normal: añadir a candidatos para recoger
+	if not _esta_en_vuelo and not _esta_recogida:
+		if body is CharacterBody2D and body.is_in_group("jugadores"):
+			if _candidatos_a_recoger.size() < MAX_CANDIDATOS_RECOGIDA:
+				_candidatos_a_recoger.append(body)
 
 func _on_area_recogida_body_exited(body: Node2D) -> void:
 	if body in _candidatos_a_recoger:
@@ -186,28 +234,42 @@ func _verificar_input_soltar() -> void:
 		soltar()
 
 func soltar() -> void:
-	_esta_recogida = false
-	
+	# Detectar si mantiene pulsado "abajo"
+	var controles := _obtener_controles_dueno()
+	var mantiene_abajo := false
+	if not controles.is_empty():
+		mantiene_abajo = Input.is_action_pressed(controles["down"])
+
 	var direccion_lanzamiento := _obtener_direccion_lanzamiento()
+
+	# Guardar referencia al dueño antes de soltar
+	_ultimo_dueno_id = _id_jugador
+	_esta_recogida = false
+
 	var pos_mundial := global_position
 	var raiz := get_tree().root
-	
+
 	get_parent().remove_child(self)
 	raiz.add_child(self)
-	
+
 	global_position = pos_mundial
 	rotation = 0
-	
-	# Lanzar hacia adelante
-	position.x += 40 * direccion_lanzamiento
-	
+
+	# Configurar modo de lanzamiento
+	if mantiene_abajo:
+		# MODO SOLTAR: cae recto, sin daño, recogible
+		_fue_lanzada = false
+		_velocidad_arma = Vector2(0, VELOCIDAD_CAIDA_INICIAL)
+		print("Arma soltada (caerá al suelo)")
+	else:
+		# MODO LANZAR: sale con velocidad, hace daño, desaparece
+		_fue_lanzada = true
+		_velocidad_arma = Vector2(VELOCIDAD_LANZAMIENTO * direccion_lanzamiento, VELOCIDAD_CAIDA_INICIAL)
+		print("Arma lanzada hacia adelante")
+
+	_esta_en_vuelo = true
+	_desaparicion_activa = false
 	arma_soltada.emit()
-	
-	# Cooldown antes de poder recogerla de nuevo
-	await get_tree().create_timer(0.5).timeout
-	if is_instance_valid(self):
-		_id_jugador = 0
-		_iniciar_temporizador_desaparicion()
 
 func _iniciar_temporizador_desaparicion() -> void:
 	const TIEMPO_DESAPARICION: float = 3.0
@@ -237,6 +299,40 @@ func _obtener_direccion_lanzamiento() -> int:
 	if not padre:
 		return 1
 	return -1 if padre.scale.x < 0 else 1
+
+# === SISTEMA DE VUELO ===
+
+func _detectar_suelo() -> bool:
+	## Detecta si el arma tocó el suelo usando raycast
+	var space_state := get_world_2d().direct_space_state
+	if not space_state:
+		return false
+
+	# Raycast corto hacia abajo para detectar suelo (Layer 6: Escenario)
+	var query := PhysicsRayQueryParameters2D.create(
+		global_position,
+		global_position + Vector2(0, 8),
+		0b100000  # Layer 6: Escenario
+	)
+	var result := space_state.intersect_ray(query)
+	return not result.is_empty()
+
+func _al_tocar_suelo() -> void:
+	## Comportamiento al tocar el suelo
+	_esta_en_vuelo = false
+	_velocidad_arma = Vector2.ZERO
+	rotation = 0
+
+	if _fue_lanzada:
+		# Lanzada: desaparece al tocar suelo
+		print("Arma lanzada tocó el suelo y desaparece")
+		queue_free()
+	else:
+		# Soltada: se queda en el suelo, recogible
+		print("Arma soltada en el suelo, puede recogerse")
+		_ultimo_dueno_id = 0
+		_id_jugador = 0
+		_iniciar_temporizador_desaparicion()
 
 # === UTILIDADES ===
 
