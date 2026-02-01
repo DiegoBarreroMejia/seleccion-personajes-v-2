@@ -1,0 +1,27 @@
+[gd_scene load_steps=2 format=3 uid="uid://dclr4c30b3kta"]
+
+[ext_resource type="Script" uid="uid://dhfgaw4oiqcvn" path="res://scripts/ui/HUD.gd" id="1_k5de2"]
+
+[node name="HUD" type="CanvasLayer"]
+script = ExtResource("1_k5de2")
+
+[node name="MarginContainer" type="MarginContainer" parent="."]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 10
+theme_override_constants/margin_top = 10
+theme_override_constants/margin_right = 10
+theme_override_constants/margin_bottom = 10
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer"]
+layout_mode = 2
+size_flags_vertical = 0
+
+[node name="LabelPuntuacion" type="Label" parent="MarginContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 24
+text = "J1: 0 | J2: 0 | Objetivo: 10"
+horizontal_alignment = 1

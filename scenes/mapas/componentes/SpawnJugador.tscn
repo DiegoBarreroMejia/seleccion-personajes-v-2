@@ -1,0 +1,14 @@
+[gd_scene load_steps=2 format=3 uid="uid://m3s3cyuu17fu"]
+
+[ext_resource type="Script" uid="uid://bibulgkh8srk6" path="res://scripts/mapas/SpawnJugador.gd" id="1_dw0o6"]
+
+[node name="SpawnJ1" type="Marker2D"]
+script = ExtResource("1_dw0o6")
+
+[node name="ColorRect" type="ColorRect" parent="."]
+visible = false
+offset_left = -6.0
+offset_top = -5.0
+offset_right = 6.0
+offset_bottom = 6.0
+color = Color(0, 0.66972286, 0.6697228, 1)

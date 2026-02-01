@@ -1,0 +1,11 @@
+[gd_scene load_steps=2 format=3 uid="uid://b25ptj7tt26qn"]
+
+[ext_resource type="Script" uid="uid://1i5lc6ctf8hi" path="res://scripts/mapas/SpawnerArmas.gd" id="1_2i0hk"]
+
+[node name="SpawnerArmas" type="Marker2D"]
+script = ExtResource("1_2i0hk")
+
+[node name="Temporizador" type="Timer" parent="."]
+one_shot = true
+
+[connection signal="timeout" from="Temporizador" to="." method="_on_temporizador_timeout"]

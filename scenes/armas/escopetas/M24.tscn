@@ -1,0 +1,27 @@
+[gd_scene load_steps=5 format=3 uid="uid://dbdym27q1ixdl"]
+
+[ext_resource type="Script" uid="uid://6t54j3pscxni" path="res://scripts/armas/Escopeta.gd" id="1_6s400"]
+[ext_resource type="PackedScene" uid="uid://bqjkouyrpyfr1" path="res://scenes/armas/Bala.tscn" id="2_ap4rh"]
+[ext_resource type="Texture2D" uid="uid://x0jssyoc2oym" path="res://assets/sprites/armas/guns/SawedOffShotgun.png" id="3_0w55a"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_8bdao"]
+radius = 13.0
+
+[node name="Pistola" type="Node2D"]
+script = ExtResource("1_6s400")
+bala_scene = ExtResource("2_ap4rh")
+velocidad_disparo = 1.0
+
+[node name="SawedOffShotgun" type="Sprite2D" parent="."]
+texture = ExtResource("3_0w55a")
+
+[node name="Punta" type="Marker2D" parent="."]
+position = Vector2(15, -3)
+
+[node name="AreaRecogida" type="Area2D" parent="."]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="AreaRecogida"]
+shape = SubResource("CircleShape2D_8bdao")
+
+[connection signal="body_entered" from="AreaRecogida" to="." method="_on_area_recogida_body_entered"]
+[connection signal="body_exited" from="AreaRecogida" to="." method="_on_area_recogida_body_exited"]

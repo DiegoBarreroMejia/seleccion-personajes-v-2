@@ -1,0 +1,29 @@
+[gd_scene load_steps=5 format=3 uid="uid://b6m2nrskbv2va"]
+
+[ext_resource type="Texture2D" uid="uid://sqx4n4nlb7mk" path="res://assets/sprites/personajes/pato_blanco/pato_blanco.png" id="1_ap6wr"]
+[ext_resource type="Script" uid="uid://dv6ems0ybw6v1" path="res://scripts/personajes/PersonajeBase.gd" id="1_riq03"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_60bdk"]
+size = Vector2(34, 68)
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_74yus"]
+radius = 41.0
+
+[node name="Pato_Blanco" type="CharacterBody2D"]
+script = ExtResource("1_riq03")
+
+[node name="Sprite" type="Sprite2D" parent="."]
+scale = Vector2(0.3, 0.3)
+texture = ExtResource("1_ap6wr")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(2, 0)
+shape = SubResource("RectangleShape2D_60bdk")
+
+[node name="Mano" type="Marker2D" parent="."]
+position = Vector2(18, 10)
+
+[node name="AreaRecogida" type="Area2D" parent="."]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="AreaRecogida"]
+shape = SubResource("CircleShape2D_74yus")

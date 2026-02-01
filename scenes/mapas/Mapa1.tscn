@@ -1,0 +1,60 @@
+[gd_scene load_steps=13 format=3 uid="uid://xx2kqyei0veq"]
+
+[ext_resource type="Script" uid="uid://cb3rk5evlw376" path="res://scripts/mapas/MapaController.gd" id="1_i17oa"]
+[ext_resource type="Script" uid="uid://byk0a5r8sgysr" path="res://scripts/ui/CamaraInteligente.gd" id="2_emxrc"]
+[ext_resource type="Texture2D" uid="uid://rjj3c4b4k58o" path="res://assets/sprites/mapas/rectan_azul.png" id="2_p2j07"]
+[ext_resource type="PackedScene" uid="uid://m3s3cyuu17fu" path="res://scenes/mapas/componentes/SpawnJugador.tscn" id="3_emxrc"]
+[ext_resource type="PackedScene" uid="uid://c30nrefunu7kt" path="res://scenes/armas/pistolas/Luger.tscn" id="5_b3brl"]
+[ext_resource type="PackedScene" uid="uid://b25ptj7tt26qn" path="res://scenes/mapas/componentes/SpawnerArmas.tscn" id="6_5f6nd"]
+[ext_resource type="PackedScene" uid="uid://dbdym27q1ixdl" path="res://scenes/armas/escopetas/M24.tscn" id="7_oyyrh"]
+[ext_resource type="PackedScene" uid="uid://dw06gm2b1vud7" path="res://scenes/armas/rifles/AK47.tscn" id="8_4hoji"]
+[ext_resource type="PackedScene" uid="uid://blfwly6c2khjp" path="res://scenes/armas/espada_steve/espada.tscn" id="8_emxrc"]
+[ext_resource type="Script" uid="uid://b56olwpbo4lcl" path="res://scripts/mapas/ZonaMuerte.gd" id="8_i17oa"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_ihfxy"]
+size = Vector2(1081, 75.5)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_p2j07"]
+size = Vector2(1508, 8)
+
+[node name="Mapa1" type="Node2D"]
+script = ExtResource("1_i17oa")
+
+[node name="Camera2D" type="Camera2D" parent="."]
+script = ExtResource("2_emxrc")
+
+[node name="StaticBody2D" type="StaticBody2D" parent="."]
+
+[node name="RectanAzul" type="Sprite2D" parent="StaticBody2D"]
+position = Vector2(569, 495.00003)
+scale = Vector2(3.0699997, 0.364)
+texture = ExtResource("2_p2j07")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="StaticBody2D"]
+position = Vector2(569.5, 494.75)
+shape = SubResource("RectangleShape2D_ihfxy")
+
+[node name="SpawnJ2" parent="." instance=ExtResource("3_emxrc")]
+position = Vector2(889, 401)
+id_jugador = 2
+
+[node name="SpawnJ1" parent="." instance=ExtResource("3_emxrc")]
+position = Vector2(109, 400)
+
+[node name="SpawnerArmas" parent="." instance=ExtResource("6_5f6nd")]
+position = Vector2(258, 435)
+lista_armas = Array[PackedScene]([ExtResource("8_4hoji"), ExtResource("8_emxrc"), ExtResource("7_oyyrh"), ExtResource("5_b3brl")])
+tiempo_respawn = 3.0
+
+[node name="SpawnerArmas2" parent="." instance=ExtResource("6_5f6nd")]
+position = Vector2(755, 432)
+lista_armas = Array[PackedScene]([ExtResource("7_oyyrh"), ExtResource("5_b3brl"), ExtResource("8_emxrc"), ExtResource("8_4hoji")])
+tiempo_respawn = 3.0
+
+[node name="ZonaMuerte" type="Area2D" parent="."]
+position = Vector2(581, 655)
+script = ExtResource("8_i17oa")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="ZonaMuerte"]
+position = Vector2(2, 1)
+shape = SubResource("RectangleShape2D_p2j07")
