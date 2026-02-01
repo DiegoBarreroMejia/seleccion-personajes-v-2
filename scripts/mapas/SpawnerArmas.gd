@@ -80,6 +80,10 @@ func spawn_arma() -> void:
 	print("SpawnerArmas: Arma generada en %s" % name)
 
 func _on_arma_fue_recogida(_id_jugador: int) -> void:
+	# Desconectar señal para evitar llamadas futuras si el arma es soltada y recogida de nuevo
+	if _arma_actual and _arma_actual.has_signal("arma_recogida"):
+		if _arma_actual.arma_recogida.is_connected(_on_arma_fue_recogida):
+			_arma_actual.arma_recogida.disconnect(_on_arma_fue_recogida)
 	_arma_actual = null
 	arma_recogida.emit()
 	_iniciar_cooldown_respawn()

@@ -114,8 +114,9 @@ func _puede_ser_equipada_por(personaje: CharacterBody2D) -> bool:
 	return true
 
 func _on_area_recogida_body_entered(body: Node2D) -> void:
-	if body is CharacterBody2D and _candidatos_a_recoger.size() < MAX_CANDIDATOS_RECOGIDA:
-		_candidatos_a_recoger.append(body)
+	if body is CharacterBody2D and body.is_in_group("jugadores"):
+		if _candidatos_a_recoger.size() < MAX_CANDIDATOS_RECOGIDA:
+			_candidatos_a_recoger.append(body)
 
 func _on_area_recogida_body_exited(body: Node2D) -> void:
 	if body in _candidatos_a_recoger:
@@ -233,6 +234,8 @@ func _iniciar_temporizador_desaparicion() -> void:
 
 func _obtener_direccion_lanzamiento() -> int:
 	var padre := get_parent()
+	if not padre:
+		return 1
 	return -1 if padre.scale.x < 0 else 1
 
 # === UTILIDADES ===

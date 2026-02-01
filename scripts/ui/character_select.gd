@@ -27,8 +27,8 @@ func _ready() -> void:
 
 # === CONFIGURACIÓN INICIAL ===
 
+## Precarga todas las texturas de personajes para evitar lag
 func _precargar_retratos() -> void:
-	"""Precarga todas las texturas de personajes para evitar lag"""
 	for datos_personaje in Global.catalogo_personajes:
 		var ruta_retrato: String = datos_personaje.get("retrato", "")
 		if ruta_retrato.is_empty():
@@ -44,13 +44,13 @@ func _precargar_retratos() -> void:
 
 # === ACTUALIZACIÓN DE UI ===
 
+## Actualiza las vistas previas de ambos jugadores
 func _actualizar_vistas_personajes() -> void:
-	"""Actualiza las vistas previas de ambos jugadores"""
 	_actualizar_vista_jugador(1, _p1_indice)
 	_actualizar_vista_jugador(2, _p2_indice)
 
+## Actualiza la vista previa de un jugador específico
 func _actualizar_vista_jugador(id_jugador: int, indice: int) -> void:
-	"""Actualiza la vista previa de un jugador específico"""
 	var catalogo := Global.catalogo_personajes
 	
 	if indice < 0 or indice >= catalogo.size():
@@ -68,20 +68,17 @@ func _actualizar_vista_jugador(id_jugador: int, indice: int) -> void:
 		_p2_preview.texture = textura
 		Global.p2_seleccion = datos_personaje
 
+## Actualiza los labels de configuración de reglas
 func _actualizar_ui_reglas() -> void:
-	"""Actualiza los labels de configuración de reglas"""
 	_label_vida.text = str(Global.vida_maxima)
 	_label_puntos.text = str(Global.puntos_ganar)
 
 # === NAVEGACIÓN DE PERSONAJES ===
 
+## Navega por el catálogo de personajes
+## id_jugador: 1 o 2
+## direccion: -1 para anterior, 1 para siguiente
 func _navegar_personaje(id_jugador: int, direccion: int) -> void:
-	"""Navega por el catálogo de personajes
-	
-	Args:
-		id_jugador: 1 o 2
-		direccion: -1 para anterior, 1 para siguiente
-	"""
 	var tamano_catalogo := Global.catalogo_personajes.size()
 	if tamano_catalogo == 0:
 		return
@@ -127,8 +124,8 @@ func _on_btn_puntos_menos_pressed() -> void:
 
 # === INICIO DE PARTIDA ===
 
+## Inicia la partida con los personajes y configuración seleccionados
 func _on_partida_pressed() -> void:
-	"""Inicia la partida con los personajes y configuración seleccionados"""
 	var nombre_p1: String = Global.p1_seleccion.get("nombre", "Desconocido")
 	var nombre_p2: String = Global.p2_seleccion.get("nombre", "Desconocido")
 	

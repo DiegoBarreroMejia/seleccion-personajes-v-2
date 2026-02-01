@@ -11,5 +11,6 @@ func _ready() -> void:
 func _on_body_entered(body: Node2D) -> void:
 	if body.has_method("recibir_dano") and body.has_method("esta_vivo"):
 		if body.esta_vivo():
-			print("¡Jugador %d cayó al vacío!" % body.player_id)
+			var id_texto := str(body.player_id) if "player_id" in body else "desconocido"
+			print("¡Jugador %s cayó al vacío!" % id_texto)
 			body.recibir_dano(999)

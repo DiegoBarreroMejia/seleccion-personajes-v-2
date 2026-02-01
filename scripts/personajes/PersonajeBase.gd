@@ -10,8 +10,6 @@ class_name PersonajeBase
 signal vida_cambiada(nueva_vida: int)
 signal murio(id_jugador: int)
 signal recibio_dano(cantidad: int)
-signal arma_equipada(arma: ArmaBase)
-signal arma_soltada()
 
 # === CONSTANTES DE MOVIMIENTO ===
 const VELOCIDAD_DEFECTO: float = 300.0
@@ -198,7 +196,7 @@ func _reproducir_efecto_dano() -> void:
 	nodo_visual.modulate = Color.RED
 	await get_tree().create_timer(0.1).timeout
 	
-	if is_instance_valid(self) and nodo_visual:
+	if is_instance_valid(self) and nodo_visual and _esta_vivo:
 		nodo_visual.modulate = Color.WHITE
 
 # === MÉTODOS PÚBLICOS ===

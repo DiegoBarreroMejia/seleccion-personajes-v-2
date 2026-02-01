@@ -42,7 +42,7 @@ var catalogo_personajes: Array[Dictionary] = [
 	{
 		"nombre": "Amarillo",
 		"retrato": "res://assets/sprites/personajes/pato_amarillo/pato_amarillo.png",
-		"escena":"res://scenes/personajes/Pato_Amarillo.tscn"
+		"escena": "res://scenes/personajes/Pato_Amarillo.tscn"
 	},
 	{
 		"nombre": "Blanco",
