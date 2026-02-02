@@ -63,6 +63,11 @@ var catalogo_personajes: Array[Dictionary] = [
 		"nombre": "Steve",
 		"retrato": "res://assets/sprites/personajes/steve/Steveee.png",
 		"escena": "res://scenes/personajes/steve.tscn"
+	},
+	{
+		"nombre": "Mulan",
+		"retrato": "res://assets/sprites/personajes/mulan/caminarMulan_001.png",
+		"escena": "res://scenes/personajes/Mulan.tscn"
 	}
 ]
 
