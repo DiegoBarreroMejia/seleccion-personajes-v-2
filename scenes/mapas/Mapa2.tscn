@@ -1,4 +1,4 @@
-[gd_scene load_steps=13 format=3 uid="uid://cbfced1vxyvca"]
+[gd_scene load_steps=18 format=3 uid="uid://cbfced1vxyvca"]
 
 [ext_resource type="Script" uid="uid://cb3rk5evlw376" path="res://scripts/mapas/MapaController.gd" id="1_p2vsq"]
 [ext_resource type="Script" uid="uid://byk0a5r8sgysr" path="res://scripts/ui/CamaraInteligente.gd" id="2_brhov"]
@@ -10,6 +10,11 @@
 [ext_resource type="PackedScene" uid="uid://dw06gm2b1vud7" path="res://scenes/armas/rifles/AK47.tscn" id="7_llawa"]
 [ext_resource type="PackedScene" uid="uid://blfwly6c2khjp" path="res://scenes/armas/espada_steve/espada.tscn" id="8_pe3cu"]
 [ext_resource type="PackedScene" uid="uid://dbdym27q1ixdl" path="res://scenes/armas/escopetas/M24.tscn" id="9_hjcey"]
+[ext_resource type="PackedScene" uid="uid://bot3qm2wvoeqq" path="res://scenes/armas/pistolas/M92.tscn" id="10_1tvxr"]
+[ext_resource type="PackedScene" uid="uid://buum6hxidh4w5" path="res://scenes/armas/pistolas/Revolver.tscn" id="11_kja68"]
+[ext_resource type="PackedScene" uid="uid://cvcy0aocxkmfo" path="res://scenes/armas/subfusiles/MP5.tscn" id="12_go0br"]
+[ext_resource type="PackedScene" uid="uid://c836gegkrdy5e" path="res://scenes/armas/snipers/M24.tscn" id="13_kja68"]
+[ext_resource type="PackedScene" uid="uid://bgw5p8tncfeqq" path="res://scenes/armas/rifles/M15.tscn" id="13_tykhx"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_ihfxy"]
 size = Vector2(1081, 75.5)
@@ -43,12 +48,12 @@ id_jugador = 2
 
 [node name="SpawnerArmas" parent="." instance=ExtResource("5_llawa")]
 position = Vector2(274, 436)
-lista_armas = Array[PackedScene]([ExtResource("6_pe3cu"), ExtResource("7_llawa"), ExtResource("8_pe3cu"), ExtResource("9_hjcey")])
+lista_armas = Array[PackedScene]([ExtResource("9_hjcey"), ExtResource("8_pe3cu"), ExtResource("6_pe3cu"), ExtResource("10_1tvxr"), ExtResource("11_kja68"), ExtResource("7_llawa"), ExtResource("13_tykhx"), ExtResource("13_kja68"), ExtResource("12_go0br")])
 tiempo_respawn = 3.0
 
 [node name="SpawnerArmas2" parent="." instance=ExtResource("5_llawa")]
 position = Vector2(857, 434)
-lista_armas = Array[PackedScene]([ExtResource("6_pe3cu"), ExtResource("8_pe3cu"), ExtResource("7_llawa"), ExtResource("9_hjcey")])
+lista_armas = Array[PackedScene]([ExtResource("9_hjcey"), ExtResource("8_pe3cu"), ExtResource("6_pe3cu"), ExtResource("10_1tvxr"), ExtResource("11_kja68"), ExtResource("7_llawa"), ExtResource("13_tykhx"), ExtResource("13_kja68"), ExtResource("12_go0br")])
 tiempo_respawn = 3.0
 
 [node name="ZonaMuerte" type="Area2D" parent="."]
