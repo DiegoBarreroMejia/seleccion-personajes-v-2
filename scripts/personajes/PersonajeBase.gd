@@ -16,6 +16,9 @@ const VELOCIDAD_DEFECTO: float = 300.0
 const FUERZA_SALTO_DEFECTO: float = -400.0
 const DISTANCIA_MANO: float = 20.0
 
+# === ESCENAS PRELOADED ===
+const EXPLOSION_SCENE: PackedScene = preload("res://scenes/vfx/Explosion.tscn")
+
 # === VARIABLES EXPORTADAS ===
 @export_group("Movimiento")
 @export var speed: float = VELOCIDAD_DEFECTO
@@ -180,13 +183,18 @@ func _morir() -> void:
 	queue_free()
 
 func _reproducir_animacion_muerte() -> void:
+	# Ocultar el personaje inmediatamente
 	var nodo_visual: Node2D = _sprite if _sprite else _visuals
-	if not nodo_visual:
-		return
-	
-	var tween := create_tween()
-	tween.tween_property(nodo_visual, "modulate:a", 0.0, 0.3)
-	await tween.finished
+	if nodo_visual:
+		nodo_visual.visible = false
+
+	# Instanciar explosión en la posición del personaje
+	var explosion := EXPLOSION_SCENE.instantiate()
+	explosion.global_position = global_position
+	get_tree().current_scene.add_child(explosion)
+
+	# Esperar a que termine la animación de explosión
+	await explosion.animation_finished
 
 func _reproducir_efecto_dano() -> void:
 	var nodo_visual: Node2D = _sprite if _sprite else _visuals
