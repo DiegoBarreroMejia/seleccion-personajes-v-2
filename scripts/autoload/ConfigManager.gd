@@ -237,7 +237,7 @@ func restablecer_controles() -> void:
 		InputMap.action_erase_events(accion)
 
 		var evento := InputEventKey.new()
-		evento.physical_keycode = _controles_defecto[accion]
+		evento.physical_keycode = _controles_defecto[accion] as Key
 		InputMap.action_add_event(accion, evento)
 
 	guardar_config()
@@ -309,7 +309,7 @@ func cargar_config() -> void:
 			var keycode: int = _config.get_value("controles", accion)
 			InputMap.action_erase_events(accion)
 			var evento := InputEventKey.new()
-			evento.physical_keycode = keycode
+			evento.physical_keycode = keycode as Key
 			InputMap.action_add_event(accion, evento)
 
 	print("Configuración cargada desde %s" % RUTA_CONFIG)

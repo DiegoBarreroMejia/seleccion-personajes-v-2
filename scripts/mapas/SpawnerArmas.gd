@@ -26,9 +26,6 @@ var _arma_actual: Node2D = null  # Puede ser ArmaBase o ArmaMeleeBase
 var _esperando: bool = false
 var _temporizador_respawn: Timer
 
-# === NODOS ===
-@onready var _sprite: Sprite2D = $Sprite if has_node("Sprite") else null
-
 # === MÉTODOS DE CICLO DE VIDA ===
 
 func _ready() -> void:

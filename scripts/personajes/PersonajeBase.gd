@@ -115,7 +115,7 @@ func _gestionar_movimiento() -> void:
 		velocity.x = move_toward(velocity.x, 0, speed)
 
 func _actualizar_direccion_mirada(direccion: float) -> void:
-	var nueva_direccion := signi(direccion)
+	var nueva_direccion: int = 1 if direccion > 0 else -1
 	
 	if nueva_direccion != _direccion_mirada:
 		_direccion_mirada = nueva_direccion

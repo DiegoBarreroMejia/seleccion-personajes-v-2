@@ -65,16 +65,19 @@ func _physics_process(delta: float) -> void:
 	# Aplicar gravedad
 	_velocidad_arma.y += GRAVEDAD_ARMA * delta
 
-	# Mover arma
-	position += _velocidad_arma * delta
+	# Detectar colisión con suelo antes de mover
+	var resultado_suelo := _detectar_suelo()
+	if not resultado_suelo.is_empty():
+		# Posicionar exactamente sobre el suelo
+		global_position = resultado_suelo["position"]
+		_al_tocar_suelo()
+	else:
+		# Mover arma normalmente
+		position += _velocidad_arma * delta
 
 	# Rotar visualmente si fue lanzada
 	if _fue_lanzada:
 		rotation += VELOCIDAD_ROTACION * delta
-
-	# Detectar colisión con suelo
-	if _detectar_suelo():
-		_al_tocar_suelo()
 
 # === CONFIGURACIÓN INICIAL ===
 
@@ -302,20 +305,20 @@ func _obtener_direccion_lanzamiento() -> int:
 
 # === SISTEMA DE VUELO ===
 
-func _detectar_suelo() -> bool:
-	## Detecta si el arma tocó el suelo usando raycast
+func _detectar_suelo() -> Dictionary:
+	## Detecta si el arma tocó el suelo usando raycast y retorna el punto de colisión
 	var space_state := get_world_2d().direct_space_state
 	if not space_state:
-		return false
+		return {}
 
-	# Raycast corto hacia abajo para detectar suelo (Layer 6: Escenario)
+	# Raycast más largo para anticipar colisión y obtener punto exacto
+	var distancia_raycast := maxf(20.0, _velocidad_arma.y * get_physics_process_delta_time() + 10.0)
 	var query := PhysicsRayQueryParameters2D.create(
 		global_position,
-		global_position + Vector2(0, 8),
+		global_position + Vector2(0, distancia_raycast),
 		0b100000  # Layer 6: Escenario
 	)
-	var result := space_state.intersect_ray(query)
-	return not result.is_empty()
+	return space_state.intersect_ray(query)
 
 func _al_tocar_suelo() -> void:
 	## Comportamiento al tocar el suelo

@@ -4,130 +4,191 @@
 
 [node name="CharacterSelect" type="Control"]
 layout_mode = 3
-anchors_preset = 0
-offset_right = 40.0
-offset_bottom = 40.0
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
 script = ExtResource("1_jn04r")
 
-[node name="panel_p1" type="Panel" parent="."]
-layout_mode = 0
-offset_left = 92.0
-offset_top = 129.0
-offset_right = 382.0
-offset_bottom = 467.0
+[node name="MargenPrincipal" type="MarginContainer" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 50
+theme_override_constants/margin_top = 50
+theme_override_constants/margin_right = 50
+theme_override_constants/margin_bottom = 50
 
-[node name="VistaPrevia" type="TextureRect" parent="panel_p1"]
-layout_mode = 0
-offset_left = 46.0
-offset_top = 44.0
-offset_right = 228.0
-offset_bottom = 264.0
-
-[node name="anterior_p1" type="Button" parent="panel_p1"]
-layout_mode = 0
-offset_left = 15.0
-offset_top = 298.0
-offset_right = 80.0
-offset_bottom = 318.0
-text = "<"
-
-[node name="siguiente_p1" type="Button" parent="panel_p1"]
-layout_mode = 0
-offset_left = 181.0
-offset_top = 298.0
-offset_right = 245.0
-offset_bottom = 319.0
-text = ">"
-
-[node name="panel_p2" type="Panel" parent="."]
-layout_mode = 0
-offset_left = 765.0
-offset_top = 126.0
-offset_right = 1045.0
-offset_bottom = 466.0
-
-[node name="VistaPrevia" type="TextureRect" parent="panel_p2"]
-layout_mode = 0
-offset_left = 56.0
-offset_top = 43.0
-offset_right = 230.0
-offset_bottom = 253.0
-
-[node name="anterior_p2" type="Button" parent="panel_p2"]
-layout_mode = 0
-offset_left = 24.0
-offset_top = 293.0
-offset_right = 93.0
-offset_bottom = 312.0
-text = "<"
-
-[node name="siguiente_p2" type="Button" parent="panel_p2"]
-layout_mode = 0
-offset_left = 204.0
-offset_top = 291.0
-offset_right = 261.0
-offset_bottom = 310.0
-text = ">"
-
-[node name="partida" type="Button" parent="."]
-layout_mode = 0
-offset_left = 497.0
-offset_top = 564.0
-offset_right = 651.0
-offset_bottom = 607.0
-text = "PARTIDA"
-
-[node name="ContenedorReglas" type="VBoxContainer" parent="."]
-layout_mode = 0
-offset_left = 515.0
-offset_top = 267.0
-offset_right = 743.0
-offset_bottom = 383.0
-
-[node name="FilaVidas" type="HBoxContainer" parent="ContenedorReglas"]
+[node name="VBoxPrincipal" type="VBoxContainer" parent="MargenPrincipal"]
 layout_mode = 2
+theme_override_constants/separation = 20
 
-[node name="Titulo" type="Label" parent="ContenedorReglas/FilaVidas"]
+[node name="PanelesJugadores" type="HBoxContainer" parent="MargenPrincipal/VBoxPrincipal"]
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_constants/separation = 30
+
+[node name="panel_p1" type="Panel" parent="MargenPrincipal/VBoxPrincipal/PanelesJugadores"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="MarginContainer" type="MarginContainer" parent="MargenPrincipal/VBoxPrincipal/PanelesJugadores/panel_p1"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 20
+theme_override_constants/margin_top = 20
+theme_override_constants/margin_right = 20
+theme_override_constants/margin_bottom = 20
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MargenPrincipal/VBoxPrincipal/PanelesJugadores/panel_p1/MarginContainer"]
+layout_mode = 2
+theme_override_constants/separation = 15
+
+[node name="VistaPrevia" type="TextureRect" parent="MargenPrincipal/VBoxPrincipal/PanelesJugadores/panel_p1/MarginContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+expand_mode = 1
+stretch_mode = 5
+
+[node name="HBoxBotones" type="HBoxContainer" parent="MargenPrincipal/VBoxPrincipal/PanelesJugadores/panel_p1/MarginContainer/VBoxContainer"]
+layout_mode = 2
+alignment = 1
+theme_override_constants/separation = 50
+
+[node name="anterior_p1" type="Button" parent="MargenPrincipal/VBoxPrincipal/PanelesJugadores/panel_p1/MarginContainer/VBoxContainer/HBoxBotones"]
+custom_minimum_size = Vector2(60, 30)
+layout_mode = 2
+text = "<"
+
+[node name="siguiente_p1" type="Button" parent="MargenPrincipal/VBoxPrincipal/PanelesJugadores/panel_p1/MarginContainer/VBoxContainer/HBoxBotones"]
+custom_minimum_size = Vector2(60, 30)
+layout_mode = 2
+text = ">"
+
+[node name="ContenedorReglas" type="VBoxContainer" parent="MargenPrincipal/VBoxPrincipal/PanelesJugadores"]
+layout_mode = 2
+size_flags_horizontal = 4
+alignment = 1
+theme_override_constants/separation = 20
+
+[node name="FilaVidas" type="HBoxContainer" parent="MargenPrincipal/VBoxPrincipal/PanelesJugadores/ContenedorReglas"]
+layout_mode = 2
+alignment = 1
+theme_override_constants/separation = 10
+
+[node name="Titulo" type="Label" parent="MargenPrincipal/VBoxPrincipal/PanelesJugadores/ContenedorReglas/FilaVidas"]
+custom_minimum_size = Vector2(80, 0)
 layout_mode = 2
 text = "VIDAS"
+horizontal_alignment = 2
 
-[node name="BtnVidaMenos" type="Button" parent="ContenedorReglas/FilaVidas"]
+[node name="BtnVidaMenos" type="Button" parent="MargenPrincipal/VBoxPrincipal/PanelesJugadores/ContenedorReglas/FilaVidas"]
+custom_minimum_size = Vector2(40, 30)
 layout_mode = 2
 text = "-"
 
-[node name="LabelVida" type="Label" parent="ContenedorReglas/FilaVidas"]
+[node name="LabelVida" type="Label" parent="MargenPrincipal/VBoxPrincipal/PanelesJugadores/ContenedorReglas/FilaVidas"]
+custom_minimum_size = Vector2(30, 0)
 layout_mode = 2
 text = "1"
+horizontal_alignment = 1
 
-[node name="BtnVidaMas" type="Button" parent="ContenedorReglas/FilaVidas"]
+[node name="BtnVidaMas" type="Button" parent="MargenPrincipal/VBoxPrincipal/PanelesJugadores/ContenedorReglas/FilaVidas"]
+custom_minimum_size = Vector2(40, 30)
 layout_mode = 2
 text = "+"
 
-[node name="FilaPuntos" type="HBoxContainer" parent="ContenedorReglas"]
+[node name="FilaPuntos" type="HBoxContainer" parent="MargenPrincipal/VBoxPrincipal/PanelesJugadores/ContenedorReglas"]
 layout_mode = 2
+alignment = 1
+theme_override_constants/separation = 10
 
-[node name="Titulo" type="Label" parent="ContenedorReglas/FilaPuntos"]
+[node name="Titulo" type="Label" parent="MargenPrincipal/VBoxPrincipal/PanelesJugadores/ContenedorReglas/FilaPuntos"]
+custom_minimum_size = Vector2(80, 0)
 layout_mode = 2
 text = "PUNTOS"
+horizontal_alignment = 2
 
-[node name="BtnPuntosMenos" type="Button" parent="ContenedorReglas/FilaPuntos"]
+[node name="BtnPuntosMenos" type="Button" parent="MargenPrincipal/VBoxPrincipal/PanelesJugadores/ContenedorReglas/FilaPuntos"]
+custom_minimum_size = Vector2(40, 30)
 layout_mode = 2
 text = "-"
 
-[node name="LabelPuntos" type="Label" parent="ContenedorReglas/FilaPuntos"]
+[node name="LabelPuntos" type="Label" parent="MargenPrincipal/VBoxPrincipal/PanelesJugadores/ContenedorReglas/FilaPuntos"]
+custom_minimum_size = Vector2(30, 0)
 layout_mode = 2
 text = "10"
+horizontal_alignment = 1
 
-[node name="BtnPuntosMas" type="Button" parent="ContenedorReglas/FilaPuntos"]
+[node name="BtnPuntosMas" type="Button" parent="MargenPrincipal/VBoxPrincipal/PanelesJugadores/ContenedorReglas/FilaPuntos"]
+custom_minimum_size = Vector2(40, 30)
 layout_mode = 2
 text = "+"
 
-[connection signal="pressed" from="panel_p1/anterior_p1" to="." method="_on_anterior_p1_pressed"]
-[connection signal="pressed" from="panel_p1/siguiente_p1" to="." method="_on_siguiente_p1_pressed"]
-[connection signal="pressed" from="panel_p2/anterior_p2" to="." method="_on_anterior_p2_pressed"]
-[connection signal="pressed" from="panel_p2/siguiente_p2" to="." method="_on_siguiente_p2_pressed"]
-[connection signal="pressed" from="partida" to="." method="_on_partida_pressed"]
-[connection signal="pressed" from="ContenedorReglas/FilaVidas/BtnVidaMenos" to="." method="_on_btn_vida_menos_pressed"]
-[connection signal="pressed" from="ContenedorReglas/FilaVidas/BtnVidaMas" to="." method="_on_btn_vida_mas_pressed"]
-[connection signal="pressed" from="ContenedorReglas/FilaPuntos/BtnPuntosMenos" to="." method="_on_btn_puntos_menos_pressed"]
-[connection signal="pressed" from="ContenedorReglas/FilaPuntos/BtnPuntosMas" to="." method="_on_btn_puntos_mas_pressed"]
+[node name="panel_p2" type="Panel" parent="MargenPrincipal/VBoxPrincipal/PanelesJugadores"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="MarginContainer" type="MarginContainer" parent="MargenPrincipal/VBoxPrincipal/PanelesJugadores/panel_p2"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 20
+theme_override_constants/margin_top = 20
+theme_override_constants/margin_right = 20
+theme_override_constants/margin_bottom = 20
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MargenPrincipal/VBoxPrincipal/PanelesJugadores/panel_p2/MarginContainer"]
+layout_mode = 2
+theme_override_constants/separation = 15
+
+[node name="VistaPrevia" type="TextureRect" parent="MargenPrincipal/VBoxPrincipal/PanelesJugadores/panel_p2/MarginContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+expand_mode = 1
+stretch_mode = 5
+
+[node name="HBoxBotones" type="HBoxContainer" parent="MargenPrincipal/VBoxPrincipal/PanelesJugadores/panel_p2/MarginContainer/VBoxContainer"]
+layout_mode = 2
+alignment = 1
+theme_override_constants/separation = 50
+
+[node name="anterior_p2" type="Button" parent="MargenPrincipal/VBoxPrincipal/PanelesJugadores/panel_p2/MarginContainer/VBoxContainer/HBoxBotones"]
+custom_minimum_size = Vector2(60, 30)
+layout_mode = 2
+text = "<"
+
+[node name="siguiente_p2" type="Button" parent="MargenPrincipal/VBoxPrincipal/PanelesJugadores/panel_p2/MarginContainer/VBoxContainer/HBoxBotones"]
+custom_minimum_size = Vector2(60, 30)
+layout_mode = 2
+text = ">"
+
+[node name="ContenedorBoton" type="HBoxContainer" parent="MargenPrincipal/VBoxPrincipal"]
+layout_mode = 2
+alignment = 1
+
+[node name="partida" type="Button" parent="MargenPrincipal/VBoxPrincipal/ContenedorBoton"]
+custom_minimum_size = Vector2(150, 45)
+layout_mode = 2
+text = "PARTIDA"
+
+[connection signal="pressed" from="MargenPrincipal/VBoxPrincipal/PanelesJugadores/panel_p1/MarginContainer/VBoxContainer/HBoxBotones/anterior_p1" to="." method="_on_anterior_p1_pressed"]
+[connection signal="pressed" from="MargenPrincipal/VBoxPrincipal/PanelesJugadores/panel_p1/MarginContainer/VBoxContainer/HBoxBotones/siguiente_p1" to="." method="_on_siguiente_p1_pressed"]
+[connection signal="pressed" from="MargenPrincipal/VBoxPrincipal/PanelesJugadores/ContenedorReglas/FilaVidas/BtnVidaMenos" to="." method="_on_btn_vida_menos_pressed"]
+[connection signal="pressed" from="MargenPrincipal/VBoxPrincipal/PanelesJugadores/ContenedorReglas/FilaVidas/BtnVidaMas" to="." method="_on_btn_vida_mas_pressed"]
+[connection signal="pressed" from="MargenPrincipal/VBoxPrincipal/PanelesJugadores/ContenedorReglas/FilaPuntos/BtnPuntosMenos" to="." method="_on_btn_puntos_menos_pressed"]
+[connection signal="pressed" from="MargenPrincipal/VBoxPrincipal/PanelesJugadores/ContenedorReglas/FilaPuntos/BtnPuntosMas" to="." method="_on_btn_puntos_mas_pressed"]
+[connection signal="pressed" from="MargenPrincipal/VBoxPrincipal/PanelesJugadores/panel_p2/MarginContainer/VBoxContainer/HBoxBotones/anterior_p2" to="." method="_on_anterior_p2_pressed"]
+[connection signal="pressed" from="MargenPrincipal/VBoxPrincipal/PanelesJugadores/panel_p2/MarginContainer/VBoxContainer/HBoxBotones/siguiente_p2" to="." method="_on_siguiente_p2_pressed"]
+[connection signal="pressed" from="MargenPrincipal/VBoxPrincipal/ContenedorBoton/partida" to="." method="_on_partida_pressed"]

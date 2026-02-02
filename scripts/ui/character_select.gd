@@ -13,10 +13,10 @@ var _p2_indice: int = 1
 var _retratos_cacheados: Dictionary = {}  # Cache de texturas
 
 # === NODOS ===
-@onready var _p1_preview: TextureRect = $panel_p1/VistaPrevia
-@onready var _p2_preview: TextureRect = $panel_p2/VistaPrevia
-@onready var _label_vida: Label = $ContenedorReglas/FilaVidas/LabelVida
-@onready var _label_puntos: Label = $ContenedorReglas/FilaPuntos/LabelPuntos
+@onready var _p1_preview: TextureRect = $MargenPrincipal/VBoxPrincipal/PanelesJugadores/panel_p1/MarginContainer/VBoxContainer/VistaPrevia
+@onready var _p2_preview: TextureRect = $MargenPrincipal/VBoxPrincipal/PanelesJugadores/panel_p2/MarginContainer/VBoxContainer/VistaPrevia
+@onready var _label_vida: Label = $MargenPrincipal/VBoxPrincipal/PanelesJugadores/ContenedorReglas/FilaVidas/LabelVida
+@onready var _label_puntos: Label = $MargenPrincipal/VBoxPrincipal/PanelesJugadores/ContenedorReglas/FilaPuntos/LabelPuntos
 
 # === MÉTODOS DE CICLO DE VIDA ===
 
