@@ -167,18 +167,22 @@ func _reproducir_animacion(nombre_anim: String) -> void:
 func _morir() -> void:
 	if not _esta_vivo:
 		return
-	
+
 	_esta_vivo = false
 	print("Jugador %d ha muerto" % player_id)
-	
+
 	set_physics_process(false)
 	collision_layer = 0
 	collision_mask = 0
-	
+
 	murio.emit(player_id)
-	
+
 	await _reproducir_animacion_muerte()
-	
+
+	# Validación defensiva después del await
+	if not is_inside_tree():
+		return
+
 	await get_tree().create_timer(0.5).timeout
 	queue_free()
 
@@ -188,10 +192,19 @@ func _reproducir_animacion_muerte() -> void:
 	if nodo_visual:
 		nodo_visual.visible = false
 
+	# Validación defensiva antes de acceder al árbol
+	if not is_inside_tree():
+		return
+
+	var current_scene := get_tree().current_scene
+	if not current_scene:
+		push_warning("PersonajeBase: current_scene es null, no se puede mostrar explosión")
+		return
+
 	# Instanciar explosión en la posición del personaje
 	var explosion := EXPLOSION_SCENE.instantiate()
 	explosion.global_position = global_position
-	get_tree().current_scene.add_child(explosion)
+	current_scene.add_child(explosion)
 
 	# Esperar a que termine la animación de explosión
 	await explosion.animation_finished
@@ -200,11 +213,14 @@ func _reproducir_efecto_dano() -> void:
 	var nodo_visual: Node2D = _sprite if _sprite else _visuals
 	if not nodo_visual:
 		return
-	
+
+	if not is_inside_tree():
+		return
+
 	nodo_visual.modulate = Color.RED
 	await get_tree().create_timer(0.1).timeout
-	
-	if is_instance_valid(self) and nodo_visual and _esta_vivo:
+
+	if is_instance_valid(self) and is_inside_tree() and nodo_visual and _esta_vivo:
 		nodo_visual.modulate = Color.WHITE
 
 # === MÉTODOS PÚBLICOS ===

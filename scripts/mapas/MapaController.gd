@@ -22,6 +22,7 @@ const RUTA_MENU_SELECCION: String = "res://scenes/ui/CharacterSelect.tscn"
 # === VARIABLES PRIVADAS ===
 var _jugadores: Dictionary = {}
 var _puntos_spawn: Dictionary = {}
+var _ronda_finalizada: bool = false  # Evita procesar múltiples muertes
 
 # === MÉTODOS DE CICLO DE VIDA ===
 
@@ -84,20 +85,63 @@ func _spawn_jugador(id_jugador: int, datos_personaje: Dictionary) -> void:
 # === GESTIÓN DE MUERTE ===
 
 func _on_jugador_murio(id_jugador_muerto: int) -> void:
-	var id_ganador := 2 if id_jugador_muerto == 1 else 1
-	
-	Global.sumar_puntos(id_ganador)
-	
+	# Evitar procesar si la ronda ya fue finalizada
+	if _ronda_finalizada:
+		return
+
+	jugador_murio.emit(id_jugador_muerto)
+
+	# Esperar un frame para detectar muerte simultánea
+	await get_tree().process_frame
+
+	# Verificar de nuevo (otra muerte pudo haber marcado la ronda como finalizada)
+	if _ronda_finalizada:
+		return
+
+	_ronda_finalizada = true
+
+	# Detectar muerte simultánea: verificar si ambos jugadores están muertos
+	var j1_vivo := _jugador_esta_vivo(1)
+	var j2_vivo := _jugador_esta_vivo(2)
+
+	var id_ganador: int
+	var es_empate := false
+
+	if not j1_vivo and not j2_vivo:
+		# Muerte simultánea = empate, no se suman puntos
+		es_empate = true
+		id_ganador = 0
+		print("¡EMPATE! Ambos jugadores murieron simultáneamente")
+	else:
+		# Victoria normal
+		id_ganador = 1 if j1_vivo else 2
+		Global.sumar_puntos(id_ganador)
+
 	var puntos_p1 := Global.obtener_puntuacion(1)
 	var puntos_p2 := Global.obtener_puntuacion(2)
-	
-	print("Muerte: J%d eliminado. Marcador: %d - %d" % [id_jugador_muerto, puntos_p1, puntos_p2])
-	
-	jugador_murio.emit(id_jugador_muerto)
+
+	if not es_empate:
+		print("Muerte: J%d eliminado. Marcador: %d - %d" % [id_jugador_muerto, puntos_p1, puntos_p2])
+
 	ronda_terminada.emit(id_ganador)
-	
+
+	# Validación defensiva antes del await
+	if not is_inside_tree():
+		return
+
 	await get_tree().create_timer(0.5).timeout
+
+	# Validación defensiva después del await
+	if not is_inside_tree():
+		return
+
 	_verificar_victoria()
+
+func _jugador_esta_vivo(id_jugador: int) -> bool:
+	var jugador: PersonajeBase = _jugadores.get(id_jugador)
+	if not is_instance_valid(jugador):
+		return false
+	return jugador.esta_vivo()
 
 # === GESTIÓN DE VICTORIA ===
 
@@ -117,24 +161,42 @@ func _manejar_victoria_partida(id_ganador: int) -> void:
 	print("=========================")
 	print("¡PARTIDA GANADA POR JUGADOR %d!" % id_ganador)
 	print("=========================")
-	
+
 	partida_terminada.emit(id_ganador)
-	
+
+	if not is_inside_tree():
+		return
+
 	await get_tree().create_timer(RETRASO_VICTORIA).timeout
-	
+
+	if not is_inside_tree():
+		return
+
 	Global.reiniciar_puntuaciones()
 	get_tree().change_scene_to_file(RUTA_MENU_SELECCION)
 
 func _iniciar_siguiente_ronda() -> void:
 	print("Nadie ha ganado aún. Siguiente ronda en %.1fs..." % RETRASO_TRANSICION_RONDA)
-	
+
+	if not is_inside_tree():
+		return
+
 	await get_tree().create_timer(RETRASO_TRANSICION_RONDA).timeout
-	
+
+	# Validación defensiva: verificar que seguimos en el árbol después del await
+	if not is_inside_tree():
+		push_warning("MapaController: Nodo ya no está en el árbol, cancelando cambio de escena")
+		return
+
 	var mapa_siguiente := Global.obtener_mapa_aleatorio()
 	if mapa_siguiente.is_empty():
 		push_error("MapaController: No se pudo obtener siguiente mapa")
 		return
-	
+
+	if not ResourceLoader.exists(mapa_siguiente):
+		push_error("MapaController: Mapa no encontrado: %s" % mapa_siguiente)
+		return
+
 	get_tree().change_scene_to_file(mapa_siguiente)
 
 # === MÉTODOS PÚBLICOS ===
