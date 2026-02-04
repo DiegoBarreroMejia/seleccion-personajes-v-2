@@ -2,8 +2,11 @@
 
 [ext_resource type="Script" uid="uid://cp77ly1oceo8h" path="res://scripts/ui/menu_pausa.gd" id="1_pausa"]
 
-[node name="MenuPausa" type="Control"]
+[node name="MenuPausa" type="CanvasLayer"]
+layer = 100
 process_mode = 3
+
+[node name="PanelControl" type="Control" parent="."]
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
@@ -12,7 +15,7 @@ grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_pausa")
 
-[node name="FondoOscuro" type="ColorRect" parent="."]
+[node name="FondoOscuro" type="ColorRect" parent="PanelControl"]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -22,7 +25,7 @@ grow_vertical = 2
 mouse_filter = 2
 color = Color(0, 0, 0, 0.7)
 
-[node name="Panel" type="Panel" parent="."]
+[node name="Panel" type="Panel" parent="PanelControl"]
 layout_mode = 1
 anchors_preset = 8
 anchor_left = 0.5
@@ -36,7 +39,7 @@ offset_bottom = 120.0
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="ContenedorCentral" type="VBoxContainer" parent="Panel"]
+[node name="ContenedorCentral" type="VBoxContainer" parent="PanelControl/Panel"]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -46,28 +49,28 @@ grow_vertical = 2
 theme_override_constants/separation = 20
 alignment = 1
 
-[node name="Titulo" type="Label" parent="Panel/ContenedorCentral"]
+[node name="Titulo" type="Label" parent="PanelControl/Panel/ContenedorCentral"]
 layout_mode = 2
 theme_override_font_sizes/font_size = 32
 text = "PAUSA"
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="Espaciador" type="Control" parent="Panel/ContenedorCentral"]
+[node name="Espaciador" type="Control" parent="PanelControl/Panel/ContenedorCentral"]
 custom_minimum_size = Vector2(0, 10)
 layout_mode = 2
 
-[node name="BtnReanudar" type="Button" parent="Panel/ContenedorCentral"]
+[node name="BtnReanudar" type="Button" parent="PanelControl/Panel/ContenedorCentral"]
 custom_minimum_size = Vector2(180, 45)
 layout_mode = 2
 size_flags_horizontal = 4
 text = "Reanudar"
 
-[node name="BtnSalir" type="Button" parent="Panel/ContenedorCentral"]
+[node name="BtnSalir" type="Button" parent="PanelControl/Panel/ContenedorCentral"]
 custom_minimum_size = Vector2(180, 45)
 layout_mode = 2
 size_flags_horizontal = 4
 text = "Salir al menú"
 
-[connection signal="pressed" from="Panel/ContenedorCentral/BtnReanudar" to="." method="_on_btn_reanudar_pressed"]
-[connection signal="pressed" from="Panel/ContenedorCentral/BtnSalir" to="." method="_on_btn_salir_pressed"]
+[connection signal="pressed" from="PanelControl/Panel/ContenedorCentral/BtnReanudar" to="PanelControl" method="_on_btn_reanudar_pressed"]
+[connection signal="pressed" from="PanelControl/Panel/ContenedorCentral/BtnSalir" to="PanelControl" method="_on_btn_salir_pressed"]

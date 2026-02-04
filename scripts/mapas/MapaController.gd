@@ -143,6 +143,17 @@ func _jugador_esta_vivo(id_jugador: int) -> bool:
 		return false
 	return jugador.esta_vivo()
 
+# === LIMPIEZA DE ESCENA ===
+
+func _limpiar_armas_sueltas() -> void:
+	## Elimina todas las armas que quedaron en el root (soltadas/lanzadas)
+	## Esto es necesario porque las armas soltadas se añaden al root, no a la escena
+	var root := get_tree().root
+	for nodo in root.get_children():
+		if nodo is ArmaBase or nodo is ArmaMeleeBase:
+			nodo.queue_free()
+	print("Armas sueltas limpiadas")
+
 # === GESTIÓN DE VICTORIA ===
 
 func _verificar_victoria() -> void:
@@ -172,6 +183,7 @@ func _manejar_victoria_partida(id_ganador: int) -> void:
 	if not is_inside_tree():
 		return
 
+	_limpiar_armas_sueltas()
 	Global.reiniciar_puntuaciones()
 	get_tree().change_scene_to_file(RUTA_MENU_SELECCION)
 
@@ -187,6 +199,8 @@ func _iniciar_siguiente_ronda() -> void:
 	if not is_inside_tree():
 		push_warning("MapaController: Nodo ya no está en el árbol, cancelando cambio de escena")
 		return
+
+	_limpiar_armas_sueltas()
 
 	var mapa_siguiente := Global.obtener_mapa_aleatorio()
 	if mapa_siguiente.is_empty():

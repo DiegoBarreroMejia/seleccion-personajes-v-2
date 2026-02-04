@@ -20,7 +20,7 @@ const ESCENAS_SIN_PAUSA: Array[String] = [
 ]
 
 # === VARIABLES ===
-var _menu_pausa_instancia: Control = null
+var _menu_pausa_instancia: CanvasLayer = null
 var _esta_pausado: bool = false
 
 # === MÉTODOS DE CICLO DE VIDA ===
@@ -54,7 +54,7 @@ func _instanciar_menu_pausa() -> void:
 		push_error("PauseManager: No se pudo cargar MenuPausa.tscn")
 		return
 
-	_menu_pausa_instancia = menu_pausa_scene.instantiate() as Control
+	_menu_pausa_instancia = menu_pausa_scene.instantiate() as CanvasLayer
 	if not _menu_pausa_instancia:
 		push_error("PauseManager: No se pudo instanciar MenuPausa")
 		return

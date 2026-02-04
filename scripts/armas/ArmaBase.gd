@@ -14,11 +14,21 @@ signal arma_soltada()
 # === CONSTANTES ===
 const MAX_CANDIDATOS_RECOGIDA: int = 4
 
-# === CONSTANTES DE LANZAMIENTO ===
+# === CONSTANTES DE FÍSICA DE ARMAS ===
 const GRAVEDAD_ARMA: float = 800.0
-const VELOCIDAD_LANZAMIENTO: float = 600.0
-const VELOCIDAD_CAIDA_INICIAL: float = -250.0
 const VELOCIDAD_ROTACION: float = 12.0
+const DISTANCIA_RAYCAST_MINIMA: float = 15.0
+
+# === CONSTANTES DE LANZAMIENTO HORIZONTAL (proyectil con arco) ===
+const VELOCIDAD_LANZAMIENTO: float = 600.0
+const IMPULSO_VERTICAL_LANZAR: float = -250.0  # Negativo = hacia arriba (arco parabólico)
+
+# === CONSTANTES DE LANZAMIENTO HACIA ARRIBA ===
+const IMPULSO_VERTICAL_ARRIBA: float = -550.0  # Fuerza hacia arriba
+const IMPULSO_HORIZONTAL_ARRIBA: float = 80.0  # Pequeño ángulo horizontal
+
+# === CONSTANTES DE SOLTAR (caída natural) ===
+const VELOCIDAD_INICIAL_SOLTAR: float = 0.0  # Sin impulso, solo gravedad
 
 # === VARIABLES EXPORTADAS ===
 @export_group("Estadísticas Arma")
@@ -170,7 +180,7 @@ func _on_area_recogida_body_entered(body: Node2D) -> void:
 				_candidatos_a_recoger.append(body)
 
 func _on_area_recogida_body_exited(body: Node2D) -> void:
-	if body in _candidatos_a_recoger:
+	if body is CharacterBody2D and body in _candidatos_a_recoger:
 		_candidatos_a_recoger.erase(body)
 
 # === SISTEMA DE DISPARO ===
@@ -237,11 +247,13 @@ func _verificar_input_soltar() -> void:
 		soltar()
 
 func soltar() -> void:
-	# Detectar si mantiene pulsado "abajo"
+	# Detectar direcciones pulsadas
 	var controles := _obtener_controles_dueno()
 	var mantiene_abajo := false
+	var mantiene_arriba := false
 	if not controles.is_empty():
 		mantiene_abajo = Input.is_action_pressed(controles["down"])
+		mantiene_arriba = Input.is_action_pressed(controles["up"])
 
 	var direccion_lanzamiento := _obtener_direccion_lanzamiento()
 
@@ -258,17 +270,22 @@ func soltar() -> void:
 	global_position = pos_mundial
 	rotation = 0
 
-	# Configurar modo de lanzamiento
+	# Configurar modo según input del jugador (prioridad: abajo > arriba > horizontal)
 	if mantiene_abajo:
-		# MODO SOLTAR: cae recto, sin daño, recogible
+		# MODO SOLTAR: caída natural por gravedad, sin impulso inicial
 		_fue_lanzada = false
-		_velocidad_arma = Vector2(0, VELOCIDAD_CAIDA_INICIAL)
-		print("Arma soltada (caerá al suelo)")
-	else:
-		# MODO LANZAR: sale con velocidad, hace daño, desaparece
+		_velocidad_arma = Vector2(0, VELOCIDAD_INICIAL_SOLTAR)
+		print("Arma soltada (caída natural)")
+	elif mantiene_arriba:
+		# MODO LANZAR ARRIBA: proyectil hacia arriba con ligero ángulo
 		_fue_lanzada = true
-		_velocidad_arma = Vector2(VELOCIDAD_LANZAMIENTO * direccion_lanzamiento, VELOCIDAD_CAIDA_INICIAL)
-		print("Arma lanzada hacia adelante")
+		_velocidad_arma = Vector2(IMPULSO_HORIZONTAL_ARRIBA * direccion_lanzamiento, IMPULSO_VERTICAL_ARRIBA)
+		print("Arma lanzada hacia arriba")
+	else:
+		# MODO LANZAR HORIZONTAL: proyectil con arco parabólico
+		_fue_lanzada = true
+		_velocidad_arma = Vector2(VELOCIDAD_LANZAMIENTO * direccion_lanzamiento, IMPULSO_VERTICAL_LANZAR)
+		print("Arma lanzada (proyectil)")
 
 	_esta_en_vuelo = true
 	_desaparicion_activa = false
@@ -306,13 +323,23 @@ func _obtener_direccion_lanzamiento() -> int:
 # === SISTEMA DE VUELO ===
 
 func _detectar_suelo() -> Dictionary:
-	## Detecta si el arma tocó el suelo usando raycast y retorna el punto de colisión
+	## Detecta si el arma tocó el suelo usando raycast
+	## Retorna el punto de colisión o diccionario vacío si no hay colisión
 	var space_state := get_world_2d().direct_space_state
 	if not space_state:
 		return {}
 
-	# Raycast más largo para anticipar colisión y obtener punto exacto
-	var distancia_raycast := maxf(20.0, _velocidad_arma.y * get_physics_process_delta_time() + 10.0)
+	# Solo detectar suelo cuando el arma está cayendo o estática
+	# Si está subiendo (velocidad Y negativa), no buscar colisión con suelo
+	if _velocidad_arma.y < 0:
+		return {}
+
+	# Calcular distancia del raycast proporcional a la velocidad de caída
+	# Esto evita que el arma "atraviese" el suelo a alta velocidad
+	var delta := get_physics_process_delta_time()
+	var distancia_por_velocidad := _velocidad_arma.y * delta + 10.0
+	var distancia_raycast := maxf(DISTANCIA_RAYCAST_MINIMA, distancia_por_velocidad)
+
 	var query := PhysicsRayQueryParameters2D.create(
 		global_position,
 		global_position + Vector2(0, distancia_raycast),
@@ -322,20 +349,18 @@ func _detectar_suelo() -> Dictionary:
 
 func _al_tocar_suelo() -> void:
 	## Comportamiento al tocar el suelo
+	## Tanto si fue lanzada como soltada, el arma queda en el suelo recogible
+	## Solo desaparece si impacta directamente con un personaje (gestionado en _on_area_recogida_body_entered)
 	_esta_en_vuelo = false
 	_velocidad_arma = Vector2.ZERO
 	rotation = 0
+	_fue_lanzada = false  # Ya no está en modo "proyectil", ahora es recogible
 
-	if _fue_lanzada:
-		# Lanzada: desaparece al tocar suelo
-		print("Arma lanzada tocó el suelo y desaparece")
-		queue_free()
-	else:
-		# Soltada: se queda en el suelo, recogible
-		print("Arma soltada en el suelo, puede recogerse")
-		_ultimo_dueno_id = 0
-		_id_jugador = 0
-		_iniciar_temporizador_desaparicion()
+	# El arma queda en el suelo, disponible para recoger
+	print("Arma en el suelo, puede recogerse")
+	_ultimo_dueno_id = 0
+	_id_jugador = 0
+	_iniciar_temporizador_desaparicion()
 
 # === UTILIDADES ===
 

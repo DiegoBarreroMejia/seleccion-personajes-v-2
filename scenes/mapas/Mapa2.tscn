@@ -29,6 +29,8 @@ script = ExtResource("1_p2vsq")
 script = ExtResource("2_brhov")
 
 [node name="StaticBody2D" type="StaticBody2D" parent="."]
+collision_layer = 33
+collision_mask = 0
 
 [node name="RectanRojo" type="Sprite2D" parent="StaticBody2D"]
 position = Vector2(566.99994, 494)
