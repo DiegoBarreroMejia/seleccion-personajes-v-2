@@ -152,7 +152,11 @@ func equipar(nuevo_dueno: CharacterBody2D) -> void:
 	_dueno = nuevo_dueno
 	_candidatos_a_recoger.clear()
 	_desaparicion_activa = false
-	
+
+	# Registrar arma en el personaje (previene doble recogida)
+	if nuevo_dueno.has_method("registrar_arma"):
+		nuevo_dueno.registrar_arma(self)
+
 	# Reparentar
 	var padre_anterior := get_parent()
 	padre_anterior.remove_child(self)
@@ -182,6 +186,12 @@ func _puede_ser_equipada_por(personaje: CharacterBody2D) -> bool:
 	if not is_instance_valid(personaje):
 		return false
 	if personaje.has_method("esta_vivo") and not personaje.esta_vivo():
+		return false
+	# Impedir equipar si el personaje ya tiene un arma
+	if personaje.has_method("tiene_arma") and personaje.tiene_arma():
+		return false
+	# Impedir recoger si la acción ya fue consumida este frame (ej: se acaba de soltar un arma)
+	if personaje.has_method("accion_consumida_este_frame") and personaje.accion_consumida_este_frame():
 		return false
 	return true
 
@@ -285,6 +295,10 @@ func soltar() -> void:
 		mantiene_arriba = Input.is_action_pressed(controles["up"])
 
 	var direccion_lanzamiento := _obtener_direccion_lanzamiento()
+
+	# Liberar referencia en el personaje antes de soltar
+	if _dueno and _dueno.has_method("liberar_arma"):
+		_dueno.liberar_arma()
 
 	# Guardar referencia al dueño antes de soltar
 	_ultimo_dueno_id = _id_jugador

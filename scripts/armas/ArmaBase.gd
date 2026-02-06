@@ -10,6 +10,9 @@ class_name ArmaBase
 signal arma_disparada()
 signal arma_recogida(id_jugador: int)
 signal arma_soltada()
+## Señal emitida al cambiar la munición. actual = balas restantes, maxima = balas totales del arma.
+## Valores negativos (-1) indican munición infinita.
+signal municion_cambiada(actual: int, maxima: int)
 
 # === CONSTANTES ===
 const MAX_CANDIDATOS_RECOGIDA: int = 4
@@ -30,12 +33,19 @@ const IMPULSO_HORIZONTAL_ARRIBA: float = 80.0  # Pequeño ángulo horizontal
 # === CONSTANTES DE SOLTAR (caída natural) ===
 const VELOCIDAD_INICIAL_SOLTAR: float = 0.0  # Sin impulso, solo gravedad
 
+# === CONSTANTES DE MUNICIÓN ===
+const TIEMPO_DESAPARICION_SIN_MUNICION: float = 2.0
+
 # === VARIABLES EXPORTADAS ===
 @export_group("Estadísticas Arma")
 @export var bala_scene: PackedScene
 @export var velocidad_disparo: float = 0.5
 @export var es_automatica: bool = false
 @export var dano: int = 1
+
+@export_group("Munición")
+## Balas totales que trae el arma. -1 = munición infinita.
+@export var municion_maxima: int = 30
 
 # === VARIABLES PRIVADAS ===
 var _puede_disparar: bool = true
@@ -44,6 +54,9 @@ var _id_jugador: int = 0
 var _candidatos_a_recoger: Array[CharacterBody2D] = []
 var _temporizador_disparo: Timer
 var _desaparicion_activa: bool = false
+
+# === VARIABLES DE MUNICIÓN ===
+var _municion_actual: int = 0   # Balas restantes
 
 # === VARIABLES DE VUELO/LANZAMIENTO ===
 var _esta_en_vuelo: bool = false
@@ -60,6 +73,7 @@ var _ultimo_dueno_id: int = 0  # Para no dañar al que la lanzó
 func _ready() -> void:
 	_configurar_temporizador_disparo()
 	_configurar_area_recogida()
+	_inicializar_municion()
 
 func _process(_delta: float) -> void:
 	if not _esta_recogida and not _esta_en_vuelo:
@@ -136,28 +150,39 @@ func equipar(nuevo_dueno: CharacterBody2D) -> void:
 	_id_jugador = nuevo_dueno.player_id
 	_candidatos_a_recoger.clear()
 	_desaparicion_activa = false
-	
+
+	# Registrar arma en el personaje (previene doble recogida)
+	if nuevo_dueno.has_method("registrar_arma"):
+		nuevo_dueno.registrar_arma(self)
+
 	# Reparentar
 	var padre_anterior := get_parent()
 	padre_anterior.remove_child(self)
-	
+
 	var mano: Node2D = nuevo_dueno.get_node_or_null("Mano")
 	var nuevo_padre := mano if mano else nuevo_dueno
-	
+
 	nuevo_padre.add_child(self)
 	position = Vector2.ZERO
 	rotation = 0
-	
+
 	# Restaurar visibilidad por si estaba desvaneciéndose
 	modulate.a = 1.0
-	
+
 	arma_recogida.emit(_id_jugador)
+	_emitir_municion_cambiada()
 	print("Arma equipada por Jugador %d" % _id_jugador)
 
 func _puede_ser_equipada_por(personaje: CharacterBody2D) -> bool:
 	if not is_instance_valid(personaje):
 		return false
 	if personaje.has_method("esta_vivo") and not personaje.esta_vivo():
+		return false
+	# Impedir equipar si el personaje ya tiene un arma
+	if personaje.has_method("tiene_arma") and personaje.tiene_arma():
+		return false
+	# Impedir recoger si la acción ya fue consumida este frame (ej: se acaba de soltar un arma)
+	if personaje.has_method("accion_consumida_este_frame") and personaje.accion_consumida_este_frame():
 		return false
 	return true
 
@@ -204,14 +229,18 @@ func disparar() -> void:
 	if not bala_scene:
 		push_warning("ArmaBase: bala_scene no asignado en %s" % name)
 		return
-	
+
+	if not _tiene_municion():
+		return
+
 	var bala := bala_scene.instantiate() as Area2D
 	if not bala:
 		return
-	
+
 	_configurar_bala(bala)
 	_generar_bala(bala)
-	
+	_consumir_bala()
+
 	_iniciar_cooldown_disparo()
 	arma_disparada.emit()
 
@@ -236,6 +265,48 @@ func _iniciar_cooldown_disparo() -> void:
 func _on_temporizador_disparo_timeout() -> void:
 	_puede_disparar = true
 
+# === SISTEMA DE MUNICIÓN ===
+
+func _inicializar_municion() -> void:
+	if _tiene_municion_infinita():
+		_municion_actual = -1
+		return
+
+	_municion_actual = municion_maxima
+
+func _tiene_municion_infinita() -> bool:
+	return municion_maxima < 0
+
+func _tiene_municion() -> bool:
+	if _tiene_municion_infinita():
+		return true
+	return _municion_actual > 0
+
+func _consumir_bala(cantidad: int = 1) -> void:
+	if _tiene_municion_infinita():
+		return
+
+	_municion_actual = maxi(_municion_actual - cantidad, 0)
+	_emitir_municion_cambiada()
+
+func _emitir_municion_cambiada() -> void:
+	if _tiene_municion_infinita():
+		municion_cambiada.emit(-1, -1)
+	else:
+		# Siempre emitir: (balas restantes, balas máximas del arma)
+		# municion_maxima es FIJO, nunca se modifica
+		municion_cambiada.emit(_municion_actual, municion_maxima)
+
+## Devuelve la munición restante
+func obtener_municion_actual() -> int:
+	return _municion_actual
+
+## Verifica si el arma se quedó completamente sin munición
+func esta_sin_municion() -> bool:
+	if _tiene_municion_infinita():
+		return false
+	return _municion_actual <= 0
+
 # === SISTEMA DE SOLTAR ===
 
 func _verificar_input_soltar() -> void:
@@ -256,6 +327,11 @@ func soltar() -> void:
 		mantiene_arriba = Input.is_action_pressed(controles["up"])
 
 	var direccion_lanzamiento := _obtener_direccion_lanzamiento()
+
+	# Liberar referencia en el personaje antes de soltar
+	var dueno_actual := _obtener_dueno_personaje()
+	if dueno_actual and dueno_actual.has_method("liberar_arma"):
+		dueno_actual.liberar_arma()
 
 	# Guardar referencia al dueño antes de soltar
 	_ultimo_dueno_id = _id_jugador
@@ -291,26 +367,24 @@ func soltar() -> void:
 	_desaparicion_activa = false
 	arma_soltada.emit()
 
-func _iniciar_temporizador_desaparicion() -> void:
-	const TIEMPO_DESAPARICION: float = 3.0
-	
+func _iniciar_temporizador_desaparicion(tiempo: float = 3.0) -> void:
 	_desaparicion_activa = true
-	
-	await get_tree().create_timer(TIEMPO_DESAPARICION).timeout
-	
+
+	await get_tree().create_timer(tiempo).timeout
+
 	# Verificaciones de seguridad
 	if not is_instance_valid(self):
 		return
 	if _esta_recogida or not _desaparicion_activa:
 		return
-	
-	print("Arma desapareciendo después de %.1f segundos en el suelo" % TIEMPO_DESAPARICION)
-	
+
+	print("Arma desapareciendo después de %.1f segundos en el suelo" % tiempo)
+
 	# Animación de desvanecimiento
 	var tween := create_tween()
 	tween.tween_property(self, "modulate:a", 0.0, 0.5)
 	await tween.finished
-	
+
 	if is_instance_valid(self) and not _esta_recogida:
 		queue_free()
 
@@ -349,20 +423,37 @@ func _detectar_suelo() -> Dictionary:
 
 func _al_tocar_suelo() -> void:
 	## Comportamiento al tocar el suelo
-	## Tanto si fue lanzada como soltada, el arma queda en el suelo recogible
-	## Solo desaparece si impacta directamente con un personaje (gestionado en _on_area_recogida_body_entered)
 	_esta_en_vuelo = false
 	_velocidad_arma = Vector2.ZERO
 	rotation = 0
-	_fue_lanzada = false  # Ya no está en modo "proyectil", ahora es recogible
+	_fue_lanzada = false
 
-	# El arma queda en el suelo, disponible para recoger
-	print("Arma en el suelo, puede recogerse")
 	_ultimo_dueno_id = 0
 	_id_jugador = 0
-	_iniciar_temporizador_desaparicion()
+
+	# Desaparición condicional basada en munición
+	if esta_sin_municion():
+		# Sin munición: desaparece rápido (2 segundos)
+		print("Arma sin munición en el suelo, desaparecerá en %.1fs" % TIEMPO_DESAPARICION_SIN_MUNICION)
+		_iniciar_temporizador_desaparicion(TIEMPO_DESAPARICION_SIN_MUNICION)
+	elif _tiene_municion_infinita():
+		# Munición infinita: comportamiento original (desaparece tras 3s)
+		print("Arma en el suelo, puede recogerse")
+		_iniciar_temporizador_desaparicion(3.0)
+	else:
+		# Tiene munición restante: permanece en el suelo hasta cambio de ronda
+		print("Arma con munición (%d) en el suelo, permanece hasta cambio de ronda" % _municion_actual)
 
 # === UTILIDADES ===
+
+func _obtener_dueno_personaje() -> CharacterBody2D:
+	## Obtiene el personaje dueño buscando en la jerarquía de padres
+	var nodo := get_parent()
+	while nodo:
+		if nodo is CharacterBody2D and nodo.is_in_group("jugadores"):
+			return nodo
+		nodo = nodo.get_parent()
+	return null
 
 func _obtener_controles_dueno() -> Dictionary:
 	if _id_jugador == 0:

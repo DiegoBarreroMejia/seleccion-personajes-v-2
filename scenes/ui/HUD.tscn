@@ -25,3 +25,46 @@ layout_mode = 2
 theme_override_font_sizes/font_size = 24
 text = "J1: 0 | J2: 0 | Objetivo: 10"
 horizontal_alignment = 1
+
+[node name="ContenedorMunicion" type="HBoxContainer" parent="MarginContainer"]
+layout_mode = 2
+size_flags_vertical = 8
+alignment = 1
+
+[node name="PanelJ1" type="PanelContainer" parent="MarginContainer/ContenedorMunicion"]
+layout_mode = 2
+custom_minimum_size = Vector2(200, 0)
+
+[node name="MargenJ1" type="MarginContainer" parent="MarginContainer/ContenedorMunicion/PanelJ1"]
+layout_mode = 2
+theme_override_constants/margin_left = 8
+theme_override_constants/margin_top = 4
+theme_override_constants/margin_right = 8
+theme_override_constants/margin_bottom = 4
+
+[node name="LabelMunicionJ1" type="Label" parent="MarginContainer/ContenedorMunicion/PanelJ1/MargenJ1"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 18
+text = "J1: ---"
+horizontal_alignment = 1
+
+[node name="Separador" type="Control" parent="MarginContainer/ContenedorMunicion"]
+layout_mode = 2
+custom_minimum_size = Vector2(40, 0)
+
+[node name="PanelJ2" type="PanelContainer" parent="MarginContainer/ContenedorMunicion"]
+layout_mode = 2
+custom_minimum_size = Vector2(200, 0)
+
+[node name="MargenJ2" type="MarginContainer" parent="MarginContainer/ContenedorMunicion/PanelJ2"]
+layout_mode = 2
+theme_override_constants/margin_left = 8
+theme_override_constants/margin_top = 4
+theme_override_constants/margin_right = 8
+theme_override_constants/margin_bottom = 4
+
+[node name="LabelMunicionJ2" type="Label" parent="MarginContainer/ContenedorMunicion/PanelJ2/MargenJ2"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 18
+text = "J2: ---"
+horizontal_alignment = 1

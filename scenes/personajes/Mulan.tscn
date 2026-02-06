@@ -1,10 +1,10 @@
-[gd_scene load_steps=11 format=3 uid="uid://lr32pog6bhjp"]
+[gd_scene load_steps=12 format=3 uid="uid://lr32pog6bhjp"]
 
 [ext_resource type="Script" uid="uid://dv6ems0ybw6v1" path="res://scripts/personajes/PersonajeBase.gd" id="1_script"]
 [ext_resource type="Texture2D" uid="uid://bw7wtc3r5txwr" path="res://assets/sprites/personajes/mulan/caminarMulan_001.png" id="2_frame1"]
 [ext_resource type="Texture2D" uid="uid://loesgt4jst6c" path="res://assets/sprites/personajes/mulan/caminarMulan-002.png" id="3_frame2"]
-[ext_resource type="Texture2D" path="res://assets/sprites/personajes/mulan/saltarMulan_001.png" id="4_saltar1"]
-[ext_resource type="Texture2D" path="res://assets/sprites/personajes/mulan/saltarMulan_002.png" id="5_saltar2"]
+[ext_resource type="Texture2D" uid="uid://dikl7bpi8iani" path="res://assets/sprites/personajes/mulan/saltarMulan_001.png" id="4_saltar1"]
+[ext_resource type="Texture2D" uid="uid://cfwhu3buaoiw2" path="res://assets/sprites/personajes/mulan/saltarMulan_002.png" id="5_saltar2"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_mulan"]
 size = Vector2(34, 68)
@@ -48,7 +48,6 @@ tracks/0/keys = {
 [sub_resource type="Animation" id="Animation_saltar"]
 resource_name = "saltar"
 length = 0.4
-loop_mode = 1
 tracks/0/type = "value"
 tracks/0/imported = false
 tracks/0/enabled = true
@@ -75,7 +74,7 @@ script = ExtResource("1_script")
 [node name="Sprite" type="Sprite2D" parent="."]
 position = Vector2(-1, -3)
 scale = Vector2(0.5, 0.5)
-texture = ExtResource("2_frame1")
+texture = ExtResource("5_saltar2")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 shape = SubResource("RectangleShape2D_mulan")

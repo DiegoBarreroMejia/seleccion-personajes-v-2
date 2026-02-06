@@ -1,8 +1,8 @@
-[gd_scene load_steps=5 format=3 uid="uid://m24sniper00001"]
+[gd_scene load_steps=5 format=3 uid="uid://c836gegkrdy5e"]
 
 [ext_resource type="Script" uid="uid://dm10rva2ja187" path="res://scripts/armas/ArmaBase.gd" id="1_script"]
 [ext_resource type="PackedScene" uid="uid://bqjkouyrpyfr1" path="res://scenes/armas/Bala.tscn" id="2_bala"]
-[ext_resource type="Texture2D" path="res://assets/sprites/armas/guns/M24.png" id="3_sprite"]
+[ext_resource type="Texture2D" uid="uid://djl1yqd0lpoon" path="res://assets/sprites/armas/guns/M24.png" id="3_sprite"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_area"]
 radius = 13.0
@@ -14,10 +14,11 @@ velocidad_disparo = 1.2
 dano = 3
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
+position = Vector2(5, 0)
 texture = ExtResource("3_sprite")
 
 [node name="Punta" type="Marker2D" parent="."]
-position = Vector2(22, -2)
+position = Vector2(21, -2)
 
 [node name="AreaRecogida" type="Area2D" parent="."]
 

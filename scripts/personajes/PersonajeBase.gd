@@ -10,6 +10,8 @@ class_name PersonajeBase
 signal vida_cambiada(nueva_vida: int)
 signal murio(id_jugador: int)
 signal recibio_dano(cantidad: int)
+signal arma_equipada(arma: Node2D)
+signal arma_desequipada()
 
 # === CONSTANTES DE MOVIMIENTO ===
 const VELOCIDAD_DEFECTO: float = 300.0
@@ -40,6 +42,8 @@ var _vida_actual: int = 1:
 var _esta_vivo: bool = true
 var _direccion_mirada: int = 1
 var _estaba_en_suelo: bool = true
+var _arma_actual: Node2D = null
+var _accion_consumida_frame: int = -1  # Frame en que se consumió la última acción
 
 # === NODOS CACHEADOS ===
 @onready var _sprite: Sprite2D = $Sprite if has_node("Sprite") else null
@@ -247,6 +251,34 @@ func obtener_direccion_mirada() -> int:
 func curar(cantidad: int = 1) -> void:
 	if not _esta_vivo:
 		return
-	
+
 	_vida_actual = mini(_vida_actual + cantidad, Global.vida_maxima)
 	print("Jugador %d curado. Vida actual: %d" % [player_id, _vida_actual])
+
+# === MÉTODOS PÚBLICOS - GESTIÓN DE ARMAS ===
+
+## Registra un arma como equipada por este personaje
+func registrar_arma(arma: Node2D) -> void:
+	_arma_actual = arma
+	arma_equipada.emit(arma)
+
+## Libera la referencia al arma equipada y consume la acción de este frame
+func liberar_arma() -> void:
+	_arma_actual = null
+	# Marcar que la acción fue consumida en este frame (soltar tiene prioridad)
+	_accion_consumida_frame = Engine.get_process_frames()
+	arma_desequipada.emit()
+
+## Verifica si el personaje ya tiene un arma equipada
+func tiene_arma() -> bool:
+	return _arma_actual != null and is_instance_valid(_arma_actual)
+
+## Verifica si la acción fue consumida en este frame (ej: soltar tiene prioridad sobre recoger)
+func accion_consumida_este_frame() -> bool:
+	return _accion_consumida_frame == Engine.get_process_frames()
+
+## Obtiene la referencia al arma equipada actual (o null)
+func obtener_arma() -> Node2D:
+	if not is_instance_valid(_arma_actual):
+		_arma_actual = null
+	return _arma_actual

@@ -42,19 +42,24 @@ position = Vector2(569.5, 494.75)
 shape = SubResource("RectangleShape2D_ihfxy")
 
 [node name="SpawnJ1" parent="." instance=ExtResource("3_brhov")]
-position = Vector2(106, 408)
+position = Vector2(160, 414)
 
 [node name="SpawnJ2" parent="." instance=ExtResource("3_brhov")]
-position = Vector2(922, 365)
+position = Vector2(962, 413)
 id_jugador = 2
 
 [node name="SpawnerArmas" parent="." instance=ExtResource("5_llawa")]
-position = Vector2(274, 436)
+position = Vector2(321, 433)
 lista_armas = Array[PackedScene]([ExtResource("9_hjcey"), ExtResource("8_pe3cu"), ExtResource("6_pe3cu"), ExtResource("10_1tvxr"), ExtResource("11_kja68"), ExtResource("7_llawa"), ExtResource("13_tykhx"), ExtResource("13_kja68"), ExtResource("12_go0br")])
 tiempo_respawn = 3.0
 
 [node name="SpawnerArmas2" parent="." instance=ExtResource("5_llawa")]
 position = Vector2(857, 434)
+lista_armas = Array[PackedScene]([ExtResource("9_hjcey"), ExtResource("8_pe3cu"), ExtResource("6_pe3cu"), ExtResource("10_1tvxr"), ExtResource("11_kja68"), ExtResource("7_llawa"), ExtResource("13_tykhx"), ExtResource("13_kja68"), ExtResource("12_go0br")])
+tiempo_respawn = 3.0
+
+[node name="SpawnerArmas3" parent="." instance=ExtResource("5_llawa")]
+position = Vector2(579, 442)
 lista_armas = Array[PackedScene]([ExtResource("9_hjcey"), ExtResource("8_pe3cu"), ExtResource("6_pe3cu"), ExtResource("10_1tvxr"), ExtResource("11_kja68"), ExtResource("7_llawa"), ExtResource("13_tykhx"), ExtResource("13_kja68"), ExtResource("12_go0br")])
 tiempo_respawn = 3.0
 
