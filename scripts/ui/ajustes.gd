@@ -9,6 +9,12 @@ extends Control
 # === CONSTANTES ===
 const RUTA_MENU_INICIO: String = "res://scenes/ui/MenuInicio.tscn"
 
+# === VARIABLES ESTÁTICAS (se asignan ANTES de instanciar/navegar a Ajustes) ===
+## Ruta de la escena a la que volver. Se ignora si es_overlay es true.
+static var escena_origen: String = "res://scenes/ui/MenuInicio.tscn"
+## Si true, Ajustes fue instanciado como overlay (ej: desde pausa). Al volver se destruye.
+static var es_overlay: bool = false
+
 # === VARIABLES ===
 var _esperando_tecla: bool = false
 var _accion_a_reasignar: String = ""
@@ -78,6 +84,10 @@ func _crear_botones_control(grid: GridContainer, acciones: Array[String]) -> voi
 
 	# Esperar un frame para que se limpien
 	await get_tree().process_frame
+
+	# Verificar que seguimos en el árbol después del await
+	if not is_inside_tree():
+		return
 
 	for accion in acciones:
 		# Label con nombre de la acción
@@ -158,10 +168,12 @@ func _cancelar_espera_tecla() -> void:
 	_boton_esperando = null
 
 func _mostrar_error_boton(boton: Button) -> void:
+	if not is_instance_valid(boton):
+		return
 	var color_original := boton.modulate
 	boton.modulate = Color.RED
 	await get_tree().create_timer(0.3).timeout
-	if is_instance_valid(boton):
+	if is_instance_valid(boton) and is_inside_tree():
 		boton.modulate = color_original
 
 # === CALLBACKS BOTONES PRINCIPALES ===
@@ -179,7 +191,16 @@ func _on_btn_volver_pressed() -> void:
 		_cancelar_espera_tecla()
 	# Descartar cambios de video no aplicados
 	ConfigManager.descartar_cambios_video()
-	get_tree().change_scene_to_file(RUTA_MENU_INICIO)
+
+	if es_overlay:
+		# Fue instanciado como overlay (desde pausa): destruirse a sí mismo
+		es_overlay = false
+		var canvas_padre := get_parent()
+		if canvas_padre:
+			canvas_padre.queue_free()
+	else:
+		# Fue abierto como escena: volver a la escena de origen
+		get_tree().change_scene_to_file(escena_origen)
 
 # === UTILIDADES ===
 

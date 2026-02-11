@@ -4,6 +4,11 @@ extends Control
 ##
 ## Permite a los jugadores elegir su personaje y configurar las reglas del juego
 
+# === CONSTANTES ===
+const RUTA_MENU_INICIO: String = "res://scenes/ui/MenuInicio.tscn"
+const RUTA_AJUSTES: String = "res://scenes/ui/Ajustes.tscn"
+const RUTA_SELECCION: String = "res://scenes/ui/CharacterSelect.tscn"
+
 # === SEÑALES ===
 signal partida_iniciada()
 
@@ -52,15 +57,22 @@ func _actualizar_vistas_personajes() -> void:
 ## Actualiza la vista previa de un jugador específico
 func _actualizar_vista_jugador(id_jugador: int, indice: int) -> void:
 	var catalogo := Global.catalogo_personajes
-	
+
+	if catalogo.is_empty():
+		push_error("Catálogo de personajes vacío")
+		return
+
 	if indice < 0 or indice >= catalogo.size():
 		push_error("Índice de personaje inválido: %d" % indice)
 		return
-	
+
 	var datos_personaje: Dictionary = catalogo[indice]
 	var ruta_retrato: String = datos_personaje.get("retrato", "")
 	var textura: Texture2D = _retratos_cacheados.get(ruta_retrato)
-	
+
+	if textura == null and not ruta_retrato.is_empty():
+		push_warning("Retrato no cacheado para: %s" % datos_personaje.get("nombre", "?"))
+
 	if id_jugador == 1:
 		_p1_preview.texture = textura
 		Global.p1_seleccion = datos_personaje
@@ -121,6 +133,17 @@ func _on_btn_puntos_mas_pressed() -> void:
 func _on_btn_puntos_menos_pressed() -> void:
 	Global.puntos_ganar -= 1
 	_actualizar_ui_reglas()
+
+# === SEÑALES DE BOTONES - NAVEGACIÓN ===
+
+func _on_btn_volver_pressed() -> void:
+	get_tree().change_scene_to_file(RUTA_MENU_INICIO)
+
+func _on_btn_ajustes_pressed() -> void:
+	var ajustes_script := preload("res://scripts/ui/ajustes.gd")
+	ajustes_script.escena_origen = RUTA_SELECCION
+	ajustes_script.es_overlay = false
+	get_tree().change_scene_to_file(RUTA_AJUSTES)
 
 # === INICIO DE PARTIDA ===
 

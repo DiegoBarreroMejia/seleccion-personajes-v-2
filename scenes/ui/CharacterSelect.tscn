@@ -177,6 +177,17 @@ text = ">"
 [node name="ContenedorBoton" type="HBoxContainer" parent="MargenPrincipal/VBoxPrincipal"]
 layout_mode = 2
 alignment = 1
+theme_override_constants/separation = 20
+
+[node name="BtnVolver" type="Button" parent="MargenPrincipal/VBoxPrincipal/ContenedorBoton"]
+custom_minimum_size = Vector2(150, 45)
+layout_mode = 2
+text = "Volver"
+
+[node name="BtnAjustes" type="Button" parent="MargenPrincipal/VBoxPrincipal/ContenedorBoton"]
+custom_minimum_size = Vector2(150, 45)
+layout_mode = 2
+text = "Ajustes"
 
 [node name="partida" type="Button" parent="MargenPrincipal/VBoxPrincipal/ContenedorBoton"]
 custom_minimum_size = Vector2(150, 45)
@@ -191,4 +202,6 @@ text = "PARTIDA"
 [connection signal="pressed" from="MargenPrincipal/VBoxPrincipal/PanelesJugadores/ContenedorReglas/FilaPuntos/BtnPuntosMas" to="." method="_on_btn_puntos_mas_pressed"]
 [connection signal="pressed" from="MargenPrincipal/VBoxPrincipal/PanelesJugadores/panel_p2/MarginContainer/VBoxContainer/HBoxBotones/anterior_p2" to="." method="_on_anterior_p2_pressed"]
 [connection signal="pressed" from="MargenPrincipal/VBoxPrincipal/PanelesJugadores/panel_p2/MarginContainer/VBoxContainer/HBoxBotones/siguiente_p2" to="." method="_on_siguiente_p2_pressed"]
+[connection signal="pressed" from="MargenPrincipal/VBoxPrincipal/ContenedorBoton/BtnVolver" to="." method="_on_btn_volver_pressed"]
+[connection signal="pressed" from="MargenPrincipal/VBoxPrincipal/ContenedorBoton/BtnAjustes" to="." method="_on_btn_ajustes_pressed"]
 [connection signal="pressed" from="MargenPrincipal/VBoxPrincipal/ContenedorBoton/partida" to="." method="_on_partida_pressed"]

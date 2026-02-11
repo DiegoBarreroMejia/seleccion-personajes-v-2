@@ -22,5 +22,8 @@ func _ready() -> void:
 func _on_btn_reanudar_pressed() -> void:
 	PauseManager.reanudar()
 
+func _on_btn_ajustes_pressed() -> void:
+	PauseManager.abrir_ajustes()
+
 func _on_btn_salir_pressed() -> void:
 	PauseManager.salir_al_menu()

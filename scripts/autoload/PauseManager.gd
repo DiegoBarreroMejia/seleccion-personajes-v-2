@@ -11,6 +11,7 @@ extends Node
 
 # === CONSTANTES ===
 const RUTA_MENU_PAUSA: String = "res://scenes/ui/MenuPausa.tscn"
+const RUTA_AJUSTES: String = "res://scenes/ui/Ajustes.tscn"
 
 ## Escenas donde NO se debe activar la pausa (menús)
 const ESCENAS_SIN_PAUSA: Array[String] = [
@@ -21,6 +22,7 @@ const ESCENAS_SIN_PAUSA: Array[String] = [
 
 # === VARIABLES ===
 var _menu_pausa_instancia: CanvasLayer = null
+var _ajustes_instancia: CanvasLayer = null
 var _esta_pausado: bool = false
 
 # === MÉTODOS DE CICLO DE VIDA ===
@@ -31,6 +33,9 @@ func _ready() -> void:
 
 func _input(event: InputEvent) -> void:
 	if event.is_action_pressed("pausa"):
+		# Si Ajustes está abierto como overlay, no hacer nada (ESC se maneja en ajustes.gd)
+		if _ajustes_instancia:
+			return
 		if _puede_pausar():
 			alternar_pausa()
 
@@ -107,6 +112,37 @@ func salir_al_menu() -> void:
 
 	get_tree().change_scene_to_file("res://scenes/ui/MenuInicio.tscn")
 	print("Volviendo al menú principal")
+
+## Abre los ajustes como overlay encima del menú de pausa
+func abrir_ajustes() -> void:
+	if _ajustes_instancia:
+		return
+
+	# Configurar ajustes para modo overlay
+	var ajustes_script := preload("res://scripts/ui/ajustes.gd")
+	ajustes_script.es_overlay = true
+
+	var ajustes_scene := load(RUTA_AJUSTES) as PackedScene
+	if not ajustes_scene:
+		push_error("PauseManager: No se pudo cargar Ajustes.tscn")
+		return
+
+	# Envolver en CanvasLayer para que esté encima del menú de pausa
+	_ajustes_instancia = CanvasLayer.new()
+	_ajustes_instancia.layer = 101  # Encima del menú de pausa (layer 100)
+	_ajustes_instancia.process_mode = Node.PROCESS_MODE_ALWAYS
+
+	var ajustes_control := ajustes_scene.instantiate()
+	_ajustes_instancia.add_child(ajustes_control)
+
+	get_tree().root.add_child(_ajustes_instancia)
+
+	# Conectar para limpiar referencia cuando se destruya
+	_ajustes_instancia.tree_exited.connect(_on_ajustes_cerrado)
+	print("Ajustes abiertos desde pausa")
+
+func _on_ajustes_cerrado() -> void:
+	_ajustes_instancia = null
 
 ## Devuelve si el juego está pausado
 func esta_pausado() -> bool:

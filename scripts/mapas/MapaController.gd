@@ -91,14 +91,15 @@ func _on_jugador_murio(id_jugador_muerto: int) -> void:
 
 	jugador_murio.emit(id_jugador_muerto)
 
+	# Marcar ronda como finalizada ANTES del await para evitar race condition
+	# Si ambos jugadores mueren en el mismo frame, solo el primero pasa este punto
+	_ronda_finalizada = true
+
 	# Esperar un frame para detectar muerte simultánea
 	await get_tree().process_frame
 
-	# Verificar de nuevo (otra muerte pudo haber marcado la ronda como finalizada)
-	if _ronda_finalizada:
+	if not is_inside_tree():
 		return
-
-	_ronda_finalizada = true
 
 	# Detectar muerte simultánea: verificar si ambos jugadores están muertos
 	var j1_vivo := _jugador_esta_vivo(1)

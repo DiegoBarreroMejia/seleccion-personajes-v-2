@@ -54,6 +54,8 @@ var _id_jugador: int = 0
 var _candidatos_a_recoger: Array[CharacterBody2D] = []
 var _temporizador_disparo: Timer
 var _desaparicion_activa: bool = false
+var _destruida: bool = false  # Previene daño múltiple al destruir
+var _id_desaparicion: int = 0  # Identificador único para cancelar timers de desaparición
 
 # === VARIABLES DE MUNICIÓN ===
 var _municion_actual: int = 0   # Balas restantes
@@ -188,11 +190,12 @@ func _puede_ser_equipada_por(personaje: CharacterBody2D) -> bool:
 
 func _on_area_recogida_body_entered(body: Node2D) -> void:
 	# Si está en vuelo y fue lanzada, puede hacer daño
-	if _esta_en_vuelo and _fue_lanzada:
+	if _esta_en_vuelo and _fue_lanzada and not _destruida:
 		if body is CharacterBody2D and body.is_in_group("jugadores"):
 			# No dañar al que la lanzó
 			if "player_id" in body and body.player_id != _ultimo_dueno_id:
 				if body.has_method("recibir_dano"):
+					_destruida = true
 					body.recibir_dano(dano)
 					print("Arma lanzada golpeó a Jugador %d" % body.player_id)
 					queue_free()
@@ -297,6 +300,10 @@ func _emitir_municion_cambiada() -> void:
 		# municion_maxima es FIJO, nunca se modifica
 		municion_cambiada.emit(_municion_actual, municion_maxima)
 
+## Emite el estado actual de munición (para sincronizar HUD al equipar)
+func emitir_estado_municion() -> void:
+	_emitir_municion_cambiada()
+
 ## Devuelve la munición restante
 func obtener_municion_actual() -> int:
 	return _municion_actual
@@ -368,14 +375,17 @@ func soltar() -> void:
 	arma_soltada.emit()
 
 func _iniciar_temporizador_desaparicion(tiempo: float = 3.0) -> void:
+	# Incrementar ID para invalidar cualquier timer anterior en curso
+	_id_desaparicion += 1
+	var id_actual := _id_desaparicion
 	_desaparicion_activa = true
 
 	await get_tree().create_timer(tiempo).timeout
 
-	# Verificaciones de seguridad
+	# Verificaciones de seguridad (incluye check de ID para cancelación)
 	if not is_instance_valid(self):
 		return
-	if _esta_recogida or not _desaparicion_activa:
+	if _esta_recogida or not _desaparicion_activa or id_actual != _id_desaparicion:
 		return
 
 	print("Arma desapareciendo después de %.1f segundos en el suelo" % tiempo)

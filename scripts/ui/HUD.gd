@@ -68,7 +68,7 @@ func _on_jugador_arma_equipada(arma: Node2D, id_jugador: int) -> void:
 		if not arma.municion_cambiada.is_connected(_on_municion_cambiada.bind(id_jugador)):
 			arma.municion_cambiada.connect(_on_municion_cambiada.bind(id_jugador))
 		# Solicitar estado inicial
-		arma._emitir_municion_cambiada()
+		arma.emitir_estado_municion()
 	else:
 		# Arma melee: mostrar indicador de melee
 		_mostrar_arma_melee(id_jugador)

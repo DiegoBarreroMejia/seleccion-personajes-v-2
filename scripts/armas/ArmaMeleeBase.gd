@@ -49,6 +49,8 @@ var _temporizador_ataque: Timer
 var _dueno: CharacterBody2D = null
 var _enemigos_golpeados_este_ataque: Array[Node2D] = []
 var _desaparicion_activa: bool = false
+var _destruida: bool = false  # Previene daño múltiple al destruir
+var _id_desaparicion: int = 0  # Identificador único para cancelar timers de desaparición
 
 # === VARIABLES DE VUELO/LANZAMIENTO ===
 var _esta_en_vuelo: bool = false
@@ -197,11 +199,12 @@ func _puede_ser_equipada_por(personaje: CharacterBody2D) -> bool:
 
 func _on_area_recogida_body_entered(body: Node2D) -> void:
 	# Si está en vuelo y fue lanzada, puede hacer daño
-	if _esta_en_vuelo and _fue_lanzada:
+	if _esta_en_vuelo and _fue_lanzada and not _destruida:
 		if body is CharacterBody2D and body.is_in_group("jugadores"):
 			# No dañar al que la lanzó
 			if "player_id" in body and body.player_id != _ultimo_dueno_id:
 				if body.has_method("recibir_dano"):
+					_destruida = true
 					body.recibir_dano(dano)
 					print("Arma melee lanzada golpeó a Jugador %d" % body.player_id)
 					queue_free()
@@ -342,22 +345,26 @@ func soltar() -> void:
 
 func _iniciar_temporizador_desaparicion() -> void:
 	const TIEMPO_DESAPARICION: float = 5.0
-	
+
+	# Incrementar ID para invalidar cualquier timer anterior en curso
+	_id_desaparicion += 1
+	var id_actual := _id_desaparicion
 	_desaparicion_activa = true
-	
+
 	await get_tree().create_timer(TIEMPO_DESAPARICION).timeout
-	
+
+	# Verificaciones de seguridad (incluye check de ID para cancelación)
 	if not is_instance_valid(self):
 		return
-	if _esta_recogida or not _desaparicion_activa:
+	if _esta_recogida or not _desaparicion_activa or id_actual != _id_desaparicion:
 		return
-	
+
 	print("Arma melee desapareciendo después de %.1f segundos" % TIEMPO_DESAPARICION)
-	
+
 	var tween := create_tween()
 	tween.tween_property(self, "modulate:a", 0.0, 0.5)
 	await tween.finished
-	
+
 	if is_instance_valid(self) and not _esta_recogida:
 		queue_free()
 

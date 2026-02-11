@@ -306,10 +306,13 @@ func cargar_config() -> void:
 	# Controles
 	for accion in ACCIONES_J1 + ACCIONES_J2:
 		if _config.has_section_key("controles", accion):
-			var keycode: int = _config.get_value("controles", accion)
-			InputMap.action_erase_events(accion)
-			var evento := InputEventKey.new()
-			evento.physical_keycode = keycode as Key
-			InputMap.action_add_event(accion, evento)
+			var keycode_valor = _config.get_value("controles", accion)
+			if keycode_valor is int and keycode_valor > 0:
+				InputMap.action_erase_events(accion)
+				var evento := InputEventKey.new()
+				evento.physical_keycode = keycode_valor as Key
+				InputMap.action_add_event(accion, evento)
+			else:
+				push_warning("ConfigManager: Keycode inválido para '%s', usando valor por defecto" % accion)
 
 	print("Configuración cargada desde %s" % RUTA_CONFIG)
