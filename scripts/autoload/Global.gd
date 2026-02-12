@@ -99,7 +99,8 @@ const p2_controls: Dictionary = {
 # === MAPAS ===
 var mapas_disponibles: Array[String] = [
 	"res://scenes/mapas/Mapa1.tscn",
-	"res://scenes/mapas/Mapa2.tscn"
+	"res://scenes/mapas/Mapa2.tscn",
+	"res://scenes/mapas/Mapa3.tscn"
 ]
 
 # === MÉTODOS DE CICLO DE VIDA ===

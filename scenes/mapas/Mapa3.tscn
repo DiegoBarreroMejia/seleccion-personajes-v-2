@@ -1,0 +1,71 @@
+[gd_scene load_steps=18 format=3 uid="uid://cftrndb1aqy03"]
+
+[ext_resource type="Script" uid="uid://cb3rk5evlw376" path="res://scripts/mapas/MapaController.gd" id="1_agrlq"]
+[ext_resource type="Script" uid="uid://byk0a5r8sgysr" path="res://scripts/ui/CamaraInteligente.gd" id="2_54lqw"]
+[ext_resource type="Texture2D" uid="uid://cw1onh8ww4ahc" path="res://assets/sprites/mapas/Mapa3.png" id="2_agrlq"]
+[ext_resource type="PackedScene" uid="uid://m3s3cyuu17fu" path="res://scenes/mapas/componentes/SpawnJugador.tscn" id="4_1pmqj"]
+[ext_resource type="PackedScene" uid="uid://b25ptj7tt26qn" path="res://scenes/mapas/componentes/SpawnerArmas.tscn" id="5_mpk7y"]
+[ext_resource type="PackedScene" uid="uid://dbdym27q1ixdl" path="res://scenes/armas/escopetas/M24.tscn" id="6_l7fsc"]
+[ext_resource type="PackedScene" uid="uid://blfwly6c2khjp" path="res://scenes/armas/espada_steve/espada.tscn" id="7_ctcxi"]
+[ext_resource type="PackedScene" uid="uid://c30nrefunu7kt" path="res://scenes/armas/pistolas/Luger.tscn" id="8_ctso4"]
+[ext_resource type="PackedScene" uid="uid://bot3qm2wvoeqq" path="res://scenes/armas/pistolas/M92.tscn" id="9_6vnb5"]
+[ext_resource type="PackedScene" uid="uid://buum6hxidh4w5" path="res://scenes/armas/pistolas/Revolver.tscn" id="10_43mje"]
+[ext_resource type="PackedScene" uid="uid://dw06gm2b1vud7" path="res://scenes/armas/rifles/AK47.tscn" id="11_icsd2"]
+[ext_resource type="PackedScene" uid="uid://bgw5p8tncfeqq" path="res://scenes/armas/rifles/M15.tscn" id="12_ibhjj"]
+[ext_resource type="PackedScene" uid="uid://c836gegkrdy5e" path="res://scenes/armas/snipers/M24.tscn" id="13_y670s"]
+[ext_resource type="PackedScene" uid="uid://cvcy0aocxkmfo" path="res://scenes/armas/subfusiles/MP5.tscn" id="14_1bcb4"]
+[ext_resource type="Script" uid="uid://b56olwpbo4lcl" path="res://scripts/mapas/ZonaMuerte.gd" id="15_sc221"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_ihfxy"]
+size = Vector2(2081, 30.75)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_obsmc"]
+size = Vector2(1508, 8)
+
+[node name="Mapa2" type="Node2D"]
+script = ExtResource("1_agrlq")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+position = Vector2(436, 105)
+texture = ExtResource("2_agrlq")
+
+[node name="Camera2D" type="Camera2D" parent="."]
+script = ExtResource("2_54lqw")
+
+[node name="StaticBody2D" type="StaticBody2D" parent="."]
+collision_layer = 33
+collision_mask = 0
+
+[node name="CollisionShape2D2" type="CollisionShape2D" parent="StaticBody2D"]
+position = Vector2(269.5, 472)
+shape = SubResource("RectangleShape2D_ihfxy")
+
+[node name="SpawnJ1" parent="." instance=ExtResource("4_1pmqj")]
+position = Vector2(-616, 404)
+
+[node name="SpawnJ2" parent="." instance=ExtResource("4_1pmqj")]
+position = Vector2(1194, 401)
+id_jugador = 2
+
+[node name="SpawnerArmas" parent="." instance=ExtResource("5_mpk7y")]
+position = Vector2(321, 433)
+lista_armas = Array[PackedScene]([ExtResource("6_l7fsc"), ExtResource("7_ctcxi"), ExtResource("8_ctso4"), ExtResource("9_6vnb5"), ExtResource("10_43mje"), ExtResource("11_icsd2"), ExtResource("12_ibhjj"), ExtResource("13_y670s"), ExtResource("14_1bcb4")])
+tiempo_respawn = 3.0
+
+[node name="SpawnerArmas2" parent="." instance=ExtResource("5_mpk7y")]
+position = Vector2(857, 434)
+lista_armas = Array[PackedScene]([ExtResource("6_l7fsc"), ExtResource("7_ctcxi"), ExtResource("8_ctso4"), ExtResource("9_6vnb5"), ExtResource("10_43mje"), ExtResource("11_icsd2"), ExtResource("12_ibhjj"), ExtResource("13_y670s"), ExtResource("14_1bcb4")])
+tiempo_respawn = 3.0
+
+[node name="SpawnerArmas3" parent="." instance=ExtResource("5_mpk7y")]
+position = Vector2(579, 442)
+lista_armas = Array[PackedScene]([ExtResource("6_l7fsc"), ExtResource("7_ctcxi"), ExtResource("8_ctso4"), ExtResource("9_6vnb5"), ExtResource("10_43mje"), ExtResource("11_icsd2"), ExtResource("12_ibhjj"), ExtResource("13_y670s"), ExtResource("14_1bcb4")])
+tiempo_respawn = 3.0
+
+[node name="ZonaMuerte" type="Area2D" parent="."]
+position = Vector2(581, 655)
+script = ExtResource("15_sc221")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="ZonaMuerte"]
+position = Vector2(2, 1)
+shape = SubResource("RectangleShape2D_obsmc")
