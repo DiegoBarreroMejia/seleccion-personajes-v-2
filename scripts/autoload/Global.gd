@@ -33,6 +33,9 @@ var puntos_ganar: int = PUNTOS_DEFECTO:
 		puntos_ganar = clampi(value, MIN_PUNTOS, MAX_PUNTOS)
 		puntos_ganar_cambiados.emit(puntos_ganar)
 
+# === RESULTADO DE PARTIDA ===
+var ultimo_ganador: int = 0
+
 # === PUNTUACIÓN (PRIVADA) ===
 var _p1_score: int = 0
 var _p2_score: int = 0

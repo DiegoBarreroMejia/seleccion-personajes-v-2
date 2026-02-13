@@ -51,6 +51,7 @@ var _enemigos_golpeados_este_ataque: Array[Node2D] = []
 var _desaparicion_activa: bool = false
 var _destruida: bool = false  # Previene daño múltiple al destruir
 var _id_desaparicion: int = 0  # Identificador único para cancelar timers de desaparición
+var _atacando: bool = false  # true durante la ventana de daño del ataque
 
 # === VARIABLES DE VUELO/LANZAMIENTO ===
 var _esta_en_vuelo: bool = false
@@ -234,22 +235,23 @@ func _verificar_input_ataque() -> void:
 func atacar() -> void:
 	if not _puede_atacar:
 		return
-	
+
+	_atacando = true
 	_enemigos_golpeados_este_ataque.clear()
-	
+
 	if _anim_player and _anim_player.has_animation(nombre_animacion_ataque):
 		_anim_player.play(nombre_animacion_ataque)
-	
+
 	_iniciar_cooldown_ataque()
 	arma_atacada.emit()
 
 func _on_area_dano_body_entered(body: Node2D) -> void:
-	if not _esta_recogida:
+	if not _esta_recogida or not _atacando:
 		return
-	
+
 	if body == _dueno:
 		return
-	
+
 	if body in _enemigos_golpeados_este_ataque:
 		return
 	
@@ -277,6 +279,7 @@ func _iniciar_cooldown_ataque() -> void:
 
 func _on_temporizador_ataque_timeout() -> void:
 	_puede_atacar = true
+	_atacando = false
 
 # === SISTEMA DE SOLTAR ===
 
@@ -419,11 +422,13 @@ func _al_tocar_suelo() -> void:
 # === MÉTODOS VIRTUALES ===
 
 func _al_equipar() -> void:
+	_atacando = false
 	_enemigos_golpeados_este_ataque.clear()
 	if _anim_player and _anim_player.has_animation("RESET"):
 		_anim_player.play("RESET")
 
 func _al_soltar() -> void:
+	_atacando = false
 	_enemigos_golpeados_este_ataque.clear()
 
 # === UTILIDADES ===

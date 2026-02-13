@@ -17,7 +17,8 @@ const RUTA_AJUSTES: String = "res://scenes/ui/Ajustes.tscn"
 const ESCENAS_SIN_PAUSA: Array[String] = [
 	"MenuInicio",
 	"CharacterSelect",
-	"Ajustes"
+	"Ajustes",
+	"Victoria"
 ]
 
 # === VARIABLES ===

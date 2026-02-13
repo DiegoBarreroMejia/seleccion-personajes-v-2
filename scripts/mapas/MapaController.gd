@@ -17,7 +17,7 @@ signal partida_terminada(id_ganador: int)
 # === CONSTANTES ===
 const RETRASO_VICTORIA: float = 2.0
 const RETRASO_TRANSICION_RONDA: float = 1.5
-const RUTA_MENU_SELECCION: String = "res://scenes/ui/CharacterSelect.tscn"
+const RUTA_VICTORIA: String = "res://scenes/ui/Victoria.tscn"
 
 # === VARIABLES PRIVADAS ===
 var _jugadores: Dictionary = {}
@@ -185,8 +185,8 @@ func _manejar_victoria_partida(id_ganador: int) -> void:
 		return
 
 	_limpiar_armas_sueltas()
-	Global.reiniciar_puntuaciones()
-	get_tree().change_scene_to_file(RUTA_MENU_SELECCION)
+	Global.ultimo_ganador = id_ganador
+	get_tree().change_scene_to_file(RUTA_VICTORIA)
 
 func _iniciar_siguiente_ronda() -> void:
 	print("Nadie ha ganado aún. Siguiente ronda en %.1fs..." % RETRASO_TRANSICION_RONDA)
@@ -214,23 +214,7 @@ func _iniciar_siguiente_ronda() -> void:
 
 	get_tree().change_scene_to_file(mapa_siguiente)
 
-# === MÉTODOS PÚBLICOS ===
-
-func obtener_jugador(id_jugador: int) -> PersonajeBase:
-	return _jugadores.get(id_jugador)
-
-func reaparecer_jugador(id_jugador: int) -> void:
-	var personaje: PersonajeBase = _jugadores.get(id_jugador)
-	
-	if personaje:
-		var pos_spawn: Vector2 = _puntos_spawn.get(id_jugador, Vector2.ZERO)
-		personaje.position = pos_spawn
-		print("Jugador %d reaparecido" % id_jugador)
-
-func obtener_marcador_texto() -> String:
-	var p1 := Global.obtener_puntuacion(1)
-	var p2 := Global.obtener_puntuacion(2)
-	return "%d - %d" % [p1, p2]
+# === MÉTODOS PRIVADOS - HUD ===
 
 func _instanciar_hud() -> void:
 	var hud_scene := load("res://scenes/ui/HUD.tscn") as PackedScene

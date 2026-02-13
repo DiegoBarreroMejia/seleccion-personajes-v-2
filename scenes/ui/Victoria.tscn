@@ -1,0 +1,74 @@
+[gd_scene load_steps=2 format=3 uid="uid://dvict0r1asc3n"]
+
+[ext_resource type="Script" uid="uid://cvict0r1agd" path="res://scripts/ui/victoria.gd" id="1_script"]
+
+[node name="Victoria" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_script")
+
+[node name="FondoColor" type="ColorRect" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0.12, 0.12, 0.18, 1)
+
+[node name="ContenedorCentral" type="VBoxContainer" parent="."]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -200.0
+offset_top = -180.0
+offset_right = 200.0
+offset_bottom = 180.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/separation = 20
+alignment = 1
+
+[node name="LabelVictoria" type="Label" parent="ContenedorCentral"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 64
+text = "VICTORIA"
+horizontal_alignment = 1
+
+[node name="LabelGanador" type="Label" parent="ContenedorCentral"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 32
+text = "Jugador X gana!"
+horizontal_alignment = 1
+
+[node name="LabelMarcador" type="Label" parent="ContenedorCentral"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 24
+text = "Marcador final: 0 - 0"
+horizontal_alignment = 1
+
+[node name="Espaciador" type="Control" parent="ContenedorCentral"]
+layout_mode = 2
+custom_minimum_size = Vector2(0, 30)
+
+[node name="BtnVolverMenu" type="Button" parent="ContenedorCentral"]
+layout_mode = 2
+size_flags_horizontal = 4
+custom_minimum_size = Vector2(250, 50)
+text = "Volver al menú"
+
+[node name="BtnRevancha" type="Button" parent="ContenedorCentral"]
+layout_mode = 2
+size_flags_horizontal = 4
+custom_minimum_size = Vector2(250, 50)
+text = "Revancha"
+
+[connection signal="pressed" from="ContenedorCentral/BtnVolverMenu" to="." method="_on_btn_volver_menu_pressed"]
+[connection signal="pressed" from="ContenedorCentral/BtnRevancha" to="." method="_on_btn_revancha_pressed"]
