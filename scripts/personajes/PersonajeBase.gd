@@ -15,7 +15,7 @@ signal arma_desequipada()
 
 # === CONSTANTES DE MOVIMIENTO ===
 const VELOCIDAD_DEFECTO: float = 300.0
-const FUERZA_SALTO_DEFECTO: float = -400.0
+const FUERZA_SALTO_DEFECTO: float = -500.0
 const DISTANCIA_MANO: float = 20.0
 
 # === ESCENAS PRELOADED ===

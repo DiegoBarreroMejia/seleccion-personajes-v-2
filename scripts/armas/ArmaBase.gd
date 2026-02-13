@@ -171,6 +171,10 @@ func equipar(nuevo_dueno: CharacterBody2D) -> void:
 	# Restaurar visibilidad por si estaba desvaneciéndose
 	modulate.a = 1.0
 
+	# Desactivar área de recogida mientras está equipada
+	if _area_recogida:
+		_area_recogida.monitoring = false
+
 	arma_recogida.emit(_id_jugador)
 	_emitir_municion_cambiada()
 	print("Arma equipada por Jugador %d" % _id_jugador)
@@ -372,6 +376,10 @@ func soltar() -> void:
 
 	_esta_en_vuelo = true
 	_desaparicion_activa = false
+
+	if _area_recogida:
+		_area_recogida.monitoring = true
+
 	arma_soltada.emit()
 
 func _iniciar_temporizador_desaparicion(tiempo: float = 3.0) -> void:

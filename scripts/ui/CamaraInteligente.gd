@@ -18,8 +18,14 @@ func _encontrar_jugadores() -> void:
 	_jugadores = get_tree().get_nodes_in_group("jugadores")
 
 func _process(_delta: float) -> void:
-	# Limpiar jugadores inválidos
-	_jugadores = _jugadores.filter(func(j): return is_instance_valid(j))
+	# Limpiar jugadores inválidos solo si alguno fue liberado
+	var necesita_limpiar := false
+	for j in _jugadores:
+		if not is_instance_valid(j):
+			necesita_limpiar = true
+			break
+	if necesita_limpiar:
+		_jugadores = _jugadores.filter(func(j): return is_instance_valid(j))
 
 	if _jugadores.size() < 2:
 		return
