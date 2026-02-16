@@ -1,6 +1,16 @@
-[gd_scene load_steps=2 format=3 uid="uid://b852q02qlfpcq"]
+[gd_scene load_steps=12 format=3 uid="uid://b852q02qlfpcq"]
 
 [ext_resource type="Script" uid="uid://ds50ei2bqpnnw" path="res://scripts/ui/character_select.gd" id="1_jn04r"]
+[ext_resource type="Texture2D" uid="uid://dg2fu8evnlxom" path="res://assets/sprites/ui/selector_personaje/fondo_menu_byn.png" id="2_fondo"]
+[ext_resource type="Texture2D" uid="uid://bmyh5043rjvxq" path="res://assets/sprites/ui/selector_personaje/fondo_configuracion_libro.png" id="3_libro"]
+[ext_resource type="Texture2D" uid="uid://c86vrp3sas5s4" path="res://assets/sprites/ui/selector_personaje/boton_a_flecha_normal.png" id="4_flecha_normal"]
+[ext_resource type="Texture2D" uid="uid://3fg7n8kyrdsd" path="res://assets/sprites/ui/selector_personaje/boton_a_flecha_hover.png" id="5_flecha_hover"]
+[ext_resource type="Texture2D" uid="uid://d2m624ijp5aaw" path="res://assets/sprites/ui/selector_personaje/boton_a_flecha_pressed.png" id="6_flecha_pressed"]
+[ext_resource type="Texture2D" uid="uid://ipffxiucinwe" path="res://assets/sprites/ui/selector_personaje/marco_puntos_vidas.png" id="7_marco_pv"]
+[ext_resource type="Texture2D" uid="uid://bbhpaiy3hh2pa" path="res://assets/sprites/ui/selector_personaje/marco_texto.png" id="8_marco_texto"]
+[ext_resource type="Texture2D" uid="uid://d257ke5v0lidv" path="res://assets/sprites/ui/menu_inicio/boton_b_normal.png" id="9_btn_normal"]
+[ext_resource type="Texture2D" uid="uid://b4tso5lav6ys1" path="res://assets/sprites/ui/menu_inicio/boton_a_hover.png" id="10_btn_hover"]
+[ext_resource type="Texture2D" uid="uid://dmjosswhndjh5" path="res://assets/sprites/ui/menu_inicio/boton_c_pressed.png" id="11_btn_pressed"]
 
 [node name="CharacterSelect" type="Control"]
 layout_mode = 3
@@ -11,6 +21,35 @@ grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_jn04r")
 
+[node name="FondoByn" type="TextureRect" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_bottom = 43.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("2_fondo")
+expand_mode = 1
+stretch_mode = 6
+
+[node name="LibroCentral" type="TextureRect" parent="."]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -504.0
+offset_top = -282.0
+offset_right = 503.0
+offset_bottom = 283.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("3_libro")
+expand_mode = 1
+stretch_mode = 6
+
 [node name="MargenPrincipal" type="MarginContainer" parent="."]
 layout_mode = 1
 anchors_preset = 15
@@ -18,14 +57,14 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-theme_override_constants/margin_left = 50
-theme_override_constants/margin_top = 50
-theme_override_constants/margin_right = 50
-theme_override_constants/margin_bottom = 50
+theme_override_constants/margin_left = 100
+theme_override_constants/margin_top = 60
+theme_override_constants/margin_right = 100
+theme_override_constants/margin_bottom = 20
 
 [node name="VBoxPrincipal" type="VBoxContainer" parent="MargenPrincipal"]
 layout_mode = 2
-theme_override_constants/separation = 20
+theme_override_constants/separation = 15
 
 [node name="PanelesJugadores" type="HBoxContainer" parent="MargenPrincipal/VBoxPrincipal"]
 layout_mode = 2
@@ -33,6 +72,7 @@ size_flags_vertical = 3
 theme_override_constants/separation = 30
 
 [node name="panel_p1" type="Panel" parent="MargenPrincipal/VBoxPrincipal/PanelesJugadores"]
+self_modulate = Color(1, 1, 1, 0)
 layout_mode = 2
 size_flags_horizontal = 3
 
@@ -41,6 +81,10 @@ layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
+offset_left = 77.0
+offset_top = 32.0
+offset_right = 24.0
+offset_bottom = -17.0
 grow_horizontal = 2
 grow_vertical = 2
 theme_override_constants/margin_left = 20
@@ -50,7 +94,7 @@ theme_override_constants/margin_bottom = 20
 
 [node name="VBoxContainer" type="VBoxContainer" parent="MargenPrincipal/VBoxPrincipal/PanelesJugadores/panel_p1/MarginContainer"]
 layout_mode = 2
-theme_override_constants/separation = 15
+theme_override_constants/separation = 10
 
 [node name="VistaPrevia" type="TextureRect" parent="MargenPrincipal/VBoxPrincipal/PanelesJugadores/panel_p1/MarginContainer/VBoxContainer"]
 layout_mode = 2
@@ -60,80 +104,170 @@ stretch_mode = 5
 
 [node name="HBoxBotones" type="HBoxContainer" parent="MargenPrincipal/VBoxPrincipal/PanelesJugadores/panel_p1/MarginContainer/VBoxContainer"]
 layout_mode = 2
-alignment = 1
 theme_override_constants/separation = 50
+alignment = 1
 
-[node name="anterior_p1" type="Button" parent="MargenPrincipal/VBoxPrincipal/PanelesJugadores/panel_p1/MarginContainer/VBoxContainer/HBoxBotones"]
-custom_minimum_size = Vector2(60, 30)
+[node name="anterior_p1" type="TextureButton" parent="MargenPrincipal/VBoxPrincipal/PanelesJugadores/panel_p1/MarginContainer/VBoxContainer/HBoxBotones"]
+custom_minimum_size = Vector2(55, 55)
 layout_mode = 2
-text = "<"
+texture_normal = ExtResource("4_flecha_normal")
+texture_pressed = ExtResource("6_flecha_pressed")
+texture_hover = ExtResource("5_flecha_hover")
+ignore_texture_size = true
+stretch_mode = 0
 
-[node name="siguiente_p1" type="Button" parent="MargenPrincipal/VBoxPrincipal/PanelesJugadores/panel_p1/MarginContainer/VBoxContainer/HBoxBotones"]
-custom_minimum_size = Vector2(60, 30)
+[node name="siguiente_p1" type="TextureButton" parent="MargenPrincipal/VBoxPrincipal/PanelesJugadores/panel_p1/MarginContainer/VBoxContainer/HBoxBotones"]
+custom_minimum_size = Vector2(55, 55)
 layout_mode = 2
-text = ">"
+texture_normal = ExtResource("4_flecha_normal")
+texture_pressed = ExtResource("6_flecha_pressed")
+texture_hover = ExtResource("5_flecha_hover")
+ignore_texture_size = true
+stretch_mode = 0
+flip_h = true
 
 [node name="ContenedorReglas" type="VBoxContainer" parent="MargenPrincipal/VBoxPrincipal/PanelesJugadores"]
 layout_mode = 2
 size_flags_horizontal = 4
+theme_override_constants/separation = 15
 alignment = 1
-theme_override_constants/separation = 20
+
+[node name="TituloVidas" type="TextureRect" parent="MargenPrincipal/VBoxPrincipal/PanelesJugadores/ContenedorReglas"]
+custom_minimum_size = Vector2(220, 55)
+layout_mode = 2
+size_flags_horizontal = 4
+texture = ExtResource("8_marco_texto")
+expand_mode = 1
+
+[node name="Label" type="Label" parent="MargenPrincipal/VBoxPrincipal/PanelesJugadores/ContenedorReglas/TituloVidas"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_font_sizes/font_size = 18
+text = "VIDAS"
+horizontal_alignment = 1
+vertical_alignment = 1
 
 [node name="FilaVidas" type="HBoxContainer" parent="MargenPrincipal/VBoxPrincipal/PanelesJugadores/ContenedorReglas"]
 layout_mode = 2
-alignment = 1
+size_flags_horizontal = 4
 theme_override_constants/separation = 10
+alignment = 1
 
-[node name="Titulo" type="Label" parent="MargenPrincipal/VBoxPrincipal/PanelesJugadores/ContenedorReglas/FilaVidas"]
-custom_minimum_size = Vector2(80, 0)
+[node name="BtnVidaMenos" type="TextureButton" parent="MargenPrincipal/VBoxPrincipal/PanelesJugadores/ContenedorReglas/FilaVidas"]
+custom_minimum_size = Vector2(35, 35)
 layout_mode = 2
-text = "VIDAS"
-horizontal_alignment = 2
+size_flags_vertical = 4
+texture_normal = ExtResource("4_flecha_normal")
+texture_pressed = ExtResource("6_flecha_pressed")
+texture_hover = ExtResource("5_flecha_hover")
+ignore_texture_size = true
+stretch_mode = 0
 
-[node name="BtnVidaMenos" type="Button" parent="MargenPrincipal/VBoxPrincipal/PanelesJugadores/ContenedorReglas/FilaVidas"]
-custom_minimum_size = Vector2(40, 30)
+[node name="MarcoVidas" type="TextureRect" parent="MargenPrincipal/VBoxPrincipal/PanelesJugadores/ContenedorReglas/FilaVidas"]
+custom_minimum_size = Vector2(120, 55)
 layout_mode = 2
-text = "-"
+size_flags_horizontal = 4
+texture = ExtResource("7_marco_pv")
+expand_mode = 1
 
-[node name="LabelVida" type="Label" parent="MargenPrincipal/VBoxPrincipal/PanelesJugadores/ContenedorReglas/FilaVidas"]
-custom_minimum_size = Vector2(30, 0)
-layout_mode = 2
+[node name="LabelVida" type="Label" parent="MargenPrincipal/VBoxPrincipal/PanelesJugadores/ContenedorReglas/FilaVidas/MarcoVidas"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_font_sizes/font_size = 18
 text = "1"
 horizontal_alignment = 1
+vertical_alignment = 1
 
-[node name="BtnVidaMas" type="Button" parent="MargenPrincipal/VBoxPrincipal/PanelesJugadores/ContenedorReglas/FilaVidas"]
-custom_minimum_size = Vector2(40, 30)
+[node name="BtnVidaMas" type="TextureButton" parent="MargenPrincipal/VBoxPrincipal/PanelesJugadores/ContenedorReglas/FilaVidas"]
+custom_minimum_size = Vector2(35, 35)
 layout_mode = 2
-text = "+"
+size_flags_vertical = 4
+texture_normal = ExtResource("4_flecha_normal")
+texture_pressed = ExtResource("6_flecha_pressed")
+texture_hover = ExtResource("5_flecha_hover")
+ignore_texture_size = true
+stretch_mode = 0
+flip_h = true
+
+[node name="TituloPuntos" type="TextureRect" parent="MargenPrincipal/VBoxPrincipal/PanelesJugadores/ContenedorReglas"]
+custom_minimum_size = Vector2(220, 55)
+layout_mode = 2
+size_flags_horizontal = 4
+texture = ExtResource("8_marco_texto")
+expand_mode = 1
+
+[node name="Label" type="Label" parent="MargenPrincipal/VBoxPrincipal/PanelesJugadores/ContenedorReglas/TituloPuntos"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_font_sizes/font_size = 18
+text = "PUNTOS"
+horizontal_alignment = 1
+vertical_alignment = 1
 
 [node name="FilaPuntos" type="HBoxContainer" parent="MargenPrincipal/VBoxPrincipal/PanelesJugadores/ContenedorReglas"]
 layout_mode = 2
-alignment = 1
+size_flags_horizontal = 4
 theme_override_constants/separation = 10
+alignment = 1
 
-[node name="Titulo" type="Label" parent="MargenPrincipal/VBoxPrincipal/PanelesJugadores/ContenedorReglas/FilaPuntos"]
-custom_minimum_size = Vector2(80, 0)
+[node name="BtnPuntosMenos" type="TextureButton" parent="MargenPrincipal/VBoxPrincipal/PanelesJugadores/ContenedorReglas/FilaPuntos"]
+custom_minimum_size = Vector2(35, 35)
 layout_mode = 2
-text = "PUNTOS"
-horizontal_alignment = 2
+size_flags_vertical = 4
+texture_normal = ExtResource("4_flecha_normal")
+texture_pressed = ExtResource("6_flecha_pressed")
+texture_hover = ExtResource("5_flecha_hover")
+ignore_texture_size = true
+stretch_mode = 0
 
-[node name="BtnPuntosMenos" type="Button" parent="MargenPrincipal/VBoxPrincipal/PanelesJugadores/ContenedorReglas/FilaPuntos"]
-custom_minimum_size = Vector2(40, 30)
+[node name="MarcoPuntos" type="TextureRect" parent="MargenPrincipal/VBoxPrincipal/PanelesJugadores/ContenedorReglas/FilaPuntos"]
+custom_minimum_size = Vector2(120, 55)
 layout_mode = 2
-text = "-"
+size_flags_horizontal = 4
+texture = ExtResource("7_marco_pv")
+expand_mode = 1
 
-[node name="LabelPuntos" type="Label" parent="MargenPrincipal/VBoxPrincipal/PanelesJugadores/ContenedorReglas/FilaPuntos"]
-custom_minimum_size = Vector2(30, 0)
-layout_mode = 2
+[node name="LabelPuntos" type="Label" parent="MargenPrincipal/VBoxPrincipal/PanelesJugadores/ContenedorReglas/FilaPuntos/MarcoPuntos"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_font_sizes/font_size = 18
 text = "10"
 horizontal_alignment = 1
+vertical_alignment = 1
 
-[node name="BtnPuntosMas" type="Button" parent="MargenPrincipal/VBoxPrincipal/PanelesJugadores/ContenedorReglas/FilaPuntos"]
-custom_minimum_size = Vector2(40, 30)
+[node name="BtnPuntosMas" type="TextureButton" parent="MargenPrincipal/VBoxPrincipal/PanelesJugadores/ContenedorReglas/FilaPuntos"]
+custom_minimum_size = Vector2(35, 35)
 layout_mode = 2
-text = "+"
+size_flags_vertical = 4
+texture_normal = ExtResource("4_flecha_normal")
+texture_pressed = ExtResource("6_flecha_pressed")
+texture_hover = ExtResource("5_flecha_hover")
+ignore_texture_size = true
+stretch_mode = 0
+flip_h = true
 
 [node name="panel_p2" type="Panel" parent="MargenPrincipal/VBoxPrincipal/PanelesJugadores"]
+self_modulate = Color(1, 1, 1, 0)
 layout_mode = 2
 size_flags_horizontal = 3
 
@@ -142,6 +276,10 @@ layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
+offset_left = -24.0
+offset_top = 32.0
+offset_right = -91.0
+offset_bottom = -18.0
 grow_horizontal = 2
 grow_vertical = 2
 theme_override_constants/margin_left = 20
@@ -151,7 +289,7 @@ theme_override_constants/margin_bottom = 20
 
 [node name="VBoxContainer" type="VBoxContainer" parent="MargenPrincipal/VBoxPrincipal/PanelesJugadores/panel_p2/MarginContainer"]
 layout_mode = 2
-theme_override_constants/separation = 15
+theme_override_constants/separation = 10
 
 [node name="VistaPrevia" type="TextureRect" parent="MargenPrincipal/VBoxPrincipal/PanelesJugadores/panel_p2/MarginContainer/VBoxContainer"]
 layout_mode = 2
@@ -161,38 +299,98 @@ stretch_mode = 5
 
 [node name="HBoxBotones" type="HBoxContainer" parent="MargenPrincipal/VBoxPrincipal/PanelesJugadores/panel_p2/MarginContainer/VBoxContainer"]
 layout_mode = 2
-alignment = 1
 theme_override_constants/separation = 50
+alignment = 1
 
-[node name="anterior_p2" type="Button" parent="MargenPrincipal/VBoxPrincipal/PanelesJugadores/panel_p2/MarginContainer/VBoxContainer/HBoxBotones"]
-custom_minimum_size = Vector2(60, 30)
+[node name="anterior_p2" type="TextureButton" parent="MargenPrincipal/VBoxPrincipal/PanelesJugadores/panel_p2/MarginContainer/VBoxContainer/HBoxBotones"]
+custom_minimum_size = Vector2(55, 55)
 layout_mode = 2
-text = "<"
+texture_normal = ExtResource("4_flecha_normal")
+texture_pressed = ExtResource("6_flecha_pressed")
+texture_hover = ExtResource("5_flecha_hover")
+ignore_texture_size = true
+stretch_mode = 0
 
-[node name="siguiente_p2" type="Button" parent="MargenPrincipal/VBoxPrincipal/PanelesJugadores/panel_p2/MarginContainer/VBoxContainer/HBoxBotones"]
-custom_minimum_size = Vector2(60, 30)
+[node name="siguiente_p2" type="TextureButton" parent="MargenPrincipal/VBoxPrincipal/PanelesJugadores/panel_p2/MarginContainer/VBoxContainer/HBoxBotones"]
+custom_minimum_size = Vector2(55, 55)
 layout_mode = 2
-text = ">"
+texture_normal = ExtResource("4_flecha_normal")
+texture_pressed = ExtResource("6_flecha_pressed")
+texture_hover = ExtResource("5_flecha_hover")
+ignore_texture_size = true
+stretch_mode = 0
+flip_h = true
 
 [node name="ContenedorBoton" type="HBoxContainer" parent="MargenPrincipal/VBoxPrincipal"]
 layout_mode = 2
-alignment = 1
 theme_override_constants/separation = 20
+alignment = 1
 
-[node name="BtnVolver" type="Button" parent="MargenPrincipal/VBoxPrincipal/ContenedorBoton"]
+[node name="BtnVolver" type="TextureButton" parent="MargenPrincipal/VBoxPrincipal/ContenedorBoton"]
 custom_minimum_size = Vector2(150, 45)
 layout_mode = 2
+texture_normal = ExtResource("9_btn_normal")
+texture_pressed = ExtResource("11_btn_pressed")
+texture_hover = ExtResource("10_btn_hover")
+ignore_texture_size = true
+stretch_mode = 0
+
+[node name="Label" type="Label" parent="MargenPrincipal/VBoxPrincipal/ContenedorBoton/BtnVolver"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_font_sizes/font_size = 20
 text = "Volver"
+horizontal_alignment = 1
+vertical_alignment = 1
 
-[node name="BtnAjustes" type="Button" parent="MargenPrincipal/VBoxPrincipal/ContenedorBoton"]
+[node name="partida" type="TextureButton" parent="MargenPrincipal/VBoxPrincipal/ContenedorBoton"]
 custom_minimum_size = Vector2(150, 45)
 layout_mode = 2
-text = "Ajustes"
+texture_normal = ExtResource("9_btn_normal")
+texture_pressed = ExtResource("11_btn_pressed")
+texture_hover = ExtResource("10_btn_hover")
+ignore_texture_size = true
+stretch_mode = 0
 
-[node name="partida" type="Button" parent="MargenPrincipal/VBoxPrincipal/ContenedorBoton"]
-custom_minimum_size = Vector2(150, 45)
-layout_mode = 2
+[node name="Label" type="Label" parent="MargenPrincipal/VBoxPrincipal/ContenedorBoton/partida"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_font_sizes/font_size = 20
 text = "PARTIDA"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="BtnAjustes" type="TextureButton" parent="MargenPrincipal/VBoxPrincipal/ContenedorBoton"]
+custom_minimum_size = Vector2(150, 45)
+layout_mode = 2
+texture_normal = ExtResource("9_btn_normal")
+texture_pressed = ExtResource("11_btn_pressed")
+texture_hover = ExtResource("10_btn_hover")
+ignore_texture_size = true
+stretch_mode = 0
+
+[node name="Label" type="Label" parent="MargenPrincipal/VBoxPrincipal/ContenedorBoton/BtnAjustes"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_font_sizes/font_size = 20
+text = "Ajustes"
+horizontal_alignment = 1
+vertical_alignment = 1
 
 [connection signal="pressed" from="MargenPrincipal/VBoxPrincipal/PanelesJugadores/panel_p1/MarginContainer/VBoxContainer/HBoxBotones/anterior_p1" to="." method="_on_anterior_p1_pressed"]
 [connection signal="pressed" from="MargenPrincipal/VBoxPrincipal/PanelesJugadores/panel_p1/MarginContainer/VBoxContainer/HBoxBotones/siguiente_p1" to="." method="_on_siguiente_p1_pressed"]
