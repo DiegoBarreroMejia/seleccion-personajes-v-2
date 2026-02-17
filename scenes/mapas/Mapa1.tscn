@@ -1,4 +1,4 @@
-[gd_scene load_steps=18 format=3 uid="uid://xx2kqyei0veq"]
+[gd_scene load_steps=19 format=3 uid="uid://xx2kqyei0veq"]
 
 [ext_resource type="Script" uid="uid://cb3rk5evlw376" path="res://scripts/mapas/MapaController.gd" id="1_i17oa"]
 [ext_resource type="Script" uid="uid://byk0a5r8sgysr" path="res://scripts/ui/CamaraInteligente.gd" id="2_emxrc"]
@@ -15,6 +15,7 @@
 [ext_resource type="PackedScene" uid="uid://c836gegkrdy5e" path="res://scenes/armas/snipers/M24.tscn" id="10_vau7j"]
 [ext_resource type="PackedScene" uid="uid://bgw5p8tncfeqq" path="res://scenes/armas/rifles/M15.tscn" id="11_ekd0n"]
 [ext_resource type="PackedScene" uid="uid://cvcy0aocxkmfo" path="res://scenes/armas/subfusiles/MP5.tscn" id="13_etde7"]
+[ext_resource type="PackedScene" uid="uid://mqim3a8e2605" path="res://scenes/armas/arco_steve/Arco.tscn" id="14_arco"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_ihfxy"]
 size = Vector2(1081, 75.5)
@@ -50,12 +51,12 @@ position = Vector2(109, 400)
 
 [node name="SpawnerArmas" parent="." instance=ExtResource("6_5f6nd")]
 position = Vector2(258, 435)
-lista_armas = Array[PackedScene]([ExtResource("6_4hoji"), ExtResource("8_emxrc"), ExtResource("5_b3brl"), ExtResource("8_oyyrh"), ExtResource("9_4hoji"), ExtResource("8_4hoji"), ExtResource("11_ekd0n"), ExtResource("10_vau7j"), ExtResource("13_etde7")])
+lista_armas = Array[PackedScene]([ExtResource("6_4hoji"), ExtResource("8_emxrc"), ExtResource("5_b3brl"), ExtResource("8_oyyrh"), ExtResource("9_4hoji"), ExtResource("8_4hoji"), ExtResource("11_ekd0n"), ExtResource("10_vau7j"), ExtResource("13_etde7"), ExtResource("14_arco")])
 tiempo_respawn = 3.0
 
 [node name="SpawnerArmas2" parent="." instance=ExtResource("6_5f6nd")]
 position = Vector2(755, 432)
-lista_armas = Array[PackedScene]([ExtResource("10_vau7j"), ExtResource("8_emxrc"), ExtResource("5_b3brl"), ExtResource("8_oyyrh"), ExtResource("9_4hoji"), ExtResource("8_4hoji"), ExtResource("11_ekd0n"), ExtResource("10_vau7j"), ExtResource("13_etde7")])
+lista_armas = Array[PackedScene]([ExtResource("10_vau7j"), ExtResource("8_emxrc"), ExtResource("5_b3brl"), ExtResource("8_oyyrh"), ExtResource("9_4hoji"), ExtResource("8_4hoji"), ExtResource("11_ekd0n"), ExtResource("10_vau7j"), ExtResource("13_etde7"), ExtResource("14_arco")])
 tiempo_respawn = 3.0
 
 [node name="ZonaMuerte" type="Area2D" parent="."]

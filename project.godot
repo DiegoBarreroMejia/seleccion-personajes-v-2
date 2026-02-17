@@ -19,6 +19,8 @@ config/features=PackedStringArray("4.5", "GL Compatibility")
 Global="*res://scripts/autoload/Global.gd"
 PauseManager="*res://scripts/autoload/PauseManager.gd"
 ConfigManager="*res://scripts/autoload/ConfigManager.gd"
+MusicManager="*res://scripts/autoload/MusicManager.gd"
+SFXManager="*res://scripts/autoload/SFXManager.gd"
 
 [display]
 

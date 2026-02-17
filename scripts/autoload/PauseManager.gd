@@ -21,16 +21,27 @@ const ESCENAS_SIN_PAUSA: Array[String] = [
 	"Victoria"
 ]
 
+## Sonidos de pausa
+var _sfx_pausar: AudioStream = preload("res://assets/sonidos/ui/sonido_cauando_pausas.ogg")
+var _sfx_reanudar: AudioStream = preload("res://assets/sonidos/ui/sonido_cuando_quitas_pausa.ogg")
+
 # === VARIABLES ===
 var _menu_pausa_instancia: CanvasLayer = null
 var _ajustes_instancia: CanvasLayer = null
 var _esta_pausado: bool = false
+var _sfx_player: AudioStreamPlayer = null
 
 # === MÉTODOS DE CICLO DE VIDA ===
 
 func _ready() -> void:
 	# Permite procesar input incluso cuando el juego está pausado
 	process_mode = Node.PROCESS_MODE_ALWAYS
+
+	# Crear reproductor de SFX (ALWAYS para que suene aunque esté pausado)
+	_sfx_player = AudioStreamPlayer.new()
+	_sfx_player.process_mode = Node.PROCESS_MODE_ALWAYS
+	_sfx_player.bus = "SFX"
+	add_child(_sfx_player)
 
 func _input(event: InputEvent) -> void:
 	if event.is_action_pressed("pausa"):
@@ -90,6 +101,8 @@ func pausar() -> void:
 	_esta_pausado = true
 	get_tree().paused = true
 	_instanciar_menu_pausa()
+	_sfx_player.stream = _sfx_pausar
+	_sfx_player.play()
 	print("Juego pausado")
 
 ## Reanuda el juego y oculta el menú de pausa
@@ -100,6 +113,8 @@ func reanudar() -> void:
 	_esta_pausado = false
 	get_tree().paused = false
 	_eliminar_menu_pausa()
+	_sfx_player.stream = _sfx_reanudar
+	_sfx_player.play()
 	print("Juego reanudado")
 
 ## Sale al menú principal

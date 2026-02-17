@@ -1,6 +1,7 @@
-[gd_scene load_steps=2 format=3 uid="uid://cx8p4rnqt2m7k"]
+[gd_scene load_steps=3 format=3 uid="uid://cx8p4rnqt2m7k"]
 
 [ext_resource type="Script" uid="uid://cp77ly1oceo8h" path="res://scripts/ui/menu_pausa.gd" id="1_pausa"]
+[ext_resource type="FontFile" path="res://assets/fonts/PressStart2P-Regular.ttf" id="2_ps2p"]
 
 [node name="MenuPausa" type="CanvasLayer"]
 layer = 100
@@ -51,6 +52,7 @@ alignment = 1
 
 [node name="Titulo" type="Label" parent="PanelControl/Panel/ContenedorCentral"]
 layout_mode = 2
+theme_override_fonts/font = ExtResource("2_ps2p")
 theme_override_font_sizes/font_size = 32
 text = "PAUSA"
 horizontal_alignment = 1
@@ -64,18 +66,21 @@ layout_mode = 2
 custom_minimum_size = Vector2(180, 45)
 layout_mode = 2
 size_flags_horizontal = 4
+theme_override_fonts/font = ExtResource("2_ps2p")
 text = "Reanudar"
 
 [node name="BtnAjustes" type="Button" parent="PanelControl/Panel/ContenedorCentral"]
 custom_minimum_size = Vector2(180, 45)
 layout_mode = 2
 size_flags_horizontal = 4
+theme_override_fonts/font = ExtResource("2_ps2p")
 text = "Ajustes"
 
 [node name="BtnSalir" type="Button" parent="PanelControl/Panel/ContenedorCentral"]
 custom_minimum_size = Vector2(180, 45)
 layout_mode = 2
 size_flags_horizontal = 4
+theme_override_fonts/font = ExtResource("2_ps2p")
 text = "Salir al menú"
 
 [connection signal="pressed" from="PanelControl/Panel/ContenedorCentral/BtnReanudar" to="PanelControl" method="_on_btn_reanudar_pressed"]

@@ -1,6 +1,7 @@
-[gd_scene load_steps=2 format=3 uid="uid://dclr4c30b3kta"]
+[gd_scene load_steps=3 format=3 uid="uid://dclr4c30b3kta"]
 
 [ext_resource type="Script" uid="uid://dhfgaw4oiqcvn" path="res://scripts/ui/HUD.gd" id="1_k5de2"]
+[ext_resource type="FontFile" path="res://assets/fonts/PressStart2P-Regular.ttf" id="2_ps2p"]
 
 [node name="HUD" type="CanvasLayer"]
 script = ExtResource("1_k5de2")
@@ -22,6 +23,7 @@ size_flags_vertical = 0
 
 [node name="LabelPuntuacion" type="Label" parent="MarginContainer/VBoxContainer"]
 layout_mode = 2
+theme_override_fonts/font = ExtResource("2_ps2p")
 theme_override_font_sizes/font_size = 24
 text = "J1: 0 | J2: 0 | Objetivo: 10"
 horizontal_alignment = 1
@@ -44,6 +46,7 @@ theme_override_constants/margin_bottom = 4
 
 [node name="LabelMunicionJ1" type="Label" parent="MarginContainer/ContenedorMunicion/PanelJ1/MargenJ1"]
 layout_mode = 2
+theme_override_fonts/font = ExtResource("2_ps2p")
 theme_override_font_sizes/font_size = 18
 text = "J1: ---"
 horizontal_alignment = 1
@@ -65,6 +68,7 @@ theme_override_constants/margin_bottom = 4
 
 [node name="LabelMunicionJ2" type="Label" parent="MarginContainer/ContenedorMunicion/PanelJ2/MargenJ2"]
 layout_mode = 2
+theme_override_fonts/font = ExtResource("2_ps2p")
 theme_override_font_sizes/font_size = 18
 text = "J2: ---"
 horizontal_alignment = 1

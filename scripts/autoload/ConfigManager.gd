@@ -55,6 +55,11 @@ signal control_reasignado(accion: String, tecla: String)
 var resolucion_actual: Vector2i = RESOLUCION_DEFECTO
 var pantalla_completa: bool = false
 
+# === VARIABLES DE AUDIO ===
+var volumen_musica: float = 0.8  ## Volumen de música (0.0 a 1.0)
+var volumen_sfx: float = 0.8  ## Volumen de efectos de sonido (0.0 a 1.0)
+var soundtrack_seleccionado: int = 0  ## Índice del soundtrack activo
+
 # === VARIABLES DE CAMBIOS PENDIENTES (VIDEO) ===
 var _resolucion_pendiente: Vector2i = RESOLUCION_DEFECTO
 var _pantalla_completa_pendiente: bool = false
@@ -260,6 +265,23 @@ func obtener_nombre_accion(accion: String) -> String:
 	## Devuelve el nombre legible de una acción
 	return NOMBRES_ACCIONES.get(accion, accion)
 
+# === MÉTODOS PÚBLICOS - AUDIO ===
+
+func cambiar_volumen_musica(valor: float) -> void:
+	## Cambia el volumen de música y guarda la configuración
+	volumen_musica = clampf(valor, 0.0, 1.0)
+	guardar_config()
+
+func cambiar_volumen_sfx(valor: float) -> void:
+	## Cambia el volumen de SFX y guarda la configuración
+	volumen_sfx = clampf(valor, 0.0, 1.0)
+	guardar_config()
+
+func cambiar_soundtrack(indice: int) -> void:
+	## Cambia el soundtrack seleccionado y guarda la configuración
+	soundtrack_seleccionado = indice
+	guardar_config()
+
 # === PERSISTENCIA ===
 
 func guardar_config() -> void:
@@ -268,6 +290,11 @@ func guardar_config() -> void:
 	_config.set_value("video", "resolucion_x", resolucion_actual.x)
 	_config.set_value("video", "resolucion_y", resolucion_actual.y)
 	_config.set_value("video", "pantalla_completa", pantalla_completa)
+
+	# Audio
+	_config.set_value("audio", "volumen_musica", volumen_musica)
+	_config.set_value("audio", "volumen_sfx", volumen_sfx)
+	_config.set_value("audio", "soundtrack_seleccionado", soundtrack_seleccionado)
 
 	# Controles
 	for accion in ACCIONES_J1 + ACCIONES_J2:
@@ -302,6 +329,15 @@ func cargar_config() -> void:
 	# Validar resolución
 	if resolucion_actual not in RESOLUCIONES:
 		resolucion_actual = RESOLUCION_DEFECTO
+
+	# Audio
+	volumen_musica = _config.get_value("audio", "volumen_musica", 0.8)
+	volumen_sfx = _config.get_value("audio", "volumen_sfx", 0.8)
+	soundtrack_seleccionado = _config.get_value("audio", "soundtrack_seleccionado", 0)
+	volumen_musica = clampf(volumen_musica, 0.0, 1.0)
+	volumen_sfx = clampf(volumen_sfx, 0.0, 1.0)
+	if soundtrack_seleccionado < 0:
+		soundtrack_seleccionado = 0
 
 	# Controles
 	for accion in ACCIONES_J1 + ACCIONES_J2:

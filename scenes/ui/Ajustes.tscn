@@ -1,6 +1,7 @@
-[gd_scene load_steps=2 format=3 uid="uid://b5yqk8m3nxrpt"]
+[gd_scene load_steps=3 format=3 uid="uid://b5yqk8m3nxrpt"]
 
 [ext_resource type="Script" uid="uid://ctkvd7s3ia07f" path="res://scripts/ui/ajustes.gd" id="1_ajustes"]
+[ext_resource type="FontFile" path="res://assets/fonts/PressStart2P-Regular.ttf" id="2_vt323"]
 
 [node name="Ajustes" type="Control"]
 layout_mode = 3
@@ -37,6 +38,7 @@ theme_override_constants/separation = 20
 
 [node name="Titulo" type="Label" parent="ContenedorPrincipal"]
 layout_mode = 2
+theme_override_fonts/font = ExtResource("2_vt323")
 theme_override_font_sizes/font_size = 48
 text = "Ajustes"
 horizontal_alignment = 1
@@ -49,12 +51,20 @@ theme_override_constants/separation = 10
 [node name="BtnVideo" type="Button" parent="ContenedorPrincipal/Pestanas"]
 custom_minimum_size = Vector2(120, 40)
 layout_mode = 2
+theme_override_fonts/font = ExtResource("2_vt323")
 text = "Video"
 
 [node name="BtnControles" type="Button" parent="ContenedorPrincipal/Pestanas"]
 custom_minimum_size = Vector2(120, 40)
 layout_mode = 2
+theme_override_fonts/font = ExtResource("2_vt323")
 text = "Controles"
+
+[node name="BtnSonido" type="Button" parent="ContenedorPrincipal/Pestanas"]
+custom_minimum_size = Vector2(120, 40)
+layout_mode = 2
+theme_override_fonts/font = ExtResource("2_vt323")
+text = "Sonido"
 
 [node name="Separador" type="HSeparator" parent="ContenedorPrincipal"]
 layout_mode = 2
@@ -72,12 +82,14 @@ theme_override_constants/separation = 20
 [node name="LabelResolucion" type="Label" parent="ContenedorPrincipal/ContenedorVideo/FilaResolucion"]
 custom_minimum_size = Vector2(150, 0)
 layout_mode = 2
+theme_override_fonts/font = ExtResource("2_vt323")
 text = "Resolución:"
 horizontal_alignment = 2
 
 [node name="OptionResolucion" type="OptionButton" parent="ContenedorPrincipal/ContenedorVideo/FilaResolucion"]
 custom_minimum_size = Vector2(180, 40)
 layout_mode = 2
+theme_override_fonts/font = ExtResource("2_vt323")
 
 [node name="FilaPantalla" type="HBoxContainer" parent="ContenedorPrincipal/ContenedorVideo"]
 layout_mode = 2
@@ -87,6 +99,7 @@ theme_override_constants/separation = 20
 [node name="LabelPantalla" type="Label" parent="ContenedorPrincipal/ContenedorVideo/FilaPantalla"]
 custom_minimum_size = Vector2(150, 0)
 layout_mode = 2
+theme_override_fonts/font = ExtResource("2_vt323")
 text = "Pantalla completa:"
 horizontal_alignment = 2
 
@@ -107,6 +120,7 @@ theme_override_constants/separation = 10
 
 [node name="TituloJ1" type="Label" parent="ContenedorPrincipal/ContenedorControles/PanelJ1"]
 layout_mode = 2
+theme_override_fonts/font = ExtResource("2_vt323")
 theme_override_font_sizes/font_size = 20
 text = "JUGADOR 1"
 horizontal_alignment = 1
@@ -126,6 +140,7 @@ theme_override_constants/separation = 10
 
 [node name="TituloJ2" type="Label" parent="ContenedorPrincipal/ContenedorControles/PanelJ2"]
 layout_mode = 2
+theme_override_fonts/font = ExtResource("2_vt323")
 theme_override_font_sizes/font_size = 20
 text = "JUGADOR 2"
 horizontal_alignment = 1
@@ -138,6 +153,69 @@ layout_mode = 2
 theme_override_constants/h_separation = 10
 theme_override_constants/v_separation = 8
 columns = 2
+
+[node name="ContenedorSonido" type="VBoxContainer" parent="ContenedorPrincipal"]
+visible = false
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_constants/separation = 20
+
+[node name="FilaMusica" type="HBoxContainer" parent="ContenedorPrincipal/ContenedorSonido"]
+layout_mode = 2
+alignment = 1
+theme_override_constants/separation = 20
+
+[node name="LabelMusica" type="Label" parent="ContenedorPrincipal/ContenedorSonido/FilaMusica"]
+custom_minimum_size = Vector2(150, 0)
+layout_mode = 2
+theme_override_fonts/font = ExtResource("2_vt323")
+text = "Música:"
+horizontal_alignment = 2
+
+[node name="OptionMusica" type="OptionButton" parent="ContenedorPrincipal/ContenedorSonido/FilaMusica"]
+custom_minimum_size = Vector2(220, 40)
+layout_mode = 2
+theme_override_fonts/font = ExtResource("2_vt323")
+
+[node name="FilaVolumen" type="HBoxContainer" parent="ContenedorPrincipal/ContenedorSonido"]
+layout_mode = 2
+alignment = 1
+theme_override_constants/separation = 20
+
+[node name="LabelVolumen" type="Label" parent="ContenedorPrincipal/ContenedorSonido/FilaVolumen"]
+custom_minimum_size = Vector2(150, 0)
+layout_mode = 2
+theme_override_fonts/font = ExtResource("2_vt323")
+text = "Vol. Música:"
+horizontal_alignment = 2
+
+[node name="SliderVolumen" type="HSlider" parent="ContenedorPrincipal/ContenedorSonido/FilaVolumen"]
+custom_minimum_size = Vector2(220, 20)
+layout_mode = 2
+min_value = 0.0
+max_value = 100.0
+step = 1.0
+value = 80.0
+
+[node name="FilaVolumenSFX" type="HBoxContainer" parent="ContenedorPrincipal/ContenedorSonido"]
+layout_mode = 2
+alignment = 1
+theme_override_constants/separation = 20
+
+[node name="LabelVolumenSFX" type="Label" parent="ContenedorPrincipal/ContenedorSonido/FilaVolumenSFX"]
+custom_minimum_size = Vector2(150, 0)
+layout_mode = 2
+theme_override_fonts/font = ExtResource("2_vt323")
+text = "Vol. Efectos:"
+horizontal_alignment = 2
+
+[node name="SliderVolumenSFX" type="HSlider" parent="ContenedorPrincipal/ContenedorSonido/FilaVolumenSFX"]
+custom_minimum_size = Vector2(220, 20)
+layout_mode = 2
+min_value = 0.0
+max_value = 100.0
+step = 1.0
+value = 80.0
 
 [node name="Espaciador" type="Control" parent="ContenedorPrincipal"]
 custom_minimum_size = Vector2(0, 10)
@@ -152,16 +230,19 @@ theme_override_constants/separation = 20
 [node name="BtnRestablecer" type="Button" parent="ContenedorPrincipal/BotonesInferiores"]
 custom_minimum_size = Vector2(150, 50)
 layout_mode = 2
+theme_override_fonts/font = ExtResource("2_vt323")
 text = "Restablecer"
 
 [node name="BtnAplicar" type="Button" parent="ContenedorPrincipal/BotonesInferiores"]
 custom_minimum_size = Vector2(150, 50)
 layout_mode = 2
+theme_override_fonts/font = ExtResource("2_vt323")
 text = "Aplicar"
 
 [node name="BtnVolver" type="Button" parent="ContenedorPrincipal/BotonesInferiores"]
 custom_minimum_size = Vector2(150, 50)
 layout_mode = 2
+theme_override_fonts/font = ExtResource("2_vt323")
 text = "Volver"
 
 [connection signal="pressed" from="ContenedorPrincipal/BotonesInferiores/BtnRestablecer" to="." method="_on_btn_restablecer_pressed"]

@@ -1,6 +1,7 @@
-[gd_scene load_steps=2 format=3]
+[gd_scene load_steps=3 format=3]
 
 [ext_resource type="Script" uid="uid://bdnmgu0rts3ba" path="res://scripts/ui/victoria.gd" id="1_script"]
+[ext_resource type="FontFile" path="res://assets/fonts/PressStart2P-Regular.ttf" id="2_ps2p"]
 
 [node name="Victoria" type="Control"]
 layout_mode = 3
@@ -38,18 +39,21 @@ alignment = 1
 
 [node name="LabelVictoria" type="Label" parent="ContenedorCentral"]
 layout_mode = 2
+theme_override_fonts/font = ExtResource("2_ps2p")
 theme_override_font_sizes/font_size = 64
 text = "VICTORIA"
 horizontal_alignment = 1
 
 [node name="LabelGanador" type="Label" parent="ContenedorCentral"]
 layout_mode = 2
+theme_override_fonts/font = ExtResource("2_ps2p")
 theme_override_font_sizes/font_size = 32
 text = "Jugador X gana!"
 horizontal_alignment = 1
 
 [node name="LabelMarcador" type="Label" parent="ContenedorCentral"]
 layout_mode = 2
+theme_override_fonts/font = ExtResource("2_ps2p")
 theme_override_font_sizes/font_size = 24
 text = "Marcador final: 0 - 0"
 horizontal_alignment = 1
@@ -62,12 +66,14 @@ custom_minimum_size = Vector2(0, 30)
 layout_mode = 2
 size_flags_horizontal = 4
 custom_minimum_size = Vector2(250, 50)
+theme_override_fonts/font = ExtResource("2_ps2p")
 text = "Volver al menú"
 
 [node name="BtnRevancha" type="Button" parent="ContenedorCentral"]
 layout_mode = 2
 size_flags_horizontal = 4
 custom_minimum_size = Vector2(250, 50)
+theme_override_fonts/font = ExtResource("2_ps2p")
 text = "Revancha"
 
 [connection signal="pressed" from="ContenedorCentral/BtnVolverMenu" to="." method="_on_btn_volver_menu_pressed"]

@@ -28,4 +28,7 @@ func _on_btn_ajustes_pressed() -> void:
 	get_tree().change_scene_to_file(RUTA_AJUSTES)
 
 func _on_btn_salir_pressed() -> void:
+	# Esperar a que suene el SFX de cerrar antes de salir
+	SFXManager.reproducir("cerrar_juego")
+	await get_tree().create_timer(0.5).timeout
 	get_tree().quit()

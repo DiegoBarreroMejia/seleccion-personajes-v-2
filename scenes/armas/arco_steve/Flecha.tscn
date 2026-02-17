@@ -1,0 +1,23 @@
+[gd_scene load_steps=4 format=3 uid="uid://flecha_arco001"]
+
+[ext_resource type="Script" path="res://scripts/armas/Flecha.gd" id="1_script"]
+[ext_resource type="Texture2D" path="res://assets/sprites/armas/arco_steve/arrow.png" id="2_sprite"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_col"]
+size = Vector2(8, 3)
+
+[node name="Flecha" type="Area2D"]
+collision_layer = 0
+collision_mask = 33
+script = ExtResource("1_script")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+texture = ExtResource("2_sprite")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("RectangleShape2D_col")
+
+[node name="VisibleOnScreenNotifier2D" type="VisibleOnScreenNotifier2D" parent="."]
+rect = Rect2(-6, -4, 12, 8)
+
+[connection signal="body_entered" from="." to="." method="_on_body_entered"]

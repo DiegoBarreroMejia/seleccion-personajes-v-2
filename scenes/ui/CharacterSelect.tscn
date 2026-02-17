@@ -1,4 +1,4 @@
-[gd_scene load_steps=12 format=3 uid="uid://b852q02qlfpcq"]
+[gd_scene load_steps=13 format=3 uid="uid://b852q02qlfpcq"]
 
 [ext_resource type="Script" uid="uid://ds50ei2bqpnnw" path="res://scripts/ui/character_select.gd" id="1_jn04r"]
 [ext_resource type="Texture2D" uid="uid://dg2fu8evnlxom" path="res://assets/sprites/ui/selector_personaje/fondo_menu_byn.png" id="2_fondo"]
@@ -11,6 +11,7 @@
 [ext_resource type="Texture2D" uid="uid://d257ke5v0lidv" path="res://assets/sprites/ui/menu_inicio/boton_b_normal.png" id="9_btn_normal"]
 [ext_resource type="Texture2D" uid="uid://b4tso5lav6ys1" path="res://assets/sprites/ui/menu_inicio/boton_a_hover.png" id="10_btn_hover"]
 [ext_resource type="Texture2D" uid="uid://dmjosswhndjh5" path="res://assets/sprites/ui/menu_inicio/boton_c_pressed.png" id="11_btn_pressed"]
+[ext_resource type="FontFile" uid="uid://bul4vmew5ma36" path="res://assets/fonts/PressStart2P-Regular.ttf" id="12_ps2p"]
 
 [node name="CharacterSelect" type="Control"]
 layout_mode = 3
@@ -81,10 +82,10 @@ layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_left = 77.0
-offset_top = 32.0
-offset_right = 24.0
-offset_bottom = -17.0
+offset_left = 100.0
+offset_top = 90.0
+offset_right = -10.0
+offset_bottom = -31.0
 grow_horizontal = 2
 grow_vertical = 2
 theme_override_constants/margin_left = 20
@@ -147,6 +148,7 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_fonts/font = ExtResource("12_ps2p")
 theme_override_font_sizes/font_size = 18
 text = "VIDAS"
 horizontal_alignment = 1
@@ -183,6 +185,7 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_fonts/font = ExtResource("12_ps2p")
 theme_override_font_sizes/font_size = 18
 text = "1"
 horizontal_alignment = 1
@@ -214,6 +217,7 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_fonts/font = ExtResource("12_ps2p")
 theme_override_font_sizes/font_size = 18
 text = "PUNTOS"
 horizontal_alignment = 1
@@ -250,6 +254,7 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_fonts/font = ExtResource("12_ps2p")
 theme_override_font_sizes/font_size = 18
 text = "10"
 horizontal_alignment = 1
@@ -276,10 +281,10 @@ layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_left = -24.0
-offset_top = 32.0
-offset_right = -91.0
-offset_bottom = -18.0
+offset_left = 10.0
+offset_top = 90.0
+offset_right = -100.0
+offset_bottom = -31.0
 grow_horizontal = 2
 grow_vertical = 2
 theme_override_constants/margin_left = 20
@@ -343,6 +348,7 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_fonts/font = ExtResource("12_ps2p")
 theme_override_font_sizes/font_size = 20
 text = "Volver"
 horizontal_alignment = 1
@@ -365,6 +371,7 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_fonts/font = ExtResource("12_ps2p")
 theme_override_font_sizes/font_size = 20
 text = "PARTIDA"
 horizontal_alignment = 1
@@ -387,6 +394,7 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_fonts/font = ExtResource("12_ps2p")
 theme_override_font_sizes/font_size = 20
 text = "Ajustes"
 horizontal_alignment = 1
@@ -401,5 +409,5 @@ vertical_alignment = 1
 [connection signal="pressed" from="MargenPrincipal/VBoxPrincipal/PanelesJugadores/panel_p2/MarginContainer/VBoxContainer/HBoxBotones/anterior_p2" to="." method="_on_anterior_p2_pressed"]
 [connection signal="pressed" from="MargenPrincipal/VBoxPrincipal/PanelesJugadores/panel_p2/MarginContainer/VBoxContainer/HBoxBotones/siguiente_p2" to="." method="_on_siguiente_p2_pressed"]
 [connection signal="pressed" from="MargenPrincipal/VBoxPrincipal/ContenedorBoton/BtnVolver" to="." method="_on_btn_volver_pressed"]
-[connection signal="pressed" from="MargenPrincipal/VBoxPrincipal/ContenedorBoton/BtnAjustes" to="." method="_on_btn_ajustes_pressed"]
 [connection signal="pressed" from="MargenPrincipal/VBoxPrincipal/ContenedorBoton/partida" to="." method="_on_partida_pressed"]
+[connection signal="pressed" from="MargenPrincipal/VBoxPrincipal/ContenedorBoton/BtnAjustes" to="." method="_on_btn_ajustes_pressed"]

@@ -1,0 +1,19 @@
+[remap]
+
+importer="oggvorbisstr"
+type="AudioStreamOggVorbis"
+uid="uid://bnauadacagau0"
+path="res://.godot/imported/Soundtrack3 - Crossover Battle.ogg-f77ca8bb94b40e33ec692d58a8c46e26.oggvorbisstr"
+
+[deps]
+
+source_file="res://assets/sonidos/soundtrack/Soundtrack3 - Crossover Battle.ogg"
+dest_files=["res://.godot/imported/Soundtrack3 - Crossover Battle.ogg-f77ca8bb94b40e33ec692d58a8c46e26.oggvorbisstr"]
+
+[params]
+
+loop=false
+loop_offset=0
+bpm=0
+beat_count=0
+bar_beats=4
