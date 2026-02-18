@@ -10,10 +10,9 @@ const RUTA_MENU_INICIO: String = "res://scenes/ui/MenuInicio.tscn"
 const RUTA_SELECCION: String = "res://scenes/ui/CharacterSelect.tscn"
 
 # === NODOS ===
-@onready var _label_ganador: Label = $MarcoTexto/MargenMarco/VBoxInfo/LabelGanador
-@onready var _label_marcador: Label = $MarcoTexto/MargenMarco/VBoxInfo/LabelMarcador
-@onready var _btn_revancha: TextureButton = $BotonesContainer/BtnRevancha
-@onready var _btn_volver_menu: TextureButton = $BotonesContainer/BtnVolverMenu
+@onready var _label_ganador: Label = $VBoxCentral/MarcoTexto/MargenMarco/VBoxInfo/LabelGanador
+@onready var _label_marcador: Label = $VBoxCentral/MarcoTexto/MargenMarco/VBoxInfo/LabelMarcador
+@onready var _btn_revancha: TextureButton = $VBoxCentral/BotonesContainer/BtnRevancha
 
 # === MÉTODOS DE CICLO DE VIDA ===
 
