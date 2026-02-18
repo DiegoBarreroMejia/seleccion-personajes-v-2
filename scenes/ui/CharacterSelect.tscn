@@ -43,8 +43,8 @@ anchor_right = 0.5
 anchor_bottom = 0.5
 offset_left = -504.0
 offset_top = -282.0
-offset_right = 503.0
-offset_bottom = 283.0
+offset_right = 504.0
+offset_bottom = 282.0
 grow_horizontal = 2
 grow_vertical = 2
 texture = ExtResource("3_libro")
@@ -82,7 +82,7 @@ layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_left = 100.0
+offset_left = 10.0
 offset_top = 90.0
 offset_right = -10.0
 offset_bottom = -31.0
@@ -127,6 +127,34 @@ ignore_texture_size = true
 stretch_mode = 0
 flip_h = true
 
+[node name="Jugadorp1" type="TextureRect" parent="MargenPrincipal/VBoxPrincipal/PanelesJugadores/panel_p1"]
+custom_minimum_size = Vector2(220, 55)
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -110.0
+offset_top = 41.0
+offset_right = 110.0
+offset_bottom = 96.0
+size_flags_horizontal = 4
+texture = ExtResource("8_marco_texto")
+expand_mode = 1
+
+[node name="Label" type="Label" parent="MargenPrincipal/VBoxPrincipal/PanelesJugadores/panel_p1/Jugadorp1"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_fonts/font = ExtResource("12_ps2p")
+theme_override_font_sizes/font_size = 18
+text = "J1"
+horizontal_alignment = 1
+vertical_alignment = 1
+
 [node name="ContenedorReglas" type="VBoxContainer" parent="MargenPrincipal/VBoxPrincipal/PanelesJugadores"]
 layout_mode = 2
 size_flags_horizontal = 4
@@ -141,6 +169,27 @@ texture = ExtResource("8_marco_texto")
 expand_mode = 1
 
 [node name="Label" type="Label" parent="MargenPrincipal/VBoxPrincipal/PanelesJugadores/ContenedorReglas/TituloVidas"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_fonts/font = ExtResource("12_ps2p")
+theme_override_font_sizes/font_size = 18
+text = "VIDAS"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="TituloVidas" type="TextureRect" parent="MargenPrincipal/VBoxPrincipal/PanelesJugadores/ContenedorReglas/TituloVidas"]
+custom_minimum_size = Vector2(220, 55)
+layout_mode = 0
+size_flags_horizontal = 4
+texture = ExtResource("8_marco_texto")
+expand_mode = 1
+
+[node name="Label" type="Label" parent="MargenPrincipal/VBoxPrincipal/PanelesJugadores/ContenedorReglas/TituloVidas/TituloVidas"]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -283,7 +332,7 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 offset_left = 10.0
 offset_top = 90.0
-offset_right = -100.0
+offset_right = -10.0
 offset_bottom = -31.0
 grow_horizontal = 2
 grow_vertical = 2
@@ -325,6 +374,34 @@ texture_hover = ExtResource("5_flecha_hover")
 ignore_texture_size = true
 stretch_mode = 0
 flip_h = true
+
+[node name="JugadorP2" type="TextureRect" parent="MargenPrincipal/VBoxPrincipal/PanelesJugadores/panel_p2"]
+custom_minimum_size = Vector2(220, 55)
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -110.0
+offset_top = 41.0
+offset_right = 110.0
+offset_bottom = 96.0
+size_flags_horizontal = 4
+texture = ExtResource("8_marco_texto")
+expand_mode = 1
+
+[node name="Label" type="Label" parent="MargenPrincipal/VBoxPrincipal/PanelesJugadores/panel_p2/JugadorP2"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_fonts/font = ExtResource("12_ps2p")
+theme_override_font_sizes/font_size = 18
+text = "J2"
+horizontal_alignment = 1
+vertical_alignment = 1
 
 [node name="ContenedorBoton" type="HBoxContainer" parent="MargenPrincipal/VBoxPrincipal"]
 layout_mode = 2
