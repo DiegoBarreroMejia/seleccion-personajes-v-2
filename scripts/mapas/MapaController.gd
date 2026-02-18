@@ -17,7 +17,8 @@ signal partida_terminada(id_ganador: int)
 # === CONSTANTES ===
 const RETRASO_VICTORIA: float = 2.0
 const RETRASO_TRANSICION_RONDA: float = 1.5
-const RUTA_VICTORIA: String = "res://scenes/ui/Victoria.tscn"
+const VICTORIA_SCENE: PackedScene = preload("res://scenes/ui/Victoria.tscn")
+const COUNTDOWN_SCENE: PackedScene = preload("res://scenes/ui/Countdown.tscn")
 
 # === VARIABLES PRIVADAS ===
 var _jugadores: Dictionary = {}
@@ -30,6 +31,7 @@ func _ready() -> void:
 	_encontrar_puntos_spawn()
 	_spawn_jugadores()
 	_instanciar_hud()
+	_iniciar_countdown()
 
 # === CONFIGURACIÓN INICIAL ===
 
@@ -186,7 +188,8 @@ func _manejar_victoria_partida(id_ganador: int) -> void:
 
 	_limpiar_armas_sueltas()
 	Global.ultimo_ganador = id_ganador
-	get_tree().change_scene_to_file(RUTA_VICTORIA)
+	var victoria := VICTORIA_SCENE.instantiate()
+	add_child(victoria)
 
 func _iniciar_siguiente_ronda() -> void:
 	print("Nadie ha ganado aún. Siguiente ronda en %.1fs..." % RETRASO_TRANSICION_RONDA)
@@ -213,6 +216,24 @@ func _iniciar_siguiente_ronda() -> void:
 		return
 
 	get_tree().change_scene_to_file(mapa_siguiente)
+
+# === MÉTODOS PRIVADOS - COUNTDOWN ===
+
+func _iniciar_countdown() -> void:
+	# Bloquear jugadores mientras dura el countdown
+	_set_jugadores_bloqueados(true)
+
+	var countdown := COUNTDOWN_SCENE.instantiate()
+	add_child(countdown)
+	countdown.countdown_terminado.connect(_on_countdown_terminado)
+
+func _on_countdown_terminado() -> void:
+	_set_jugadores_bloqueados(false)
+
+func _set_jugadores_bloqueados(valor: bool) -> void:
+	for jugador in _jugadores.values():
+		if is_instance_valid(jugador):
+			jugador.bloqueado = valor
 
 # === MÉTODOS PRIVADOS - HUD ===
 

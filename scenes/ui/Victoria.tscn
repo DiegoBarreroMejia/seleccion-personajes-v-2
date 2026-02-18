@@ -1,32 +1,26 @@
-[gd_scene load_steps=8 format=3]
+[gd_scene load_steps=8 format=3 uid="uid://dtrwlpduq2j18"]
 
 [ext_resource type="Script" uid="uid://bdnmgu0rts3ba" path="res://scripts/ui/victoria.gd" id="1_script"]
-[ext_resource type="FontFile" path="res://assets/fonts/PressStart2P-Regular.ttf" id="2_ps2p"]
-[ext_resource type="Texture2D" path="res://assets/sprites/partida/victoria.png" id="3_victoria"]
-[ext_resource type="Texture2D" path="res://assets/sprites/ui/selector_personaje/marco_texto.png" id="4_marco"]
-[ext_resource type="Texture2D" path="res://assets/sprites/ui/menu_inicio/boton_b_normal.png" id="5_btn_normal"]
-[ext_resource type="Texture2D" path="res://assets/sprites/ui/menu_inicio/boton_a_hover.png" id="6_btn_hover"]
-[ext_resource type="Texture2D" path="res://assets/sprites/ui/menu_inicio/boton_c_pressed.png" id="7_btn_pressed"]
+[ext_resource type="FontFile" uid="uid://bul4vmew5ma36" path="res://assets/fonts/PressStart2P-Regular.ttf" id="2_ps2p"]
+[ext_resource type="Texture2D" uid="uid://dsskmcikeigka" path="res://assets/sprites/partida/victoria.png" id="3_victoria"]
+[ext_resource type="Texture2D" uid="uid://bbhpaiy3hh2pa" path="res://assets/sprites/ui/selector_personaje/marco_texto.png" id="4_marco"]
+[ext_resource type="Texture2D" uid="uid://d257ke5v0lidv" path="res://assets/sprites/ui/menu_inicio/boton_b_normal.png" id="5_btn_normal"]
+[ext_resource type="Texture2D" uid="uid://b4tso5lav6ys1" path="res://assets/sprites/ui/menu_inicio/boton_a_hover.png" id="6_btn_hover"]
+[ext_resource type="Texture2D" uid="uid://dmjosswhndjh5" path="res://assets/sprites/ui/menu_inicio/boton_c_pressed.png" id="7_btn_pressed"]
 
-[node name="Victoria" type="Control"]
+[node name="Victoria" type="CanvasLayer"]
+layer = 10
+script = ExtResource("1_script")
+
+[node name="Control" type="Control" parent="."]
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-script = ExtResource("1_script")
 
-[node name="FondoColor" type="ColorRect" parent="."]
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-color = Color(0.08, 0.08, 0.12, 1)
-
-[node name="VBoxCentral" type="VBoxContainer" parent="."]
+[node name="VBoxCentral" type="VBoxContainer" parent="Control"]
 layout_mode = 1
 anchors_preset = 8
 anchor_left = 0.5
@@ -42,23 +36,25 @@ grow_vertical = 2
 theme_override_constants/separation = 24
 alignment = 1
 
-[node name="ImgVictoria" type="TextureRect" parent="VBoxCentral"]
+[node name="ImgVictoria" type="TextureRect" parent="Control/VBoxCentral"]
+custom_minimum_size = Vector2(0, 160)
 layout_mode = 2
 size_flags_horizontal = 4
-custom_minimum_size = Vector2(0, 160)
+size_flags_vertical = 4
 texture = ExtResource("3_victoria")
 expand_mode = 1
 stretch_mode = 5
 
-[node name="MarcoTexto" type="TextureRect" parent="VBoxCentral"]
+[node name="MarcoTexto" type="TextureRect" parent="Control/VBoxCentral"]
+custom_minimum_size = Vector2(500, 210)
 layout_mode = 2
 size_flags_horizontal = 4
-custom_minimum_size = Vector2(500, 120)
+size_flags_vertical = 4
 texture = ExtResource("4_marco")
 expand_mode = 1
 stretch_mode = 5
 
-[node name="MargenMarco" type="MarginContainer" parent="VBoxCentral/MarcoTexto"]
+[node name="MargenMarco" type="MarginContainer" parent="Control/VBoxCentral/MarcoTexto"]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -70,12 +66,12 @@ theme_override_constants/margin_top = 16
 theme_override_constants/margin_right = 20
 theme_override_constants/margin_bottom = 16
 
-[node name="VBoxInfo" type="VBoxContainer" parent="VBoxCentral/MarcoTexto/MargenMarco"]
+[node name="VBoxInfo" type="VBoxContainer" parent="Control/VBoxCentral/MarcoTexto/MargenMarco"]
 layout_mode = 2
 theme_override_constants/separation = 10
 alignment = 1
 
-[node name="LabelGanador" type="Label" parent="VBoxCentral/MarcoTexto/MargenMarco/VBoxInfo"]
+[node name="LabelGanador" type="Label" parent="Control/VBoxCentral/MarcoTexto/MargenMarco/VBoxInfo"]
 layout_mode = 2
 theme_override_colors/font_color = Color(1, 1, 1, 1)
 theme_override_fonts/font = ExtResource("2_ps2p")
@@ -83,7 +79,7 @@ theme_override_font_sizes/font_size = 28
 text = "Jugador X gana!"
 horizontal_alignment = 1
 
-[node name="LabelMarcador" type="Label" parent="VBoxCentral/MarcoTexto/MargenMarco/VBoxInfo"]
+[node name="LabelMarcador" type="Label" parent="Control/VBoxCentral/MarcoTexto/MargenMarco/VBoxInfo"]
 layout_mode = 2
 theme_override_colors/font_color = Color(1, 0.85, 0.2, 1)
 theme_override_fonts/font = ExtResource("2_ps2p")
@@ -91,13 +87,13 @@ theme_override_font_sizes/font_size = 22
 text = "0  -  0"
 horizontal_alignment = 1
 
-[node name="BotonesContainer" type="HBoxContainer" parent="VBoxCentral"]
+[node name="BotonesContainer" type="HBoxContainer" parent="Control/VBoxCentral"]
 layout_mode = 2
 size_flags_horizontal = 4
 theme_override_constants/separation = 30
 alignment = 1
 
-[node name="BtnRevancha" type="TextureButton" parent="VBoxCentral/BotonesContainer"]
+[node name="BtnRevancha" type="TextureButton" parent="Control/VBoxCentral/BotonesContainer"]
 custom_minimum_size = Vector2(220, 70)
 layout_mode = 2
 size_flags_horizontal = 4
@@ -107,7 +103,7 @@ texture_hover = ExtResource("6_btn_hover")
 ignore_texture_size = true
 stretch_mode = 0
 
-[node name="Label" type="Label" parent="VBoxCentral/BotonesContainer/BtnRevancha"]
+[node name="Label" type="Label" parent="Control/VBoxCentral/BotonesContainer/BtnRevancha"]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -121,7 +117,7 @@ text = "Revancha"
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="BtnVolverMenu" type="TextureButton" parent="VBoxCentral/BotonesContainer"]
+[node name="BtnVolverMenu" type="TextureButton" parent="Control/VBoxCentral/BotonesContainer"]
 custom_minimum_size = Vector2(220, 70)
 layout_mode = 2
 size_flags_horizontal = 4
@@ -131,7 +127,7 @@ texture_hover = ExtResource("6_btn_hover")
 ignore_texture_size = true
 stretch_mode = 0
 
-[node name="Label" type="Label" parent="VBoxCentral/BotonesContainer/BtnVolverMenu"]
+[node name="Label" type="Label" parent="Control/VBoxCentral/BotonesContainer/BtnVolverMenu"]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -145,5 +141,5 @@ text = "Volver al menu"
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[connection signal="pressed" from="VBoxCentral/BotonesContainer/BtnRevancha" to="." method="_on_btn_revancha_pressed"]
-[connection signal="pressed" from="VBoxCentral/BotonesContainer/BtnVolverMenu" to="." method="_on_btn_volver_menu_pressed"]
+[connection signal="pressed" from="Control/VBoxCentral/BotonesContainer/BtnRevancha" to="." method="_on_btn_revancha_pressed"]
+[connection signal="pressed" from="Control/VBoxCentral/BotonesContainer/BtnVolverMenu" to="." method="_on_btn_volver_menu_pressed"]

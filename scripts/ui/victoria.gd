@@ -1,18 +1,18 @@
-extends Control
+extends CanvasLayer
 
-## Pantalla de victoria que se muestra al finalizar la partida
+## Pantalla de victoria que se superpone sobre el mapa como overlay.
 ##
-## Muestra el PNG de victoria, el ganador y el marcador final
-## dentro de un marco de texto, con botones de revancha y menú.
+## Se instancia desde MapaController para que el fondo sea transparente
+## y se vea el estado final de la partida detrás.
 
 # === CONSTANTES ===
 const RUTA_MENU_INICIO: String = "res://scenes/ui/MenuInicio.tscn"
 const RUTA_SELECCION: String = "res://scenes/ui/CharacterSelect.tscn"
 
 # === NODOS ===
-@onready var _label_ganador: Label = $VBoxCentral/MarcoTexto/MargenMarco/VBoxInfo/LabelGanador
-@onready var _label_marcador: Label = $VBoxCentral/MarcoTexto/MargenMarco/VBoxInfo/LabelMarcador
-@onready var _btn_revancha: TextureButton = $VBoxCentral/BotonesContainer/BtnRevancha
+@onready var _label_ganador: Label = $Control/VBoxCentral/MarcoTexto/MargenMarco/VBoxInfo/LabelGanador
+@onready var _label_marcador: Label = $Control/VBoxCentral/MarcoTexto/MargenMarco/VBoxInfo/LabelMarcador
+@onready var _btn_revancha: TextureButton = $Control/VBoxCentral/BotonesContainer/BtnRevancha
 
 # === MÉTODOS DE CICLO DE VIDA ===
 
