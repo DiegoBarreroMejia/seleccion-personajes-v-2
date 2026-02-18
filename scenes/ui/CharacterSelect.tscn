@@ -182,26 +182,6 @@ text = "VIDAS"
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="TituloVidas" type="TextureRect" parent="MargenPrincipal/VBoxPrincipal/PanelesJugadores/ContenedorReglas/TituloVidas"]
-custom_minimum_size = Vector2(220, 55)
-layout_mode = 0
-size_flags_horizontal = 4
-texture = ExtResource("8_marco_texto")
-expand_mode = 1
-
-[node name="Label" type="Label" parent="MargenPrincipal/VBoxPrincipal/PanelesJugadores/ContenedorReglas/TituloVidas/TituloVidas"]
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-theme_override_colors/font_color = Color(1, 1, 1, 1)
-theme_override_fonts/font = ExtResource("12_ps2p")
-theme_override_font_sizes/font_size = 18
-text = "VIDAS"
-horizontal_alignment = 1
-vertical_alignment = 1
 
 [node name="FilaVidas" type="HBoxContainer" parent="MargenPrincipal/VBoxPrincipal/PanelesJugadores/ContenedorReglas"]
 layout_mode = 2
