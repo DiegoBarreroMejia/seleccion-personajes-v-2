@@ -39,7 +39,6 @@ alignment = 1
 [node name="ImgVictoria" type="TextureRect" parent="Control/VBoxCentral"]
 custom_minimum_size = Vector2(0, 160)
 layout_mode = 2
-size_flags_horizontal = 4
 size_flags_vertical = 4
 texture = ExtResource("3_victoria")
 expand_mode = 1
@@ -87,10 +86,10 @@ theme_override_font_sizes/font_size = 22
 text = "0  -  0"
 horizontal_alignment = 1
 
-[node name="BotonesContainer" type="HBoxContainer" parent="Control/VBoxCentral"]
+[node name="BotonesContainer" type="VBoxContainer" parent="Control/VBoxCentral"]
 layout_mode = 2
 size_flags_horizontal = 4
-theme_override_constants/separation = 30
+theme_override_constants/separation = 16
 alignment = 1
 
 [node name="BtnRevancha" type="TextureButton" parent="Control/VBoxCentral/BotonesContainer"]
