@@ -16,6 +16,8 @@ signal municion_cambiada(actual: int, maxima: int)
 
 # === CONSTANTES ===
 const MAX_CANDIDATOS_RECOGIDA: int = 4
+const SFX_RECOGER: AudioStream = preload("res://assets/sonidos/partida/sonido_cuando_un_personaje_coje_algo.ogg")
+const SFX_SOLTAR: AudioStream = preload("res://assets/sonidos/partida/sonido_cuando_un_personaje_sualta_algo.ogg")
 
 # === CONSTANTES DE FÍSICA DE ARMAS ===
 const GRAVEDAD_ARMA: float = 800.0
@@ -69,6 +71,7 @@ var _ultimo_dueno_id: int = 0  # Para no dañar al que la lanzó
 # === NODOS ===
 @onready var _punta: Marker2D = $Punta if has_node("Punta") else null
 @onready var _area_recogida: Area2D = $AreaRecogida if has_node("AreaRecogida") else null
+var _sfx_player: AudioStreamPlayer2D = null
 
 # === MÉTODOS DE CICLO DE VIDA ===
 
@@ -76,6 +79,10 @@ func _ready() -> void:
 	_configurar_temporizador_disparo()
 	_configurar_area_recogida()
 	_inicializar_municion()
+	_sfx_player = AudioStreamPlayer2D.new()
+	_sfx_player.bus = "SFX"
+	_sfx_player.max_distance = 800.0
+	add_child(_sfx_player)
 
 func _process(_delta: float) -> void:
 	if not _esta_recogida and not _esta_en_vuelo:
@@ -177,6 +184,12 @@ func equipar(nuevo_dueno: CharacterBody2D) -> void:
 
 	arma_recogida.emit(_id_jugador)
 	_emitir_municion_cambiada()
+
+	# Sonido de recoger
+	if _sfx_player:
+		_sfx_player.stream = SFX_RECOGER
+		_sfx_player.play()
+
 	print("Arma equipada por Jugador %d" % _id_jugador)
 
 func _puede_ser_equipada_por(personaje: CharacterBody2D) -> bool:
@@ -379,6 +392,11 @@ func soltar() -> void:
 
 	if _area_recogida:
 		_area_recogida.monitoring = true
+
+	# Sonido de soltar
+	if _sfx_player:
+		_sfx_player.stream = SFX_SOLTAR
+		_sfx_player.play()
 
 	arma_soltada.emit()
 

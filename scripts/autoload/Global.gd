@@ -9,6 +9,7 @@ extends Node
 ## - Controles de entrada
 
 # === CONSTANTES ===
+const SFX_GANAR_PUNTO: AudioStream = preload("res://assets/sonidos/partida/sonido_caundo_alguien_gana_un puntos.ogg")
 const MIN_VIDA: int = 1
 const MAX_VIDA: int = 10
 const VIDA_DEFECTO: int = 1
@@ -103,13 +104,21 @@ const p2_controls: Dictionary = {
 var mapas_disponibles: Array[String] = [
 	"res://scenes/mapas/Mapa1.tscn",
 	"res://scenes/mapas/Mapa2.tscn",
-	"res://scenes/mapas/Mapa3.tscn"
+	"res://scenes/mapas/Mapa3.tscn",
+	"res://scenes/mapas/Mapa4.tscn",
+	"res://scenes/mapas/Mapa5.tscn"
 ]
 
 # === MÉTODOS DE CICLO DE VIDA ===
 
+# === NODOS PRIVADOS ===
+var _sfx_player: AudioStreamPlayer = null
+
 func _ready() -> void:
 	_inicializar_selecciones_defecto()
+	_sfx_player = AudioStreamPlayer.new()
+	_sfx_player.bus = "SFX"
+	add_child(_sfx_player)
 
 # === MÉTODOS PRIVADOS ===
 
@@ -139,6 +148,12 @@ func sumar_puntos(id_jugador: int, puntos: int = 1) -> void:
 		_verificar_victoria(2)
 	else:
 		push_warning("Global: ID de jugador inválido: %d" % id_jugador)
+		return
+
+	# Reproducir sonido de ganar punto
+	if _sfx_player:
+		_sfx_player.stream = SFX_GANAR_PUNTO
+		_sfx_player.play()
 
 ## Obtiene la puntuación de un jugador
 func obtener_puntuacion(id_jugador: int) -> int:

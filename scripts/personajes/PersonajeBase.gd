@@ -21,6 +21,14 @@ const DISTANCIA_MANO: float = 20.0
 # === ESCENAS PRELOADED ===
 const EXPLOSION_SCENE: PackedScene = preload("res://scenes/vfx/Explosion.tscn")
 
+# === SONIDOS DE PASOS ===
+const SONIDOS_PASOS: Array[AudioStream] = [
+	preload("res://assets/sonidos/partida/sonido_caminar1.ogg"),
+	preload("res://assets/sonidos/partida/sonido_caminar2.ogg"),
+	preload("res://assets/sonidos/partida/sonido_caminar3.ogg"),
+	preload("res://assets/sonidos/partida/sonido_caminar4.ogg"),
+]
+
 # === VARIABLES EXPORTADAS ===
 @export_group("Movimiento")
 @export var speed: float = VELOCIDAD_DEFECTO
@@ -53,6 +61,11 @@ var _accion_consumida_frame: int = -1  # Frame en que se consumió la última ac
 
 var _es_articulado: bool = false
 
+# === VARIABLES DE SONIDO PASOS ===
+var _sfx_pasos_player: AudioStreamPlayer2D = null
+var _indice_paso_actual: int = 0
+var _paso_anterior: int = -1  ## Último paso reproducido (evita repetir en el mismo punto)
+
 # === MÉTODOS DE CICLO DE VIDA ===
 
 func _ready() -> void:
@@ -60,8 +73,9 @@ func _ready() -> void:
 	_vida_actual = Global.vida_maxima
 	_detectar_tipo_personaje()
 	_validar_nodos()
+	_configurar_sfx_pasos()
 	add_to_group("jugadores")
-	
+
 	if _anim_player and _anim_player.has_animation("Reposo"):
 		_anim_player.play("Reposo")
 
@@ -73,6 +87,7 @@ func _physics_process(delta: float) -> void:
 	_gestionar_movimiento()
 	_gestionar_salto()
 	_actualizar_animacion()
+	_gestionar_sonido_pasos()
 	move_and_slide()
 
 # === MÉTODOS PRIVADOS - CONFIGURACIÓN ===
@@ -95,6 +110,39 @@ func _validar_nodos() -> void:
 		push_warning("PersonajeBase: Ni 'Sprite' ni 'Visuals' encontrado en %s" % name)
 	if not _mano:
 		push_warning("PersonajeBase: Nodo 'Mano' no encontrado en %s" % name)
+
+# === MÉTODOS PRIVADOS - SONIDO PASOS ===
+
+func _configurar_sfx_pasos() -> void:
+	_sfx_pasos_player = AudioStreamPlayer2D.new()
+	_sfx_pasos_player.bus = "SFX"
+	_sfx_pasos_player.max_distance = 800.0
+	add_child(_sfx_pasos_player)
+
+func _gestionar_sonido_pasos() -> void:
+	## Reproduce sonidos de pasos sincronizados con la animación de correr.
+	## Divide la animación en 4 partes iguales y reproduce un sonido en cada una.
+	if not _anim_player or not _sfx_pasos_player:
+		return
+
+	if _anim_player.current_animation != "correr" or not is_on_floor():
+		_paso_anterior = -1
+		return
+
+	# Obtener duración y posición actual de la animación
+	var duracion := _anim_player.current_animation_length
+	if duracion <= 0.0:
+		return
+
+	var posicion := _anim_player.current_animation_position
+	# Dividir la animación en 4 segmentos (un sonido por segmento)
+	var paso_actual := int((posicion / duracion) * 4.0) % 4
+
+	if paso_actual != _paso_anterior:
+		_paso_anterior = paso_actual
+		_sfx_pasos_player.stream = SONIDOS_PASOS[_indice_paso_actual]
+		_sfx_pasos_player.play()
+		_indice_paso_actual = (_indice_paso_actual + 1) % SONIDOS_PASOS.size()
 
 # === MÉTODOS PRIVADOS - FÍSICA ===
 
