@@ -1,7 +1,12 @@
-[gd_scene load_steps=3 format=3]
+[gd_scene load_steps=8 format=3]
 
 [ext_resource type="Script" uid="uid://bdnmgu0rts3ba" path="res://scripts/ui/victoria.gd" id="1_script"]
 [ext_resource type="FontFile" path="res://assets/fonts/PressStart2P-Regular.ttf" id="2_ps2p"]
+[ext_resource type="Texture2D" path="res://assets/sprites/partida/victoria.png" id="3_victoria"]
+[ext_resource type="Texture2D" path="res://assets/sprites/ui/selector_personaje/marco_texto.png" id="4_marco"]
+[ext_resource type="Texture2D" path="res://assets/sprites/ui/menu_inicio/boton_b_normal.png" id="5_btn_normal"]
+[ext_resource type="Texture2D" path="res://assets/sprites/ui/menu_inicio/boton_a_hover.png" id="6_btn_hover"]
+[ext_resource type="Texture2D" path="res://assets/sprites/ui/menu_inicio/boton_c_pressed.png" id="7_btn_pressed"]
 
 [node name="Victoria" type="Control"]
 layout_mode = 3
@@ -19,62 +24,126 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-color = Color(0.12, 0.12, 0.18, 1)
+color = Color(0.08, 0.08, 0.12, 1)
 
-[node name="ContenedorCentral" type="VBoxContainer" parent="."]
+[node name="VBoxCentral" type="VBoxContainer" parent="."]
 layout_mode = 1
 anchors_preset = 8
 anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-offset_left = -200.0
-offset_top = -180.0
-offset_right = 200.0
-offset_bottom = 180.0
+offset_left = -400.0
+offset_top = -280.0
+offset_right = 400.0
+offset_bottom = 280.0
 grow_horizontal = 2
 grow_vertical = 2
-theme_override_constants/separation = 20
+theme_override_constants/separation = 24
 alignment = 1
 
-[node name="LabelVictoria" type="Label" parent="ContenedorCentral"]
+[node name="ImgVictoria" type="TextureRect" parent="VBoxCentral"]
 layout_mode = 2
-theme_override_fonts/font = ExtResource("2_ps2p")
-theme_override_font_sizes/font_size = 64
-text = "VICTORIA"
-horizontal_alignment = 1
+size_flags_horizontal = 4
+custom_minimum_size = Vector2(0, 160)
+texture = ExtResource("3_victoria")
+expand_mode = 1
+stretch_mode = 5
 
-[node name="LabelGanador" type="Label" parent="ContenedorCentral"]
+[node name="MarcoTexto" type="TextureRect" parent="VBoxCentral"]
 layout_mode = 2
+size_flags_horizontal = 4
+custom_minimum_size = Vector2(500, 120)
+texture = ExtResource("4_marco")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="MargenMarco" type="MarginContainer" parent="VBoxCentral/MarcoTexto"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 20
+theme_override_constants/margin_top = 16
+theme_override_constants/margin_right = 20
+theme_override_constants/margin_bottom = 16
+
+[node name="VBoxInfo" type="VBoxContainer" parent="VBoxCentral/MarcoTexto/MargenMarco"]
+layout_mode = 2
+theme_override_constants/separation = 10
+alignment = 1
+
+[node name="LabelGanador" type="Label" parent="VBoxCentral/MarcoTexto/MargenMarco/VBoxInfo"]
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 1, 1, 1)
 theme_override_fonts/font = ExtResource("2_ps2p")
-theme_override_font_sizes/font_size = 32
+theme_override_font_sizes/font_size = 28
 text = "Jugador X gana!"
 horizontal_alignment = 1
 
-[node name="LabelMarcador" type="Label" parent="ContenedorCentral"]
+[node name="LabelMarcador" type="Label" parent="VBoxCentral/MarcoTexto/MargenMarco/VBoxInfo"]
 layout_mode = 2
+theme_override_colors/font_color = Color(1, 0.85, 0.2, 1)
 theme_override_fonts/font = ExtResource("2_ps2p")
-theme_override_font_sizes/font_size = 24
-text = "Marcador final: 0 - 0"
+theme_override_font_sizes/font_size = 22
+text = "0  -  0"
 horizontal_alignment = 1
 
-[node name="Espaciador" type="Control" parent="ContenedorCentral"]
-layout_mode = 2
-custom_minimum_size = Vector2(0, 30)
-
-[node name="BtnVolverMenu" type="Button" parent="ContenedorCentral"]
+[node name="BotonesContainer" type="HBoxContainer" parent="VBoxCentral"]
 layout_mode = 2
 size_flags_horizontal = 4
-custom_minimum_size = Vector2(250, 50)
-theme_override_fonts/font = ExtResource("2_ps2p")
-text = "Volver al menú"
+theme_override_constants/separation = 30
+alignment = 1
 
-[node name="BtnRevancha" type="Button" parent="ContenedorCentral"]
+[node name="BtnRevancha" type="TextureButton" parent="VBoxCentral/BotonesContainer"]
+custom_minimum_size = Vector2(220, 70)
 layout_mode = 2
 size_flags_horizontal = 4
-custom_minimum_size = Vector2(250, 50)
+texture_normal = ExtResource("5_btn_normal")
+texture_pressed = ExtResource("7_btn_pressed")
+texture_hover = ExtResource("6_btn_hover")
+ignore_texture_size = true
+stretch_mode = 0
+
+[node name="Label" type="Label" parent="VBoxCentral/BotonesContainer/BtnRevancha"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_colors/font_color = Color(1, 1, 1, 1)
 theme_override_fonts/font = ExtResource("2_ps2p")
+theme_override_font_sizes/font_size = 20
 text = "Revancha"
+horizontal_alignment = 1
+vertical_alignment = 1
 
-[connection signal="pressed" from="ContenedorCentral/BtnVolverMenu" to="." method="_on_btn_volver_menu_pressed"]
-[connection signal="pressed" from="ContenedorCentral/BtnRevancha" to="." method="_on_btn_revancha_pressed"]
+[node name="BtnVolverMenu" type="TextureButton" parent="VBoxCentral/BotonesContainer"]
+custom_minimum_size = Vector2(220, 70)
+layout_mode = 2
+size_flags_horizontal = 4
+texture_normal = ExtResource("5_btn_normal")
+texture_pressed = ExtResource("7_btn_pressed")
+texture_hover = ExtResource("6_btn_hover")
+ignore_texture_size = true
+stretch_mode = 0
+
+[node name="Label" type="Label" parent="VBoxCentral/BotonesContainer/BtnVolverMenu"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_fonts/font = ExtResource("2_ps2p")
+theme_override_font_sizes/font_size = 20
+text = "Volver al menu"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[connection signal="pressed" from="VBoxCentral/BotonesContainer/BtnRevancha" to="." method="_on_btn_revancha_pressed"]
+[connection signal="pressed" from="VBoxCentral/BotonesContainer/BtnVolverMenu" to="." method="_on_btn_volver_menu_pressed"]
