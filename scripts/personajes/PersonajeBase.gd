@@ -48,6 +48,7 @@ var _vida_actual: int = 1:
 			_morir()
 
 var _esta_vivo: bool = true
+var bloqueado: bool = false  ## Si true, el personaje no puede moverse ni saltar
 var _direccion_mirada: int = 1
 var _estaba_en_suelo: bool = true
 var _arma_actual: Node2D = null
@@ -64,7 +65,8 @@ var _es_articulado: bool = false
 # === VARIABLES DE SONIDO PASOS ===
 var _sfx_pasos_player: AudioStreamPlayer2D = null
 var _indice_paso_actual: int = 0
-var _paso_anterior: int = -1  ## Último paso reproducido (evita repetir en el mismo punto)
+var _cooldown_paso: float = 0.0       ## Tiempo restante hasta que puede sonar otro paso
+const INTERVALO_PASO: float = 0.28    ## Segundos entre cada sonido de paso
 
 # === MÉTODOS DE CICLO DE VIDA ===
 
@@ -82,12 +84,15 @@ func _ready() -> void:
 func _physics_process(delta: float) -> void:
 	if not _esta_vivo:
 		return
-	
+
 	_aplicar_gravedad(delta)
-	_gestionar_movimiento()
-	_gestionar_salto()
+
+	if not bloqueado:
+		_gestionar_movimiento()
+		_gestionar_salto()
+
 	_actualizar_animacion()
-	_gestionar_sonido_pasos()
+	_gestionar_sonido_pasos(delta)
 	move_and_slide()
 
 # === MÉTODOS PRIVADOS - CONFIGURACIÓN ===
@@ -119,30 +124,30 @@ func _configurar_sfx_pasos() -> void:
 	_sfx_pasos_player.max_distance = 800.0
 	add_child(_sfx_pasos_player)
 
-func _gestionar_sonido_pasos() -> void:
-	## Reproduce sonidos de pasos sincronizados con la animación de correr.
-	## Divide la animación en 4 partes iguales y reproduce un sonido en cada una.
-	if not _anim_player or not _sfx_pasos_player:
+func _gestionar_sonido_pasos(delta: float) -> void:
+	## Reproduce un sonido de paso cada vez que se pulsa izquierda/derecha
+	## estando en el suelo, con un cooldown para evitar repeticiones rápidas.
+	if not _sfx_pasos_player:
 		return
 
-	if _anim_player.current_animation != "correr" or not is_on_floor():
-		_paso_anterior = -1
+	# Reducir cooldown
+	if _cooldown_paso > 0.0:
+		_cooldown_paso -= delta
 		return
 
-	# Obtener duración y posición actual de la animación
-	var duracion := _anim_player.current_animation_length
-	if duracion <= 0.0:
+	# Solo sonar si está en el suelo y se está pulsando movimiento
+	if not is_on_floor() or _controls.is_empty():
 		return
 
-	var posicion := _anim_player.current_animation_position
-	# Dividir la animación en 4 segmentos (un sonido por segmento)
-	var paso_actual := int((posicion / duracion) * 4.0) % 4
+	var moviendo := Input.is_action_pressed(_controls["left"]) or \
+				   Input.is_action_pressed(_controls["right"])
+	if not moviendo:
+		return
 
-	if paso_actual != _paso_anterior:
-		_paso_anterior = paso_actual
-		_sfx_pasos_player.stream = SONIDOS_PASOS[_indice_paso_actual]
-		_sfx_pasos_player.play()
-		_indice_paso_actual = (_indice_paso_actual + 1) % SONIDOS_PASOS.size()
+	_sfx_pasos_player.stream = SONIDOS_PASOS[_indice_paso_actual]
+	_sfx_pasos_player.play()
+	_indice_paso_actual = (_indice_paso_actual + 1) % SONIDOS_PASOS.size()
+	_cooldown_paso = INTERVALO_PASO
 
 # === MÉTODOS PRIVADOS - FÍSICA ===
 
