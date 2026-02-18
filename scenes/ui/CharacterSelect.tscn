@@ -82,7 +82,7 @@ layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_left = 10.0
+offset_left = 79.0
 offset_top = 90.0
 offset_right = -10.0
 offset_bottom = -31.0
@@ -133,10 +133,11 @@ layout_mode = 1
 anchors_preset = 5
 anchor_left = 0.5
 anchor_right = 0.5
-offset_left = -110.0
+offset_left = -77.0
 offset_top = 41.0
-offset_right = 110.0
+offset_right = 143.0
 offset_bottom = 96.0
+grow_horizontal = 2
 size_flags_horizontal = 4
 texture = ExtResource("8_marco_texto")
 expand_mode = 1
@@ -181,7 +182,6 @@ theme_override_font_sizes/font_size = 18
 text = "VIDAS"
 horizontal_alignment = 1
 vertical_alignment = 1
-
 
 [node name="FilaVidas" type="HBoxContainer" parent="MargenPrincipal/VBoxPrincipal/PanelesJugadores/ContenedorReglas"]
 layout_mode = 2
@@ -312,7 +312,7 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 offset_left = 10.0
 offset_top = 90.0
-offset_right = -10.0
+offset_right = -77.0
 offset_bottom = -31.0
 grow_horizontal = 2
 grow_vertical = 2
@@ -361,10 +361,11 @@ layout_mode = 1
 anchors_preset = 5
 anchor_left = 0.5
 anchor_right = 0.5
-offset_left = -110.0
+offset_left = -144.0
 offset_top = 41.0
-offset_right = 110.0
+offset_right = 76.0
 offset_bottom = 96.0
+grow_horizontal = 2
 size_flags_horizontal = 4
 texture = ExtResource("8_marco_texto")
 expand_mode = 1
@@ -389,7 +390,7 @@ theme_override_constants/separation = 20
 alignment = 1
 
 [node name="BtnVolver" type="TextureButton" parent="MargenPrincipal/VBoxPrincipal/ContenedorBoton"]
-custom_minimum_size = Vector2(150, 45)
+custom_minimum_size = Vector2(175, 55)
 layout_mode = 2
 texture_normal = ExtResource("9_btn_normal")
 texture_pressed = ExtResource("11_btn_pressed")
@@ -412,7 +413,7 @@ horizontal_alignment = 1
 vertical_alignment = 1
 
 [node name="partida" type="TextureButton" parent="MargenPrincipal/VBoxPrincipal/ContenedorBoton"]
-custom_minimum_size = Vector2(150, 45)
+custom_minimum_size = Vector2(210, 60)
 layout_mode = 2
 texture_normal = ExtResource("9_btn_normal")
 texture_pressed = ExtResource("11_btn_pressed")
@@ -435,7 +436,7 @@ horizontal_alignment = 1
 vertical_alignment = 1
 
 [node name="BtnAjustes" type="TextureButton" parent="MargenPrincipal/VBoxPrincipal/ContenedorBoton"]
-custom_minimum_size = Vector2(150, 45)
+custom_minimum_size = Vector2(175, 55)
 layout_mode = 2
 texture_normal = ExtResource("9_btn_normal")
 texture_pressed = ExtResource("11_btn_pressed")
