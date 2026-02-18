@@ -135,8 +135,8 @@ func _gestionar_sonido_pasos(delta: float) -> void:
 		_cooldown_paso -= delta
 		return
 
-	# Solo sonar si está en el suelo y se está pulsando movimiento
-	if not is_on_floor() or _controls.is_empty():
+	# Solo sonar si no está bloqueado, está en el suelo y se está pulsando movimiento
+	if bloqueado or not is_on_floor() or _controls.is_empty():
 		return
 
 	var moviendo := Input.is_action_pressed(_controls["left"]) or \
