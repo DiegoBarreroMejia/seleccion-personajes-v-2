@@ -1,10 +1,15 @@
-[gd_scene load_steps=3 format=3 uid="uid://dclr4c30b3kta"]
+[gd_scene load_steps=6 format=3 uid="uid://dclr4c30b3kta"]
 
 [ext_resource type="Script" uid="uid://dhfgaw4oiqcvn" path="res://scripts/ui/HUD.gd" id="1_k5de2"]
-[ext_resource type="FontFile" path="res://assets/fonts/PressStart2P-Regular.ttf" id="2_ps2p"]
+[ext_resource type="FontFile" uid="uid://bul4vmew5ma36" path="res://assets/fonts/PressStart2P-Regular.ttf" id="2_ps2p"]
+[ext_resource type="Texture2D" uid="uid://xfvk12oawims" path="res://assets/sprites/HUD/hud_playerJ1.png" id="3_j1panel"]
+[ext_resource type="Texture2D" uid="uid://cdf5ye6bfpb6u" path="res://assets/sprites/HUD/hud_playerJ2.png" id="4_j2panel"]
+[ext_resource type="Texture2D" uid="uid://c4niitq6854gy" path="res://assets/sprites/HUD/hud_infinito.png" id="5_infinito"]
 
 [node name="HUD" type="CanvasLayer"]
 script = ExtResource("1_k5de2")
+tamano_barra_vida = 17
+tamano_estrella = 13
 
 [node name="MarginContainer" type="MarginContainer" parent="."]
 anchors_preset = 15
@@ -12,63 +17,211 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-theme_override_constants/margin_left = 10
-theme_override_constants/margin_top = 10
-theme_override_constants/margin_right = 10
-theme_override_constants/margin_bottom = 10
+mouse_filter = 2
+theme_override_constants/margin_left = 8
+theme_override_constants/margin_top = 8
+theme_override_constants/margin_right = 8
+theme_override_constants/margin_bottom = 8
 
-[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer"]
+[node name="HBoxTop" type="HBoxContainer" parent="MarginContainer"]
 layout_mode = 2
 size_flags_vertical = 0
+mouse_filter = 2
 
-[node name="LabelPuntuacion" type="Label" parent="MarginContainer/VBoxContainer"]
+[node name="PanelJ1" type="Control" parent="MarginContainer/HBoxTop"]
+custom_minimum_size = Vector2(300, 80)
 layout_mode = 2
+size_flags_horizontal = 0
+mouse_filter = 2
+
+[node name="FondoJ1" type="TextureRect" parent="MarginContainer/HBoxTop/PanelJ1"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+texture = ExtResource("3_j1panel")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="ContenidoJ1" type="HBoxContainer" parent="MarginContainer/HBoxTop/PanelJ1"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 87.0
+offset_top = 6.0
+offset_right = -6.0
+offset_bottom = -6.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+theme_override_constants/separation = 4
+
+[node name="DatosJ1" type="VBoxContainer" parent="MarginContainer/HBoxTop/PanelJ1/ContenidoJ1"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 4
+mouse_filter = 2
+theme_override_constants/separation = 2
+
+[node name="FilaPV_J1" type="HBoxContainer" parent="MarginContainer/HBoxTop/PanelJ1/ContenidoJ1/DatosJ1"]
+layout_mode = 2
+mouse_filter = 2
+theme_override_constants/separation = 0
+
+[node name="BarrasVida_J1" type="HBoxContainer" parent="MarginContainer/HBoxTop/PanelJ1/ContenidoJ1/DatosJ1/FilaPV_J1"]
+layout_mode = 2
+size_flags_horizontal = 3
+mouse_filter = 2
+theme_override_constants/separation = 0
+
+[node name="FilaPS_J1" type="HBoxContainer" parent="MarginContainer/HBoxTop/PanelJ1/ContenidoJ1/DatosJ1"]
+layout_mode = 2
+mouse_filter = 2
+theme_override_constants/separation = 0
+
+[node name="FilasPS_J1" type="VBoxContainer" parent="MarginContainer/HBoxTop/PanelJ1/ContenidoJ1/DatosJ1/FilaPS_J1"]
+layout_mode = 2
+size_flags_horizontal = 3
+mouse_filter = 2
+theme_override_constants/separation = 0
+
+[node name="ZonaMunicion_J1" type="Control" parent="MarginContainer/HBoxTop/PanelJ1"]
+layout_mode = 1
+anchors_preset = 0
+offset_left = 241.0
+offset_top = 22.0
+offset_right = 288.0
+offset_bottom = 66.0
+mouse_filter = 2
+
+[node name="InfinitoJ1" type="TextureRect" parent="MarginContainer/HBoxTop/PanelJ1/ZonaMunicion_J1"]
+visible = false
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+texture = ExtResource("5_infinito")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="LabelBalas_J1" type="Label" parent="MarginContainer/HBoxTop/PanelJ1/ZonaMunicion_J1"]
+visible = false
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_colors/font_color = Color(1, 1, 1, 1)
 theme_override_fonts/font = ExtResource("2_ps2p")
-theme_override_font_sizes/font_size = 24
-text = "J1: 0 | J2: 0 | Objetivo: 10"
 horizontal_alignment = 1
+vertical_alignment = 1
 
-[node name="ContenedorMunicion" type="HBoxContainer" parent="MarginContainer"]
+[node name="Espaciador" type="Control" parent="MarginContainer/HBoxTop"]
 layout_mode = 2
-size_flags_vertical = 8
-alignment = 1
+size_flags_horizontal = 3
+size_flags_vertical = 4
+mouse_filter = 2
 
-[node name="PanelJ1" type="PanelContainer" parent="MarginContainer/ContenedorMunicion"]
+[node name="PanelJ2" type="Control" parent="MarginContainer/HBoxTop"]
+custom_minimum_size = Vector2(300, 80)
 layout_mode = 2
-custom_minimum_size = Vector2(200, 0)
+size_flags_horizontal = 0
+mouse_filter = 2
 
-[node name="MargenJ1" type="MarginContainer" parent="MarginContainer/ContenedorMunicion/PanelJ1"]
-layout_mode = 2
-theme_override_constants/margin_left = 8
-theme_override_constants/margin_top = 4
-theme_override_constants/margin_right = 8
-theme_override_constants/margin_bottom = 4
+[node name="FondoJ2" type="TextureRect" parent="MarginContainer/HBoxTop/PanelJ2"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+texture = ExtResource("4_j2panel")
+expand_mode = 1
+stretch_mode = 5
 
-[node name="LabelMunicionJ1" type="Label" parent="MarginContainer/ContenedorMunicion/PanelJ1/MargenJ1"]
+[node name="ContenidoJ2" type="HBoxContainer" parent="MarginContainer/HBoxTop/PanelJ2"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 84.0
+offset_top = 6.0
+offset_right = -10.0
+offset_bottom = -6.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+theme_override_constants/separation = 4
+
+[node name="DatosJ2" type="VBoxContainer" parent="MarginContainer/HBoxTop/PanelJ2/ContenidoJ2"]
 layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 4
+mouse_filter = 2
+theme_override_constants/separation = 2
+
+[node name="FilaPV_J2" type="HBoxContainer" parent="MarginContainer/HBoxTop/PanelJ2/ContenidoJ2/DatosJ2"]
+layout_mode = 2
+mouse_filter = 2
+theme_override_constants/separation = 0
+
+[node name="BarrasVida_J2" type="HBoxContainer" parent="MarginContainer/HBoxTop/PanelJ2/ContenidoJ2/DatosJ2/FilaPV_J2"]
+layout_mode = 2
+size_flags_horizontal = 3
+mouse_filter = 2
+theme_override_constants/separation = 0
+
+[node name="FilaPS_J2" type="HBoxContainer" parent="MarginContainer/HBoxTop/PanelJ2/ContenidoJ2/DatosJ2"]
+layout_mode = 2
+mouse_filter = 2
+theme_override_constants/separation = 0
+
+[node name="FilasPS_J2" type="VBoxContainer" parent="MarginContainer/HBoxTop/PanelJ2/ContenidoJ2/DatosJ2/FilaPS_J2"]
+layout_mode = 2
+size_flags_horizontal = 3
+mouse_filter = 2
+theme_override_constants/separation = 0
+
+[node name="ZonaMunicion_J2" type="Control" parent="MarginContainer/HBoxTop/PanelJ2"]
+layout_mode = 1
+anchors_preset = 0
+offset_left = 240.0
+offset_top = 22.0
+offset_right = 289.0
+offset_bottom = 66.0
+mouse_filter = 2
+
+[node name="InfinitoJ2" type="TextureRect" parent="MarginContainer/HBoxTop/PanelJ2/ZonaMunicion_J2"]
+visible = false
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+texture = ExtResource("5_infinito")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="LabelBalas_J2" type="Label" parent="MarginContainer/HBoxTop/PanelJ2/ZonaMunicion_J2"]
+visible = false
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_colors/font_color = Color(1, 1, 1, 1)
 theme_override_fonts/font = ExtResource("2_ps2p")
-theme_override_font_sizes/font_size = 18
-text = "J1: ---"
 horizontal_alignment = 1
-
-[node name="Separador" type="Control" parent="MarginContainer/ContenedorMunicion"]
-layout_mode = 2
-custom_minimum_size = Vector2(40, 0)
-
-[node name="PanelJ2" type="PanelContainer" parent="MarginContainer/ContenedorMunicion"]
-layout_mode = 2
-custom_minimum_size = Vector2(200, 0)
-
-[node name="MargenJ2" type="MarginContainer" parent="MarginContainer/ContenedorMunicion/PanelJ2"]
-layout_mode = 2
-theme_override_constants/margin_left = 8
-theme_override_constants/margin_top = 4
-theme_override_constants/margin_right = 8
-theme_override_constants/margin_bottom = 4
-
-[node name="LabelMunicionJ2" type="Label" parent="MarginContainer/ContenedorMunicion/PanelJ2/MargenJ2"]
-layout_mode = 2
-theme_override_fonts/font = ExtResource("2_ps2p")
-theme_override_font_sizes/font_size = 18
-text = "J2: ---"
-horizontal_alignment = 1
+vertical_alignment = 1

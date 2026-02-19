@@ -14,7 +14,7 @@ const MIN_VIDA: int = 1
 const MAX_VIDA: int = 10
 const VIDA_DEFECTO: int = 1
 const MIN_PUNTOS: int = 1
-const MAX_PUNTOS: int = 50
+const MAX_PUNTOS: int = 20
 const PUNTOS_DEFECTO: int = 10
 
 # === SEÑALES ===
