@@ -65,6 +65,16 @@ var _resolucion_pendiente: Vector2i = RESOLUCION_DEFECTO
 var _pantalla_completa_pendiente: bool = false
 var _hay_cambios_pendientes: bool = false
 
+# === VARIABLES DE ESTADO PREVIO (AUDIO) ===
+## Snapshot de los valores de audio al abrir ajustes, para revertir con "Volver"
+var _volumen_musica_previo: float = 0.8
+var _volumen_sfx_previo: float = 0.8
+var _soundtrack_previo: int = 0
+
+# === VARIABLES DE ESTADO PREVIO (CONTROLES) ===
+## Snapshot de los controles al abrir ajustes, para revertir con "Volver"
+var _controles_previos: Dictionary = {}
+
 # === VARIABLES PRIVADAS ===
 var _config: ConfigFile
 var _controles_defecto: Dictionary = {}  # Guarda los controles originales
@@ -168,9 +178,7 @@ func aplicar_cambios_video() -> void:
 	pantalla_completa = _pantalla_completa_pendiente
 
 	_aplicar_configuracion_video()
-	guardar_config()
 	_hay_cambios_pendientes = false
-	configuracion_cambiada.emit()
 	print("Cambios de video aplicados")
 
 func descartar_cambios_video() -> void:
@@ -180,14 +188,68 @@ func descartar_cambios_video() -> void:
 	_hay_cambios_pendientes = false
 
 func inicializar_pendientes() -> void:
-	## Inicializa los valores pendientes con los valores actuales
+	## Inicializa los valores pendientes/previos con los valores actuales.
+	## Llamar al abrir la pantalla de ajustes.
+	# Video
 	_resolucion_pendiente = resolucion_actual
 	_pantalla_completa_pendiente = pantalla_completa
 	_hay_cambios_pendientes = false
+	# Audio
+	_volumen_musica_previo = volumen_musica
+	_volumen_sfx_previo = volumen_sfx
+	_soundtrack_previo = soundtrack_seleccionado
+	# Controles
+	_guardar_snapshot_controles()
 
 func hay_cambios_pendientes() -> bool:
 	## Devuelve true si hay cambios sin aplicar
 	return _hay_cambios_pendientes
+
+# === MÉTODOS PÚBLICOS - APLICAR / DESCARTAR TODO ===
+
+func aplicar_todos_los_cambios() -> void:
+	## Aplica y guarda TODOS los cambios pendientes (video + audio + controles)
+	aplicar_cambios_video()
+	guardar_config()
+	# Actualizar snapshots para que "Volver" no revierta lo ya aplicado
+	_volumen_musica_previo = volumen_musica
+	_volumen_sfx_previo = volumen_sfx
+	_soundtrack_previo = soundtrack_seleccionado
+	_guardar_snapshot_controles()
+	configuracion_cambiada.emit()
+	print("Todos los cambios aplicados y guardados")
+
+func descartar_todos_los_cambios() -> void:
+	## Descarta TODOS los cambios no aplicados y revierte a valores guardados
+	# Video
+	descartar_cambios_video()
+	# Audio: revertir a valores previos
+	volumen_musica = _volumen_musica_previo
+	volumen_sfx = _volumen_sfx_previo
+	soundtrack_seleccionado = _soundtrack_previo
+	# Controles: revertir InputMap al snapshot previo
+	_restaurar_snapshot_controles()
+	print("Todos los cambios descartados")
+
+# === MÉTODOS PRIVADOS - SNAPSHOTS DE CONTROLES ===
+
+func _guardar_snapshot_controles() -> void:
+	## Guarda el estado actual del InputMap para poder revertir
+	_controles_previos.clear()
+	for accion in ACCIONES_J1 + ACCIONES_J2:
+		var eventos := InputMap.action_get_events(accion)
+		if eventos.size() > 0:
+			var evento := eventos[0] as InputEventKey
+			if evento:
+				_controles_previos[accion] = evento.physical_keycode
+
+func _restaurar_snapshot_controles() -> void:
+	## Restaura el InputMap al estado guardado en el snapshot
+	for accion in _controles_previos:
+		InputMap.action_erase_events(accion)
+		var evento := InputEventKey.new()
+		evento.physical_keycode = _controles_previos[accion] as Key
+		InputMap.action_add_event(accion, evento)
 
 func obtener_indice_resolucion_pendiente() -> int:
 	## Devuelve el índice de la resolución pendiente en RESOLUCIONES
@@ -224,11 +286,9 @@ func reasignar_control(accion: String, nuevo_evento: InputEventKey) -> bool:
 					push_warning("ConfigManager: Tecla ya asignada a %s" % otra_accion)
 					return false
 
-	# Limpiar eventos anteriores y añadir el nuevo
+	# Limpiar eventos anteriores y añadir el nuevo (preview)
 	InputMap.action_erase_events(accion)
 	InputMap.action_add_event(accion, nuevo_evento)
-
-	guardar_config()
 
 	var nombre_tecla := OS.get_keycode_string(nuevo_evento.physical_keycode)
 	control_reasignado.emit(accion, nombre_tecla)
@@ -237,7 +297,8 @@ func reasignar_control(accion: String, nuevo_evento: InputEventKey) -> bool:
 	return true
 
 func restablecer_controles() -> void:
-	## Restaura todos los controles a sus valores por defecto
+	## Restaura todos los controles a sus valores por defecto (preview).
+	## No guarda hasta llamar aplicar_todos_los_cambios().
 	for accion in _controles_defecto:
 		InputMap.action_erase_events(accion)
 
@@ -245,9 +306,8 @@ func restablecer_controles() -> void:
 		evento.physical_keycode = _controles_defecto[accion] as Key
 		InputMap.action_add_event(accion, evento)
 
-	guardar_config()
 	configuracion_cambiada.emit()
-	print("Controles restablecidos a valores por defecto")
+	print("Controles restablecidos a valores por defecto (pendiente de aplicar)")
 
 func obtener_tecla_accion(accion: String) -> String:
 	## Devuelve el nombre de la tecla asignada a una acción
@@ -268,19 +328,16 @@ func obtener_nombre_accion(accion: String) -> String:
 # === MÉTODOS PÚBLICOS - AUDIO ===
 
 func cambiar_volumen_musica(valor: float) -> void:
-	## Cambia el volumen de música y guarda la configuración
+	## Cambia el volumen de música (preview). No guarda hasta llamar aplicar_todos_los_cambios().
 	volumen_musica = clampf(valor, 0.0, 1.0)
-	guardar_config()
 
 func cambiar_volumen_sfx(valor: float) -> void:
-	## Cambia el volumen de SFX y guarda la configuración
+	## Cambia el volumen de SFX (preview). No guarda hasta llamar aplicar_todos_los_cambios().
 	volumen_sfx = clampf(valor, 0.0, 1.0)
-	guardar_config()
 
 func cambiar_soundtrack(indice: int) -> void:
-	## Cambia el soundtrack seleccionado y guarda la configuración
+	## Cambia el soundtrack seleccionado (preview). No guarda hasta llamar aplicar_todos_los_cambios().
 	soundtrack_seleccionado = indice
-	guardar_config()
 
 # === PERSISTENCIA ===
 

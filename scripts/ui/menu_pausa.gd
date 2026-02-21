@@ -6,7 +6,7 @@ extends Control
 ## Se instancia y destruye dinámicamente por PauseManager.
 
 # === NODOS ===
-@onready var _btn_reanudar: Button = $Panel/ContenedorCentral/BtnReanudar
+@onready var _btn_reanudar: TextureButton = $Marco/ContenedorCentral/BtnReanudar
 
 # === MÉTODOS DE CICLO DE VIDA ===
 

@@ -1,0 +1,9 @@
+[gd_scene load_steps=2 format=3 uid="uid://countdown_scene"]
+
+[ext_resource type="Script" path="res://scripts/ui/Countdown.gd" id="1_countdown"]
+
+[node name="Countdown" type="CanvasLayer"]
+script = ExtResource("1_countdown")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+position = Vector2(640, 360)

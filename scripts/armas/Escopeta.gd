@@ -41,4 +41,10 @@ func disparar() -> void:
 	_consumir_bala()
 
 	_iniciar_cooldown_disparo()
+
+	# Reproducir sonido de disparo
+	if sfx_disparo and _sfx_player:
+		_sfx_player.stream = sfx_disparo
+		_sfx_player.play()
+
 	arma_disparada.emit()

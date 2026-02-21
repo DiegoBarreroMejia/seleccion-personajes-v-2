@@ -1,4 +1,4 @@
-[gd_scene load_steps=25 format=3 uid="uid://4mc5tyfgu42w"]
+[gd_scene load_steps=32 format=3 uid="uid://0g5p4wl53lpf"]
 
 [ext_resource type="Script" uid="uid://cb3rk5evlw376" path="res://scripts/mapas/MapaController.gd" id="1_mapa5"]
 [ext_resource type="Script" uid="uid://byk0a5r8sgysr" path="res://scripts/ui/CamaraInteligente.gd" id="2_mapa5"]
@@ -16,43 +16,52 @@
 [ext_resource type="PackedScene" uid="uid://cvcy0aocxkmfo" path="res://scenes/armas/subfusiles/MP5.tscn" id="14_mapa5"]
 [ext_resource type="PackedScene" uid="uid://c836gegkrdy5e" path="res://scenes/armas/snipers/M24.tscn" id="15_mapa5"]
 [ext_resource type="PackedScene" uid="uid://bgw5p8tncfeqq" path="res://scenes/armas/rifles/M15.tscn" id="16_mapa5"]
+[ext_resource type="Texture2D" uid="uid://b3fp3awddvmkd" path="res://assets/sprites/mapas/spriteurban1.png" id="17_jo74u"]
+[ext_resource type="Texture2D" uid="uid://bbd0pl2o33t0i" path="res://assets/sprites/mapas/spriteurban3.png" id="18_2nvs5"]
+[ext_resource type="Texture2D" uid="uid://bl0ga6h751kh4" path="res://assets/sprites/mapas/spriteurban5.png" id="19_urduw"]
+[ext_resource type="Texture2D" uid="uid://dlyjx5k4if7c8" path="res://assets/sprites/mapas/spriteurban2.png" id="20_ml3ol"]
 
 [sub_resource type="RectangleShape2D" id="suelo_col"]
-size = Vector2(1047, 40)
-
-[sub_resource type="RectangleShape2D" id="plat_izq_col"]
-size = Vector2(390, 33)
-
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_ybynr"]
-size = Vector2(154, 19.125)
-
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_icvl0"]
-size = Vector2(66, 8.40625)
-
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_t3nwj"]
-size = Vector2(72, 36.375)
-
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_33vhc"]
-size = Vector2(84, 36.375)
-
-[sub_resource type="RectangleShape2D" id="plat_der_col"]
-size = Vector2(401, 36)
+size = Vector2(1689.5, 40)
 
 [sub_resource type="RectangleShape2D" id="zona_muerte_shape"]
-size = Vector2(1508, 8)
+size = Vector2(2071, 7)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_yfcmo"]
+size = Vector2(539.5, 21)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_1jmw4"]
+size = Vector2(267.875, 21)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_eal7n"]
+size = Vector2(159.46875, 17.375)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_3cpwo"]
+size = Vector2(127.5, 19.5)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_1hls5"]
+size = Vector2(151.9375, 13.5)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_pbkun"]
+size = Vector2(257.73438, 18.65625)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_8r2cq"]
+size = Vector2(143.5, 19.5)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_rs5lr"]
+size = Vector2(217.5, 20)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_8e6gv"]
+size = Vector2(217.5, 20)
 
 [node name="Mapa5" type="Node2D"]
 script = ExtResource("1_mapa5")
 
 [node name="Camera2D" type="Camera2D" parent="."]
-limit_left = 56
-limit_top = -149
-limit_right = 1080
-limit_bottom = 875
 script = ExtResource("2_mapa5")
 
 [node name="Fondo" type="Sprite2D" parent="."]
-position = Vector2(568, 363)
+position = Vector2(550, 372)
 texture = ExtResource("3_mapa5")
 
 [node name="SueloPrincipal" type="StaticBody2D" parent="."]
@@ -60,92 +69,27 @@ collision_layer = 33
 collision_mask = 0
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="SueloPrincipal"]
-position = Vector2(569.5, 696)
+position = Vector2(562, 611)
 shape = SubResource("suelo_col")
 
-[node name="PlataformaIzquierda" type="StaticBody2D" parent="."]
-collision_layer = 33
-collision_mask = 0
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="PlataformaIzquierda"]
-position = Vector2(314.5, 376.5)
-shape = SubResource("plat_izq_col")
-
-[node name="PlataformaCentro" type="StaticBody2D" parent="."]
-collision_layer = 33
-collision_mask = 0
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="PlataformaCentro"]
-position = Vector2(571, 583)
-shape = SubResource("RectangleShape2D_ybynr")
-
-[node name="PlataformaPistola" type="StaticBody2D" parent="."]
-collision_layer = 33
-collision_mask = 0
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="PlataformaPistola"]
-position = Vector2(587, 491.79688)
-shape = SubResource("RectangleShape2D_icvl0")
-one_way_collision = true
-
-[node name="PlataformaCaja1" type="StaticBody2D" parent="."]
-collision_layer = 33
-collision_mask = 0
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="PlataformaCaja1"]
-position = Vector2(222, 665)
-shape = SubResource("RectangleShape2D_t3nwj")
-
-[node name="PlataformaCaja2" type="StaticBody2D" parent="."]
-collision_layer = 33
-collision_mask = 0
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="PlataformaCaja2"]
-position = Vector2(916, 665)
-shape = SubResource("RectangleShape2D_33vhc")
-
-[node name="PlataformaIzquierda2" type="StaticBody2D" parent="."]
-collision_layer = 33
-collision_mask = 0
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="PlataformaIzquierda2"]
-position = Vector2(246, 135)
-shape = SubResource("plat_izq_col")
-
-[node name="PlataformaDerecha" type="StaticBody2D" parent="."]
-collision_layer = 33
-collision_mask = 0
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="PlataformaDerecha"]
-position = Vector2(819.5, 375)
-shape = SubResource("plat_der_col")
-
-[node name="PlataformaDerecha2" type="StaticBody2D" parent="."]
-collision_layer = 33
-collision_mask = 0
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="PlataformaDerecha2"]
-position = Vector2(890, 135)
-shape = SubResource("plat_der_col")
-
 [node name="SpawnJ1" parent="." instance=ExtResource("4_mapa5")]
-position = Vector2(150, 650)
+position = Vector2(104, 512)
 
 [node name="SpawnJ2" parent="." instance=ExtResource("5_mapa5")]
-position = Vector2(990, 650)
+position = Vector2(1064, 531)
 
 [node name="SpawnerArmas" parent="." instance=ExtResource("6_mapa5")]
-position = Vector2(300, 650)
+position = Vector2(318, 524)
 lista_armas = Array[PackedScene]([ExtResource("8_mapa5"), ExtResource("9_mapa5"), ExtResource("10_mapa5"), ExtResource("11_mapa5"), ExtResource("12_mapa5"), ExtResource("13_mapa5"), ExtResource("14_mapa5"), ExtResource("15_mapa5"), ExtResource("16_mapa5")])
 tiempo_respawn = 3.0
 
 [node name="SpawnerArmas2" parent="." instance=ExtResource("6_mapa5")]
-position = Vector2(840, 650)
+position = Vector2(858, 522)
 lista_armas = Array[PackedScene]([ExtResource("8_mapa5"), ExtResource("9_mapa5"), ExtResource("10_mapa5"), ExtResource("11_mapa5"), ExtResource("12_mapa5"), ExtResource("13_mapa5"), ExtResource("14_mapa5"), ExtResource("15_mapa5"), ExtResource("16_mapa5")])
 tiempo_respawn = 3.0
 
 [node name="SpawnerArmas3" parent="." instance=ExtResource("6_mapa5")]
-position = Vector2(570, 450)
+position = Vector2(556, 335)
 lista_armas = Array[PackedScene]([ExtResource("8_mapa5"), ExtResource("9_mapa5"), ExtResource("10_mapa5"), ExtResource("11_mapa5"), ExtResource("12_mapa5"), ExtResource("13_mapa5"), ExtResource("14_mapa5"), ExtResource("15_mapa5"), ExtResource("16_mapa5")])
 tiempo_respawn = 3.0
 
@@ -154,4 +98,85 @@ position = Vector2(570, 800)
 script = ExtResource("7_mapa5")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="ZonaMuerte"]
+position = Vector2(35.5, -0.5)
 shape = SubResource("zona_muerte_shape")
+
+[node name="PlataformaDerecha" type="StaticBody2D" parent="."]
+
+[node name="Sprite2D" type="Sprite2D" parent="PlataformaDerecha"]
+position = Vector2(1023, 303)
+scale = Vector2(0.9401294, 0.5897436)
+texture = ExtResource("17_jo74u")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="PlataformaDerecha"]
+position = Vector2(1020, 296)
+shape = SubResource("RectangleShape2D_yfcmo")
+one_way_collision = true
+
+[node name="PlataformaEscalera" type="StaticBody2D" parent="."]
+
+[node name="Sprite2D" type="Sprite2D" parent="PlataformaEscalera"]
+position = Vector2(453, 187)
+scale = Vector2(0.6706771, 0.67751163)
+texture = ExtResource("18_2nvs5")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="PlataformaEscalera"]
+position = Vector2(380.0625, 122)
+shape = SubResource("RectangleShape2D_1jmw4")
+one_way_collision = true
+
+[node name="CollisionShape2D2" type="CollisionShape2D" parent="PlataformaEscalera"]
+position = Vector2(535.2656, 192.3125)
+shape = SubResource("RectangleShape2D_eal7n")
+one_way_collision = true
+
+[node name="CollisionShape2D3" type="CollisionShape2D" parent="PlataformaEscalera"]
+position = Vector2(609, 261)
+shape = SubResource("RectangleShape2D_3cpwo")
+one_way_collision = true
+
+[node name="PlataformaEscalera2" type="StaticBody2D" parent="."]
+
+[node name="Sprite2D" type="Sprite2D" parent="PlataformaEscalera2"]
+position = Vector2(706, 460)
+scale = Vector2(0.60476863, 0.55290073)
+texture = ExtResource("19_urduw")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="PlataformaEscalera2"]
+position = Vector2(562.96875, 393.25)
+shape = SubResource("RectangleShape2D_1hls5")
+one_way_collision = true
+
+[node name="CollisionShape2D2" type="CollisionShape2D" parent="PlataformaEscalera2"]
+position = Vector2(792.1328, 427.67188)
+shape = SubResource("RectangleShape2D_pbkun")
+one_way_collision = true
+
+[node name="CollisionShape2D3" type="CollisionShape2D" parent="PlataformaEscalera2"]
+position = Vector2(594.25, 520)
+shape = SubResource("RectangleShape2D_8r2cq")
+one_way_collision = true
+
+[node name="PlataformaPeque1" type="StaticBody2D" parent="."]
+
+[node name="Sprite2D" type="Sprite2D" parent="PlataformaPeque1"]
+position = Vector2(-31.999996, 292.1332)
+scale = Vector2(0.8814815, 0.7888914)
+texture = ExtResource("20_ml3ol")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="PlataformaPeque1"]
+position = Vector2(-32, 285)
+shape = SubResource("RectangleShape2D_rs5lr")
+one_way_collision = true
+
+[node name="PlataformaPeque2" type="StaticBody2D" parent="."]
+
+[node name="Sprite2D" type="Sprite2D" parent="PlataformaPeque2"]
+position = Vector2(146.99998, 216)
+scale = Vector2(0.8814815, 0.7888914)
+texture = ExtResource("20_ml3ol")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="PlataformaPeque2"]
+position = Vector2(149, 207)
+shape = SubResource("RectangleShape2D_8e6gv")
+one_way_collision = true

@@ -1,7 +1,11 @@
-[gd_scene load_steps=3 format=3 uid="uid://b5yqk8m3nxrpt"]
+[gd_scene load_steps=7 format=3 uid="uid://b5yqk8m3nxrpt"]
 
 [ext_resource type="Script" uid="uid://ctkvd7s3ia07f" path="res://scripts/ui/ajustes.gd" id="1_ajustes"]
-[ext_resource type="FontFile" path="res://assets/fonts/PressStart2P-Regular.ttf" id="2_vt323"]
+[ext_resource type="FontFile" uid="uid://bul4vmew5ma36" path="res://assets/fonts/PressStart2P-Regular.ttf" id="2_vt323"]
+[ext_resource type="Texture2D" uid="uid://nw20h4p82nxb" path="res://assets/sprites/ui/ajustes/fondo_con_objetos.png" id="3_fondo"]
+[ext_resource type="Texture2D" uid="uid://d257ke5v0lidv" path="res://assets/sprites/ui/menu_inicio/boton_b_normal.png" id="4_btn_normal"]
+[ext_resource type="Texture2D" uid="uid://b4tso5lav6ys1" path="res://assets/sprites/ui/menu_inicio/boton_a_hover.png" id="5_btn_hover"]
+[ext_resource type="Texture2D" uid="uid://dmjosswhndjh5" path="res://assets/sprites/ui/menu_inicio/boton_c_pressed.png" id="6_btn_pressed"]
 
 [node name="Ajustes" type="Control"]
 layout_mode = 3
@@ -12,14 +16,17 @@ grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_ajustes")
 
-[node name="FondoColor" type="ColorRect" parent="."]
+[node name="Fondo" type="TextureRect" parent="."]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-color = Color(0.12, 0.12, 0.18, 1)
+mouse_filter = 2
+texture = ExtResource("3_fondo")
+expand_mode = 1
+stretch_mode = 6
 
 [node name="ContenedorPrincipal" type="VBoxContainer" parent="."]
 layout_mode = 1
@@ -40,31 +47,103 @@ theme_override_constants/separation = 20
 layout_mode = 2
 theme_override_fonts/font = ExtResource("2_vt323")
 theme_override_font_sizes/font_size = 48
-text = "Ajustes"
+text = "AJUSTES"
 horizontal_alignment = 1
 
 [node name="Pestanas" type="HBoxContainer" parent="ContenedorPrincipal"]
 layout_mode = 2
-alignment = 1
 theme_override_constants/separation = 10
+alignment = 1
 
-[node name="BtnVideo" type="Button" parent="ContenedorPrincipal/Pestanas"]
-custom_minimum_size = Vector2(120, 40)
+[node name="BtnVideo" type="TextureButton" parent="ContenedorPrincipal/Pestanas"]
+custom_minimum_size = Vector2(180, 70)
 layout_mode = 2
+size_flags_horizontal = 4
+texture_normal = ExtResource("4_btn_normal")
+texture_pressed = ExtResource("6_btn_pressed")
+texture_hover = ExtResource("5_btn_hover")
+ignore_texture_size = true
+stretch_mode = 0
+
+[node name="LabelVideo" type="Label" parent="ContenedorPrincipal/Pestanas/BtnVideo"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -70.0
+offset_top = -20.0
+offset_right = 70.0
+offset_bottom = 20.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_colors/font_color = Color(1, 1, 1, 1)
 theme_override_fonts/font = ExtResource("2_vt323")
+theme_override_font_sizes/font_size = 14
 text = "Video"
+horizontal_alignment = 1
+vertical_alignment = 1
 
-[node name="BtnControles" type="Button" parent="ContenedorPrincipal/Pestanas"]
-custom_minimum_size = Vector2(120, 40)
+[node name="BtnControles" type="TextureButton" parent="ContenedorPrincipal/Pestanas"]
+custom_minimum_size = Vector2(180, 70)
 layout_mode = 2
+size_flags_horizontal = 4
+texture_normal = ExtResource("4_btn_normal")
+texture_pressed = ExtResource("6_btn_pressed")
+texture_hover = ExtResource("5_btn_hover")
+ignore_texture_size = true
+stretch_mode = 0
+
+[node name="LabelControles" type="Label" parent="ContenedorPrincipal/Pestanas/BtnControles"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -70.0
+offset_top = -20.0
+offset_right = 70.0
+offset_bottom = 20.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_colors/font_color = Color(1, 1, 1, 1)
 theme_override_fonts/font = ExtResource("2_vt323")
+theme_override_font_sizes/font_size = 14
 text = "Controles"
+horizontal_alignment = 1
+vertical_alignment = 1
 
-[node name="BtnSonido" type="Button" parent="ContenedorPrincipal/Pestanas"]
-custom_minimum_size = Vector2(120, 40)
+[node name="BtnSonido" type="TextureButton" parent="ContenedorPrincipal/Pestanas"]
+custom_minimum_size = Vector2(180, 70)
 layout_mode = 2
+size_flags_horizontal = 4
+texture_normal = ExtResource("4_btn_normal")
+texture_pressed = ExtResource("6_btn_pressed")
+texture_hover = ExtResource("5_btn_hover")
+ignore_texture_size = true
+stretch_mode = 0
+
+[node name="LabelSonido" type="Label" parent="ContenedorPrincipal/Pestanas/BtnSonido"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -70.0
+offset_top = -20.0
+offset_right = 70.0
+offset_bottom = 20.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_colors/font_color = Color(1, 1, 1, 1)
 theme_override_fonts/font = ExtResource("2_vt323")
+theme_override_font_sizes/font_size = 14
 text = "Sonido"
+horizontal_alignment = 1
+vertical_alignment = 1
 
 [node name="Separador" type="HSeparator" parent="ContenedorPrincipal"]
 layout_mode = 2
@@ -76,8 +155,8 @@ theme_override_constants/separation = 20
 
 [node name="FilaResolucion" type="HBoxContainer" parent="ContenedorPrincipal/ContenedorVideo"]
 layout_mode = 2
-alignment = 1
 theme_override_constants/separation = 20
+alignment = 1
 
 [node name="LabelResolucion" type="Label" parent="ContenedorPrincipal/ContenedorVideo/FilaResolucion"]
 custom_minimum_size = Vector2(150, 0)
@@ -93,8 +172,8 @@ theme_override_fonts/font = ExtResource("2_vt323")
 
 [node name="FilaPantalla" type="HBoxContainer" parent="ContenedorPrincipal/ContenedorVideo"]
 layout_mode = 2
-alignment = 1
 theme_override_constants/separation = 20
+alignment = 1
 
 [node name="LabelPantalla" type="Label" parent="ContenedorPrincipal/ContenedorVideo/FilaPantalla"]
 custom_minimum_size = Vector2(150, 0)
@@ -111,8 +190,8 @@ layout_mode = 2
 visible = false
 layout_mode = 2
 size_flags_vertical = 3
-alignment = 1
 theme_override_constants/separation = 40
+alignment = 1
 
 [node name="PanelJ1" type="VBoxContainer" parent="ContenedorPrincipal/ContenedorControles"]
 layout_mode = 2
@@ -162,8 +241,8 @@ theme_override_constants/separation = 20
 
 [node name="FilaMusica" type="HBoxContainer" parent="ContenedorPrincipal/ContenedorSonido"]
 layout_mode = 2
-alignment = 1
 theme_override_constants/separation = 20
+alignment = 1
 
 [node name="LabelMusica" type="Label" parent="ContenedorPrincipal/ContenedorSonido/FilaMusica"]
 custom_minimum_size = Vector2(150, 0)
@@ -179,8 +258,8 @@ theme_override_fonts/font = ExtResource("2_vt323")
 
 [node name="FilaVolumen" type="HBoxContainer" parent="ContenedorPrincipal/ContenedorSonido"]
 layout_mode = 2
-alignment = 1
 theme_override_constants/separation = 20
+alignment = 1
 
 [node name="LabelVolumen" type="Label" parent="ContenedorPrincipal/ContenedorSonido/FilaVolumen"]
 custom_minimum_size = Vector2(150, 0)
@@ -192,15 +271,12 @@ horizontal_alignment = 2
 [node name="SliderVolumen" type="HSlider" parent="ContenedorPrincipal/ContenedorSonido/FilaVolumen"]
 custom_minimum_size = Vector2(220, 20)
 layout_mode = 2
-min_value = 0.0
-max_value = 100.0
-step = 1.0
 value = 80.0
 
 [node name="FilaVolumenSFX" type="HBoxContainer" parent="ContenedorPrincipal/ContenedorSonido"]
 layout_mode = 2
-alignment = 1
 theme_override_constants/separation = 20
+alignment = 1
 
 [node name="LabelVolumenSFX" type="Label" parent="ContenedorPrincipal/ContenedorSonido/FilaVolumenSFX"]
 custom_minimum_size = Vector2(150, 0)
@@ -212,9 +288,6 @@ horizontal_alignment = 2
 [node name="SliderVolumenSFX" type="HSlider" parent="ContenedorPrincipal/ContenedorSonido/FilaVolumenSFX"]
 custom_minimum_size = Vector2(220, 20)
 layout_mode = 2
-min_value = 0.0
-max_value = 100.0
-step = 1.0
 value = 80.0
 
 [node name="Espaciador" type="Control" parent="ContenedorPrincipal"]
@@ -224,26 +297,98 @@ size_flags_vertical = 3
 
 [node name="BotonesInferiores" type="HBoxContainer" parent="ContenedorPrincipal"]
 layout_mode = 2
-alignment = 1
 theme_override_constants/separation = 20
+alignment = 1
 
-[node name="BtnRestablecer" type="Button" parent="ContenedorPrincipal/BotonesInferiores"]
-custom_minimum_size = Vector2(150, 50)
+[node name="BtnRestablecer" type="TextureButton" parent="ContenedorPrincipal/BotonesInferiores"]
+custom_minimum_size = Vector2(270, 100)
 layout_mode = 2
-theme_override_fonts/font = ExtResource("2_vt323")
-text = "Restablecer"
+size_flags_horizontal = 4
+texture_normal = ExtResource("4_btn_normal")
+texture_pressed = ExtResource("6_btn_pressed")
+texture_hover = ExtResource("5_btn_hover")
+ignore_texture_size = true
+stretch_mode = 0
 
-[node name="BtnAplicar" type="Button" parent="ContenedorPrincipal/BotonesInferiores"]
-custom_minimum_size = Vector2(150, 50)
-layout_mode = 2
+[node name="LabelRestablecer" type="Label" parent="ContenedorPrincipal/BotonesInferiores/BtnRestablecer"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -105.0
+offset_top = -31.0
+offset_right = 105.0
+offset_bottom = 31.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_colors/font_color = Color(1, 1, 1, 1)
 theme_override_fonts/font = ExtResource("2_vt323")
-text = "Aplicar"
+theme_override_font_sizes/font_size = 18
+text = "RESTABLECER"
+horizontal_alignment = 1
+vertical_alignment = 1
 
-[node name="BtnVolver" type="Button" parent="ContenedorPrincipal/BotonesInferiores"]
-custom_minimum_size = Vector2(150, 50)
+[node name="BtnAplicar" type="TextureButton" parent="ContenedorPrincipal/BotonesInferiores"]
+custom_minimum_size = Vector2(270, 100)
 layout_mode = 2
+size_flags_horizontal = 4
+texture_normal = ExtResource("4_btn_normal")
+texture_pressed = ExtResource("6_btn_pressed")
+texture_hover = ExtResource("5_btn_hover")
+ignore_texture_size = true
+stretch_mode = 0
+
+[node name="LabelAplicar" type="Label" parent="ContenedorPrincipal/BotonesInferiores/BtnAplicar"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -105.0
+offset_top = -31.0
+offset_right = 105.0
+offset_bottom = 31.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_colors/font_color = Color(1, 1, 1, 1)
 theme_override_fonts/font = ExtResource("2_vt323")
-text = "Volver"
+theme_override_font_sizes/font_size = 18
+text = "APLICAR"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="BtnVolver" type="TextureButton" parent="ContenedorPrincipal/BotonesInferiores"]
+custom_minimum_size = Vector2(270, 100)
+layout_mode = 2
+size_flags_horizontal = 4
+texture_normal = ExtResource("4_btn_normal")
+texture_pressed = ExtResource("6_btn_pressed")
+texture_hover = ExtResource("5_btn_hover")
+ignore_texture_size = true
+stretch_mode = 0
+
+[node name="LabelVolver" type="Label" parent="ContenedorPrincipal/BotonesInferiores/BtnVolver"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -105.0
+offset_top = -31.0
+offset_right = 105.0
+offset_bottom = 31.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_fonts/font = ExtResource("2_vt323")
+theme_override_font_sizes/font_size = 18
+text = "VOLVER"
+horizontal_alignment = 1
+vertical_alignment = 1
 
 [connection signal="pressed" from="ContenedorPrincipal/BotonesInferiores/BtnRestablecer" to="." method="_on_btn_restablecer_pressed"]
 [connection signal="pressed" from="ContenedorPrincipal/BotonesInferiores/BtnAplicar" to="." method="_on_btn_aplicar_pressed"]

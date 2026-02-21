@@ -20,14 +20,25 @@ const RETRASO_TRANSICION_RONDA: float = 1.5
 const VICTORIA_SCENE: PackedScene = preload("res://scenes/ui/Victoria.tscn")
 const COUNTDOWN_SCENE: PackedScene = preload("res://scenes/ui/Countdown.tscn")
 
+## Sonidos de daño específicos por mapa (ruta de escena → sonido)
+## Los mapas que no estén aquí usarán el comportamiento por defecto (sin sonido extra).
+const SFX_DANO_MAPA: Dictionary = {
+	"res://scenes/mapas/Mapa3.tscn": preload("res://assets/sonidos/Minecraft/hit1.ogg"),
+	# Añadir más mapas aquí:
+	# "res://scenes/mapas/Mapa1.tscn": preload("res://assets/sonidos/ruta/sonido.ogg"),
+}
+
 # === VARIABLES PRIVADAS ===
 var _jugadores: Dictionary = {}
 var _puntos_spawn: Dictionary = {}
 var _ronda_finalizada: bool = false  # Evita procesar múltiples muertes
+var _sfx_dano_player: AudioStreamPlayer = null
+var _sonido_dano: AudioStream = null  ## Sonido de daño del mapa actual (null si no tiene)
 
 # === MÉTODOS DE CICLO DE VIDA ===
 
 func _ready() -> void:
+	_configurar_sfx_mapa()
 	_encontrar_puntos_spawn()
 	_spawn_jugadores()
 	_instanciar_hud()
@@ -77,7 +88,8 @@ func _spawn_jugador(id_jugador: int, datos_personaje: Dictionary) -> void:
 	personaje.position = pos_spawn
 	
 	personaje.murio.connect(_on_jugador_murio)
-	
+	personaje.recibio_dano.connect(_on_jugador_recibio_dano)
+
 	add_child(personaje)
 	_jugadores[id_jugador] = personaje
 	
@@ -234,6 +246,23 @@ func _set_jugadores_bloqueados(valor: bool) -> void:
 	for jugador in _jugadores.values():
 		if is_instance_valid(jugador):
 			jugador.bloqueado = valor
+
+# === MÉTODOS PRIVADOS - SFX DE MAPA ===
+
+func _configurar_sfx_mapa() -> void:
+	## Configura el sonido de daño si este mapa tiene uno asignado
+	var ruta_escena := scene_file_path
+	if ruta_escena in SFX_DANO_MAPA:
+		_sonido_dano = SFX_DANO_MAPA[ruta_escena]
+		_sfx_dano_player = AudioStreamPlayer.new()
+		_sfx_dano_player.bus = "SFX"
+		add_child(_sfx_dano_player)
+
+func _on_jugador_recibio_dano(_cantidad: int) -> void:
+	## Reproduce el sonido de daño específico del mapa (si tiene uno)
+	if _sfx_dano_player and _sonido_dano:
+		_sfx_dano_player.stream = _sonido_dano
+		_sfx_dano_player.play()
 
 # === MÉTODOS PRIVADOS - HUD ===
 

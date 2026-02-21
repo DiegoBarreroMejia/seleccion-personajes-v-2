@@ -7,6 +7,9 @@ extends ArmaBase
 ## El daño es fijo, solo varía la velocidad.
 ## El sprite cambia según el nivel de carga (3 fases).
 
+# === SONIDOS ===
+const SFX_DISPARO: AudioStream = preload("res://assets/sonidos/Armas/arco/bow.ogg")
+
 # === CONSTANTES DE CARGA ===
 const VELOCIDAD_MINIMA_FLECHA: float = 300.0
 const VELOCIDAD_MAXIMA_FLECHA: float = 700.0
@@ -104,6 +107,11 @@ func disparar() -> void:
 	_consumir_bala()
 	_iniciar_cooldown_disparo()
 	arma_disparada.emit()
+
+	# Sonido de disparo del arco
+	if _sfx_player:
+		_sfx_player.stream = SFX_DISPARO
+		_sfx_player.play()
 
 # === ANIMACIÓN DE CARGA ===
 

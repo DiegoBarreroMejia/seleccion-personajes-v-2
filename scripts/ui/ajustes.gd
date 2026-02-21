@@ -23,9 +23,9 @@ var _boton_esperando: Button = null
 var _tab_actual: String = "video"  ## Pestaña activa: "video", "controles", "sonido"
 
 # === NODOS - PESTAÑAS ===
-@onready var _btn_tab_video: Button = $ContenedorPrincipal/Pestanas/BtnVideo
-@onready var _btn_tab_controles: Button = $ContenedorPrincipal/Pestanas/BtnControles
-@onready var _btn_tab_sonido: Button = $ContenedorPrincipal/Pestanas/BtnSonido
+@onready var _btn_tab_video: TextureButton = $ContenedorPrincipal/Pestanas/BtnVideo
+@onready var _btn_tab_controles: TextureButton = $ContenedorPrincipal/Pestanas/BtnControles
+@onready var _btn_tab_sonido: TextureButton = $ContenedorPrincipal/Pestanas/BtnSonido
 @onready var _contenedor_video: VBoxContainer = $ContenedorPrincipal/ContenedorVideo
 @onready var _contenedor_controles: HBoxContainer = $ContenedorPrincipal/ContenedorControles
 @onready var _contenedor_sonido: VBoxContainer = $ContenedorPrincipal/ContenedorSonido
@@ -264,13 +264,24 @@ func _on_btn_restablecer_pressed() -> void:
 			ConfigManager.establecer_pantalla_completa_pendiente(false)
 
 func _on_btn_aplicar_pressed() -> void:
-	ConfigManager.aplicar_cambios_video()
+	ConfigManager.aplicar_todos_los_cambios()
 
 func _on_btn_volver_pressed() -> void:
 	if _esperando_tecla:
 		_cancelar_espera_tecla()
-	# Descartar cambios de video no aplicados
-	ConfigManager.descartar_cambios_video()
+	# Capturar valores actuales (preview) antes de descartar
+	var vol_musica_preview := ConfigManager.volumen_musica
+	var vol_sfx_preview := ConfigManager.volumen_sfx
+	var soundtrack_preview := ConfigManager.soundtrack_seleccionado
+	# Descartar TODOS los cambios no aplicados (video + audio + controles)
+	ConfigManager.descartar_todos_los_cambios()
+	# Solo revertir los managers si los valores realmente cambiaron
+	if vol_musica_preview != ConfigManager.volumen_musica:
+		MusicManager.cambiar_volumen(ConfigManager.volumen_musica)
+	if vol_sfx_preview != ConfigManager.volumen_sfx:
+		SFXManager.cambiar_volumen(ConfigManager.volumen_sfx)
+	if soundtrack_preview != ConfigManager.soundtrack_seleccionado:
+		MusicManager.reproducir(ConfigManager.soundtrack_seleccionado)
 
 	if es_overlay:
 		# Fue instanciado como overlay (desde pausa): destruirse a sí mismo

@@ -72,7 +72,37 @@ var catalogo_personajes: Array[Dictionary] = [
 		"nombre": "Mulan",
 		"retrato": "res://assets/sprites/personajes/mulan/caminarMulan_001.png",
 		"escena": "res://scenes/personajes/Mulan.tscn"
-	}
+	},
+	{
+		"nombre": "Magic",
+		"retrato": "res://assets/sprites/personajes/magic/Magic_quieta.png",
+		"escena": "res://scenes/personajes/magic.tscn"
+	},
+	{
+		"nombre": "Diego",
+		"retrato": "res://assets/sprites/personajes/Diego/Diego_quieto.png",
+		"escena": "res://scenes/personajes/Diego.tscn"
+	},
+	{
+		"nombre": "Eve",
+		"retrato": "res://assets/sprites/personajes/Eve/Eve_quieto.png",
+		"escena": "res://scenes/personajes/Eve.tscn"
+	},
+	{
+		"nombre": "John",
+		"retrato": "res://assets/sprites/personajes/John/John_quieto.png",
+		"escena": "res://scenes/personajes/John.tscn"
+	},
+	{
+		"nombre": "Jorge",
+		"retrato": "res://assets/sprites/personajes/Jorge/Jorge_quieto.png",
+		"escena": "res://scenes/personajes/Jorge.tscn"
+	},
+	{
+		"nombre": "Kratos",
+		"retrato": "res://assets/sprites/personajes/Kratos/Kratos_quieto.png",
+		"escena": "res://scenes/personajes/Kratos.tscn"
+	},
 ]
 
 # === SELECCIÓN ACTUAL ===

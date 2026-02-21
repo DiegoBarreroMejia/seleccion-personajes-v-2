@@ -9,6 +9,7 @@ class_name Flecha
 # === CONSTANTES ===
 const GRAVEDAD: float = 400.0
 const TIEMPO_VIDA_DEFECTO: float = 8.0
+const SFX_IMPACTO: AudioStream = preload("res://assets/sonidos/Armas/arco/bowhit1.ogg")
 
 # === VARIABLES EXPORTADAS ===
 @export var velocidad: float = 500.0
@@ -113,4 +114,19 @@ func _destruir() -> void:
 
 	_destruida = true
 	set_physics_process(false)
+	_reproducir_sonido_impacto()
 	queue_free()
+
+# === SONIDO DE IMPACTO ===
+
+func _reproducir_sonido_impacto() -> void:
+	## Crea un AudioStreamPlayer2D temporal en el root que sobrevive al queue_free()
+	var sfx := AudioStreamPlayer2D.new()
+	sfx.stream = SFX_IMPACTO
+	sfx.bus = "SFX"
+	sfx.max_distance = 800.0
+	sfx.global_position = global_position
+	get_tree().root.add_child(sfx)
+	sfx.play()
+	# Auto-limpieza al terminar de reproducir
+	sfx.finished.connect(sfx.queue_free)

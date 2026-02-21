@@ -45,6 +45,10 @@ const TIEMPO_DESAPARICION_SIN_MUNICION: float = 2.0
 @export var es_automatica: bool = false
 @export var dano: int = 1
 
+@export_group("Sonido")
+## Sonido que se reproduce al disparar. Asignar un archivo .ogg/.wav desde el Inspector.
+@export var sfx_disparo: AudioStream
+
 @export_group("Munición")
 ## Balas totales que trae el arma. -1 = munición infinita.
 @export var municion_maxima: int = 30
@@ -262,6 +266,12 @@ func disparar() -> void:
 	_consumir_bala()
 
 	_iniciar_cooldown_disparo()
+
+	# Reproducir sonido de disparo
+	if sfx_disparo and _sfx_player:
+		_sfx_player.stream = sfx_disparo
+		_sfx_player.play()
+
 	arma_disparada.emit()
 
 func _configurar_bala(bala: Area2D) -> void:

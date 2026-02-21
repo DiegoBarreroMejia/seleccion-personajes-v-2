@@ -1,0 +1,39 @@
+[gd_scene load_steps=5 format=3 uid="uid://b580o3nn2kxk4"]
+
+[ext_resource type="Script" uid="uid://cihyfs5gyekqp" path="res://scripts/armas/Granada.gd" id="1_script"]
+[ext_resource type="Texture2D" uid="uid://c3mxkay5atb0d" path="res://assets/sprites/armas/granada/Granada_entera.png" id="2_sprite"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_recogida"]
+radius = 15.0
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_explosion"]
+radius = 78.333336
+
+[node name="Granada" type="Node2D"]
+script = ExtResource("1_script")
+municion_maxima = 1
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+scale = Vector2(0.1, 0.1)
+texture = ExtResource("2_sprite")
+
+[node name="Punta" type="Marker2D" parent="."]
+position = Vector2(5, -2)
+
+[node name="AreaRecogida" type="Area2D" parent="."]
+collision_layer = 0
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="AreaRecogida"]
+shape = SubResource("CircleShape2D_recogida")
+
+[node name="AreaExplosion" type="Area2D" parent="."]
+position = Vector2(-1, -2)
+scale = Vector2(2, 2)
+collision_layer = 0
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="AreaExplosion"]
+shape = SubResource("CircleShape2D_explosion")
+disabled = true
+
+[connection signal="body_entered" from="AreaRecogida" to="." method="_on_area_recogida_body_entered"]
+[connection signal="body_exited" from="AreaRecogida" to="." method="_on_area_recogida_body_exited"]

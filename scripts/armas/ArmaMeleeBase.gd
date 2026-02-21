@@ -39,6 +39,10 @@ const VELOCIDAD_INICIAL_SOLTAR: float = 0.0  # Sin impulso, solo gravedad
 @export var velocidad_ataque: float = 0.4
 @export var knockback: Vector2 = Vector2(200, -100)
 
+@export_group("Sonido")
+## Sonido que se reproduce al atacar. Asignar un archivo .ogg/.wav desde el Inspector.
+@export var sfx_ataque: AudioStream
+
 @export_group("Configuración")
 @export var nombre_animacion_ataque: String = "atacar"
 
@@ -256,6 +260,12 @@ func atacar() -> void:
 		_anim_player.play(nombre_animacion_ataque)
 
 	_iniciar_cooldown_ataque()
+
+	# Reproducir sonido de ataque
+	if sfx_ataque and _sfx_player:
+		_sfx_player.stream = sfx_ataque
+		_sfx_player.play()
+
 	arma_atacada.emit()
 
 func _on_area_dano_body_entered(body: Node2D) -> void:
