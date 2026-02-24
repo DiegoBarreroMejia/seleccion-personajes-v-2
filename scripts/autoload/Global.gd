@@ -1,14 +1,5 @@
 extends Node
 
-## Gestiona la configuración global del juego, puntuación y datos de partida
-##
-## Este singleton maneja:
-## - Configuración de reglas (vidas, puntos para ganar)
-## - Catálogo de personajes y mapas
-## - Puntuación de jugadores
-## - Controles de entrada
-
-# === CONSTANTES ===
 const SFX_GANAR_PUNTO: AudioStream = preload("res://assets/sonidos/partida/sonido_caundo_alguien_gana_un puntos.ogg")
 const MIN_VIDA: int = 1
 const MAX_VIDA: int = 10
@@ -17,13 +8,11 @@ const MIN_PUNTOS: int = 1
 const MAX_PUNTOS: int = 20
 const PUNTOS_DEFECTO: int = 10
 
-# === SEÑALES ===
 signal puntuacion_cambiada(id_jugador: int, nueva_puntuacion: int)
 signal vida_cambiada(nueva_vida: int)
 signal puntos_ganar_cambiados(nuevos_puntos: int)
 signal partida_ganada(id_ganador: int)
 
-# === CONFIGURACIÓN DE PARTIDA ===
 var vida_maxima: int = VIDA_DEFECTO:
 	set(value):
 		vida_maxima = clampi(value, MIN_VIDA, MAX_VIDA)
@@ -34,14 +23,11 @@ var puntos_ganar: int = PUNTOS_DEFECTO:
 		puntos_ganar = clampi(value, MIN_PUNTOS, MAX_PUNTOS)
 		puntos_ganar_cambiados.emit(puntos_ganar)
 
-# === RESULTADO DE PARTIDA ===
 var ultimo_ganador: int = 0
 
-# === PUNTUACIÓN (PRIVADA) ===
 var _p1_score: int = 0
 var _p2_score: int = 0
 
-# === CATÁLOGO DE PERSONAJES ===
 var catalogo_personajes: Array[Dictionary] = [
 	{
 		"nombre": "Amarillo",
@@ -103,13 +89,26 @@ var catalogo_personajes: Array[Dictionary] = [
 		"retrato": "res://assets/sprites/personajes/Kratos/Kratos_quieto.png",
 		"escena": "res://scenes/personajes/Kratos.tscn"
 	},
+	{
+		"nombre": "Sanyu",
+		"retrato": "res://assets/sprites/personajes/Sanyu/SanyuReposo.png",
+		"escena": "res://scenes/personajes/Sanyu.tscn"
+	},
+	{
+		"nombre": "Shan",
+		"retrato": "res://assets/sprites/personajes/Shan/ShanReposo.png",
+		"escena": "res://scenes/personajes/Shan.tscn"
+	},
+	{
+		"nombre": "Alex",
+		"retrato": "res://assets/sprites/personajes/Alex/Alexx.png",
+		"escena": "res://scenes/personajes/Alex.tscn"
+	},
 ]
 
-# === SELECCIÓN ACTUAL ===
 var p1_seleccion: Dictionary = {}
 var p2_seleccion: Dictionary = {}
 
-# === CONTROLES (AHORA CONSTANTES) ===
 const p1_controls: Dictionary = {
 	"up": "j1_arriba",
 	"down": "j1_abajo",
@@ -130,7 +129,6 @@ const p2_controls: Dictionary = {
 	"action": "j2_accion"
 }
 
-# === MAPAS ===
 var mapas_disponibles: Array[String] = [
 	"res://scenes/mapas/Mapa1.tscn",
 	"res://scenes/mapas/Mapa2.tscn",
@@ -139,19 +137,16 @@ var mapas_disponibles: Array[String] = [
 	"res://scenes/mapas/Mapa5.tscn"
 ]
 
-# === MÉTODOS DE CICLO DE VIDA ===
-
-# === NODOS PRIVADOS ===
 var _sfx_player: AudioStreamPlayer = null
 
+# Inicializa selecciones y reproductor de sfx
 func _ready() -> void:
 	_inicializar_selecciones_defecto()
 	_sfx_player = AudioStreamPlayer.new()
 	_sfx_player.bus = "SFX"
 	add_child(_sfx_player)
 
-# === MÉTODOS PRIVADOS ===
-
+# Asigna selecciones por defecto a ambos jugadores
 func _inicializar_selecciones_defecto() -> void:
 	if catalogo_personajes.size() >= 2:
 		p1_seleccion = catalogo_personajes[0]
@@ -159,14 +154,13 @@ func _inicializar_selecciones_defecto() -> void:
 	else:
 		push_error("Global: No hay suficientes personajes en el catálogo")
 
+# Verifica si un jugador alcanzo los puntos para ganar
 func _verificar_victoria(id_jugador: int) -> void:
 	var puntuacion := obtener_puntuacion(id_jugador)
 	if puntuacion >= puntos_ganar:
 		partida_ganada.emit(id_jugador)
 
-# === MÉTODOS PÚBLICOS - PUNTUACIÓN ===
-
-## Añade puntos al jugador especificado
+# Suma puntos al jugador y reproduce sonido
 func sumar_puntos(id_jugador: int, puntos: int = 1) -> void:
 	if id_jugador == 1:
 		_p1_score += puntos
@@ -180,12 +174,11 @@ func sumar_puntos(id_jugador: int, puntos: int = 1) -> void:
 		push_warning("Global: ID de jugador inválido: %d" % id_jugador)
 		return
 
-	# Reproducir sonido de ganar punto
 	if _sfx_player:
 		_sfx_player.stream = SFX_GANAR_PUNTO
 		_sfx_player.play()
 
-## Obtiene la puntuación de un jugador
+# Devuelve la puntuacion de un jugador
 func obtener_puntuacion(id_jugador: int) -> int:
 	if id_jugador == 1:
 		return _p1_score
@@ -195,16 +188,14 @@ func obtener_puntuacion(id_jugador: int) -> int:
 		push_warning("Global: ID de jugador inválido: %d" % id_jugador)
 		return 0
 
-## Reinicia las puntuaciones de ambos jugadores
+# Reinicia las puntuaciones a 0
 func reiniciar_puntuaciones() -> void:
 	_p1_score = 0
 	_p2_score = 0
 	puntuacion_cambiada.emit(1, 0)
 	puntuacion_cambiada.emit(2, 0)
 
-# === MÉTODOS PÚBLICOS - UTILIDADES ===
-
-## Obtiene los controles de un jugador
+# Devuelve los controles de un jugador
 func obtener_controles(id_jugador: int) -> Dictionary:
 	if id_jugador == 1:
 		return p1_controls
@@ -214,7 +205,7 @@ func obtener_controles(id_jugador: int) -> Dictionary:
 		push_warning("Global: ID de jugador inválido: %d" % id_jugador)
 		return {}
 
-## Obtiene un mapa aleatorio de la lista disponible
+# Devuelve un mapa aleatorio
 func obtener_mapa_aleatorio() -> String:
 	if mapas_disponibles.is_empty():
 		push_error("Global: No hay mapas disponibles")

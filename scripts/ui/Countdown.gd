@@ -1,14 +1,11 @@
 extends CanvasLayer
 
-## Muestra el temporizador 3 → 2 → 1 → YA antes de iniciar la partida.
-##
-## Cuando termina emite la señal countdown_terminado para que MapaController
-## desbloquee a los jugadores.
-
 signal countdown_terminado
 
-const INTERVALO: float = 0.8   # Segundos entre cada número
-const ALTO_DESEADO: float = 200.0  # Altura en píxeles a la que se normalizan todos los sprites
+const INTERVALO: float = 0.8
+const ALTO_DESEADO: float = 200.0
+
+const SFX_YA: AudioStream = preload("res://assets/sonidos/partida/sonido_YA.wav")
 
 const SPRITES: Array[String] = [
 	"res://assets/sprites/partida/3.png",
@@ -19,10 +16,12 @@ const SPRITES: Array[String] = [
 
 @onready var _sprite: Sprite2D = $Sprite2D
 
+# Oculta sprite e inicia la cuenta regresiva
 func _ready() -> void:
 	_sprite.visible = false
 	_iniciar()
 
+# Muestra 3, 2, 1, YA con sfx y emite senal al terminar
 func _iniciar() -> void:
 	for ruta in SPRITES:
 		var textura := load(ruta) as Texture2D
@@ -31,10 +30,16 @@ func _iniciar() -> void:
 			continue
 
 		_sprite.texture = textura
-		# Escalar para que todos los sprites tengan el mismo alto
 		var factor := ALTO_DESEADO / textura.get_height()
 		_sprite.scale = Vector2(factor, factor)
 		_sprite.visible = true
+
+		if ruta == SPRITES[-1]:
+			var sfx := AudioStreamPlayer.new()
+			sfx.stream = SFX_YA
+			sfx.bus = "SFX"
+			add_child(sfx)
+			sfx.play()
 
 		await get_tree().create_timer(INTERVALO).timeout
 

@@ -1,6 +1,7 @@
-[gd_scene load_steps=8 format=3 uid="uid://blfwly6c2khjp"]
+[gd_scene load_steps=9 format=3 uid="uid://blfwly6c2khjp"]
 
-[ext_resource type="Script" path="res://scripts/armas/espada.gd" id="1_espada"]
+[ext_resource type="Script" uid="uid://dwgbxgejtytyv" path="res://scripts/armas/espada.gd" id="1_espada"]
+[ext_resource type="AudioStream" uid="uid://cg0wcmqf5oio4" path="res://assets/sonidos/Armas/sonido_espadas.wav" id="2_chj5w"]
 [ext_resource type="Texture2D" uid="uid://dwg0refbodmam" path="res://assets/sprites/armas/espada_steve/espada.png" id="2_olrou"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_recogida"]
@@ -97,6 +98,7 @@ _data = {
 
 [node name="Espada" type="Node2D"]
 script = ExtResource("1_espada")
+sfx_ataque = ExtResource("2_chj5w")
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
 texture = ExtResource("2_olrou")
@@ -104,14 +106,12 @@ offset = Vector2(12, -12)
 
 [node name="AreaRecogida" type="Area2D" parent="."]
 collision_layer = 0
-collision_mask = 1
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="AreaRecogida"]
 shape = SubResource("CircleShape2D_recogida")
 
 [node name="AreaDano" type="Area2D" parent="."]
 collision_layer = 0
-collision_mask = 1
 
 [node name="CollisionFilo" type="CollisionShape2D" parent="AreaDano"]
 position = Vector2(18, -18)

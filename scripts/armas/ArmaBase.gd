@@ -1,44 +1,26 @@
 extends Node2D
 class_name ArmaBase
 
-## Clase base para todas las armas de fuego del juego
-##
-## Maneja recogida, disparo y soltar armas.
-## Las armas específicas pueden sobrescribir disparar() para comportamientos únicos.
-
-# === SEÑALES ===
 signal arma_disparada()
 signal arma_recogida(id_jugador: int)
 signal arma_soltada()
-## Señal emitida al cambiar la munición. actual = balas restantes, maxima = balas totales del arma.
-## Valores negativos (-1) indican munición infinita.
 signal municion_cambiada(actual: int, maxima: int)
 
-# === CONSTANTES ===
 const MAX_CANDIDATOS_RECOGIDA: int = 4
 const SFX_RECOGER: AudioStream = preload("res://assets/sonidos/partida/sonido_cuando_un_personaje_coje_algo.ogg")
 const SFX_SOLTAR: AudioStream = preload("res://assets/sonidos/partida/sonido_cuando_un_personaje_sualta_algo.ogg")
 
-# === CONSTANTES DE FÍSICA DE ARMAS ===
 const GRAVEDAD_ARMA: float = 800.0
 const VELOCIDAD_ROTACION: float = 12.0
 const DISTANCIA_RAYCAST_MINIMA: float = 15.0
 
-# === CONSTANTES DE LANZAMIENTO HORIZONTAL (proyectil con arco) ===
 const VELOCIDAD_LANZAMIENTO: float = 600.0
-const IMPULSO_VERTICAL_LANZAR: float = -250.0  # Negativo = hacia arriba (arco parabólico)
-
-# === CONSTANTES DE LANZAMIENTO HACIA ARRIBA ===
-const IMPULSO_VERTICAL_ARRIBA: float = -550.0  # Fuerza hacia arriba
-const IMPULSO_HORIZONTAL_ARRIBA: float = 80.0  # Pequeño ángulo horizontal
-
-# === CONSTANTES DE SOLTAR (caída natural) ===
-const VELOCIDAD_INICIAL_SOLTAR: float = 0.0  # Sin impulso, solo gravedad
-
-# === CONSTANTES DE MUNICIÓN ===
+const IMPULSO_VERTICAL_LANZAR: float = -250.0
+const IMPULSO_VERTICAL_ARRIBA: float = -550.0
+const IMPULSO_HORIZONTAL_ARRIBA: float = 80.0
+const VELOCIDAD_INICIAL_SOLTAR: float = 0.0
 const TIEMPO_DESAPARICION_SIN_MUNICION: float = 2.0
 
-# === VARIABLES EXPORTADAS ===
 @export_group("Estadísticas Arma")
 @export var bala_scene: PackedScene
 @export var velocidad_disparo: float = 0.5
@@ -46,39 +28,32 @@ const TIEMPO_DESAPARICION_SIN_MUNICION: float = 2.0
 @export var dano: int = 1
 
 @export_group("Sonido")
-## Sonido que se reproduce al disparar. Asignar un archivo .ogg/.wav desde el Inspector.
 @export var sfx_disparo: AudioStream
 
 @export_group("Munición")
-## Balas totales que trae el arma. -1 = munición infinita.
 @export var municion_maxima: int = 30
 
-# === VARIABLES PRIVADAS ===
 var _puede_disparar: bool = true
 var _esta_recogida: bool = false
 var _id_jugador: int = 0
 var _candidatos_a_recoger: Array[CharacterBody2D] = []
 var _temporizador_disparo: Timer
 var _desaparicion_activa: bool = false
-var _destruida: bool = false  # Previene daño múltiple al destruir
-var _id_desaparicion: int = 0  # Identificador único para cancelar timers de desaparición
+var _destruida: bool = false
+var _id_desaparicion: int = 0
 
-# === VARIABLES DE MUNICIÓN ===
-var _municion_actual: int = 0   # Balas restantes
+var _municion_actual: int = 0
 
-# === VARIABLES DE VUELO/LANZAMIENTO ===
 var _esta_en_vuelo: bool = false
-var _fue_lanzada: bool = false  # true = lanzada (daña y desaparece), false = soltada (recogible)
+var _fue_lanzada: bool = false
 var _velocidad_arma: Vector2 = Vector2.ZERO
-var _ultimo_dueno_id: int = 0  # Para no dañar al que la lanzó
+var _ultimo_dueno_id: int = 0
 
-# === NODOS ===
 @onready var _punta: Marker2D = $Punta if has_node("Punta") else null
 @onready var _area_recogida: Area2D = $AreaRecogida if has_node("AreaRecogida") else null
 var _sfx_player: AudioStreamPlayer2D = null
 
-# === MÉTODOS DE CICLO DE VIDA ===
-
+# Configura temporizador, area de recogida, municion y sfx
 func _ready() -> void:
 	_configurar_temporizador_disparo()
 	_configurar_area_recogida()
@@ -88,6 +63,7 @@ func _ready() -> void:
 	_sfx_player.max_distance = 800.0
 	add_child(_sfx_player)
 
+# Verifica input de recogida, disparo y soltar cada frame
 func _process(_delta: float) -> void:
 	if not _esta_recogida and not _esta_en_vuelo:
 		_verificar_input_recogida()
@@ -95,66 +71,61 @@ func _process(_delta: float) -> void:
 		_verificar_input_disparo()
 		_verificar_input_soltar()
 
+# Mueve el arma en vuelo con gravedad y rotacion
 func _physics_process(delta: float) -> void:
 	if not _esta_en_vuelo:
 		return
 
-	# Aplicar gravedad
 	_velocidad_arma.y += GRAVEDAD_ARMA * delta
 
-	# Detectar colisión con suelo antes de mover
 	var resultado_suelo := _detectar_suelo()
 	if not resultado_suelo.is_empty():
-		# Posicionar exactamente sobre el suelo
 		global_position = resultado_suelo["position"]
 		_al_tocar_suelo()
 	else:
-		# Mover arma normalmente
 		position += _velocidad_arma * delta
 
-	# Rotar visualmente si fue lanzada
 	if _fue_lanzada:
 		rotation += VELOCIDAD_ROTACION * delta
 
-# === CONFIGURACIÓN INICIAL ===
-
+# Crea el temporizador de cooldown de disparo
 func _configurar_temporizador_disparo() -> void:
 	_temporizador_disparo = Timer.new()
 	_temporizador_disparo.one_shot = true
 	_temporizador_disparo.timeout.connect(_on_temporizador_disparo_timeout)
 	add_child(_temporizador_disparo)
 
+# Conecta senales del area de recogida
 func _configurar_area_recogida() -> void:
 	if not _area_recogida:
 		push_warning("ArmaBase: 'AreaRecogida' no encontrada en %s" % name)
 		return
-	
+
 	if not _area_recogida.body_entered.is_connected(_on_area_recogida_body_entered):
 		_area_recogida.body_entered.connect(_on_area_recogida_body_entered)
 
 	if not _area_recogida.body_exited.is_connected(_on_area_recogida_body_exited):
 		_area_recogida.body_exited.connect(_on_area_recogida_body_exited)
 
-# === SISTEMA DE RECOGIDA ===
-
+# Verifica si algun candidato pulsa accion para recoger
 func _verificar_input_recogida() -> void:
 	for personaje in _candidatos_a_recoger:
 		if not is_instance_valid(personaje):
 			continue
-		
+
 		var controles := Global.obtener_controles(personaje.player_id)
 		if controles.is_empty():
 			continue
-		
+
 		if Input.is_action_just_pressed(controles["action"]):
 			equipar(personaje)
 			break
 
+# Equipa el arma al personaje dado
 func equipar(nuevo_dueno: CharacterBody2D) -> void:
 	if not _puede_ser_equipada_por(nuevo_dueno):
 		return
 
-	# Cancelar vuelo si estaba en el aire
 	_esta_en_vuelo = false
 	_fue_lanzada = false
 	_velocidad_arma = Vector2.ZERO
@@ -164,11 +135,9 @@ func equipar(nuevo_dueno: CharacterBody2D) -> void:
 	_candidatos_a_recoger.clear()
 	_desaparicion_activa = false
 
-	# Registrar arma en el personaje (previene doble recogida)
 	if nuevo_dueno.has_method("registrar_arma"):
 		nuevo_dueno.registrar_arma(self)
 
-	# Reparentar
 	var padre_anterior := get_parent()
 	padre_anterior.remove_child(self)
 
@@ -179,76 +148,67 @@ func equipar(nuevo_dueno: CharacterBody2D) -> void:
 	position = Vector2.ZERO
 	rotation = 0
 
-	# Restaurar visibilidad por si estaba desvaneciéndose
 	modulate.a = 1.0
 
-	# Desactivar área de recogida mientras está equipada
 	if _area_recogida:
 		_area_recogida.monitoring = false
 
 	arma_recogida.emit(_id_jugador)
 	_emitir_municion_cambiada()
 
-	# Sonido de recoger
 	if _sfx_player:
 		_sfx_player.stream = SFX_RECOGER
 		_sfx_player.play()
 
-	print("Arma equipada por Jugador %d" % _id_jugador)
-
+# Verifica si el personaje puede equipar esta arma
 func _puede_ser_equipada_por(personaje: CharacterBody2D) -> bool:
 	if not is_instance_valid(personaje):
 		return false
 	if personaje.has_method("esta_vivo") and not personaje.esta_vivo():
 		return false
-	# Impedir equipar si el personaje ya tiene un arma
 	if personaje.has_method("tiene_arma") and personaje.tiene_arma():
 		return false
-	# Impedir recoger si la acción ya fue consumida este frame (ej: se acaba de soltar un arma)
 	if personaje.has_method("accion_consumida_este_frame") and personaje.accion_consumida_este_frame():
 		return false
 	return true
 
+# Gestiona colision del area: dano en vuelo o agregar candidato
 func _on_area_recogida_body_entered(body: Node2D) -> void:
-	# Si está en vuelo y fue lanzada, puede hacer daño
 	if _esta_en_vuelo and _fue_lanzada and not _destruida:
 		if body is CharacterBody2D and body.is_in_group("jugadores"):
-			# No dañar al que la lanzó
 			if "player_id" in body and body.player_id != _ultimo_dueno_id:
 				if body.has_method("recibir_dano"):
 					_destruida = true
-					body.recibir_dano(dano)
-					print("Arma lanzada golpeó a Jugador %d" % body.player_id)
+					body.recibir_dano(dano, global_position)
 					queue_free()
 					return
 
-	# Comportamiento normal: añadir a candidatos para recoger
 	if not _esta_en_vuelo and not _esta_recogida:
 		if body is CharacterBody2D and body.is_in_group("jugadores"):
 			if _candidatos_a_recoger.size() < MAX_CANDIDATOS_RECOGIDA:
 				_candidatos_a_recoger.append(body)
 
+# Quita al cuerpo de la lista de candidatos
 func _on_area_recogida_body_exited(body: Node2D) -> void:
 	if body is CharacterBody2D and body in _candidatos_a_recoger:
 		_candidatos_a_recoger.erase(body)
 
-# === SISTEMA DE DISPARO ===
-
+# Verifica input de disparo segun modo automatico o semi
 func _verificar_input_disparo() -> void:
 	var controles := _obtener_controles_dueno()
 	if controles.is_empty():
 		return
-	
+
 	var debe_disparar := false
 	if es_automatica:
 		debe_disparar = Input.is_action_pressed(controles["shoot"])
 	else:
 		debe_disparar = Input.is_action_just_pressed(controles["shoot"])
-	
+
 	if debe_disparar and _puede_disparar:
 		disparar()
 
-## Dispara el arma. Sobrescribir en armas específicas para comportamientos únicos
+# Dispara un proyectil desde la punta del arma
 func disparar() -> void:
 	if not bala_scene:
 		push_warning("ArmaBase: bala_scene no asignado en %s" % name)
@@ -267,13 +227,13 @@ func disparar() -> void:
 
 	_iniciar_cooldown_disparo()
 
-	# Reproducir sonido de disparo
 	if sfx_disparo and _sfx_player:
 		_sfx_player.stream = sfx_disparo
 		_sfx_player.play()
 
 	arma_disparada.emit()
 
+# Posiciona y configura la bala antes de dispararla
 func _configurar_bala(bala: Area2D) -> void:
 	if _punta:
 		bala.global_position = _punta.global_position
@@ -281,22 +241,24 @@ func _configurar_bala(bala: Area2D) -> void:
 	else:
 		bala.global_position = global_position
 		bala.global_rotation = global_rotation
-	
+
 	if bala.has_method("establecer_dueno"):
 		bala.establecer_dueno(_id_jugador)
 
+# Agrega la bala al arbol de escena
 func _generar_bala(bala: Node2D) -> void:
 	get_tree().root.add_child(bala)
 
+# Inicia el cooldown de disparo
 func _iniciar_cooldown_disparo() -> void:
 	_puede_disparar = false
 	_temporizador_disparo.start(velocidad_disparo)
 
+# Reactiva el disparo al terminar el cooldown
 func _on_temporizador_disparo_timeout() -> void:
 	_puede_disparar = true
 
-# === SISTEMA DE MUNICIÓN ===
-
+# Inicializa la municion segun maxima o infinita
 func _inicializar_municion() -> void:
 	if _tiene_municion_infinita():
 		_municion_actual = -1
@@ -304,14 +266,17 @@ func _inicializar_municion() -> void:
 
 	_municion_actual = municion_maxima
 
+# Devuelve si la municion es infinita
 func _tiene_municion_infinita() -> bool:
 	return municion_maxima < 0
 
+# Devuelve si queda municion
 func _tiene_municion() -> bool:
 	if _tiene_municion_infinita():
 		return true
 	return _municion_actual > 0
 
+# Resta municion
 func _consumir_bala(cantidad: int = 1) -> void:
 	if _tiene_municion_infinita():
 		return
@@ -319,40 +284,38 @@ func _consumir_bala(cantidad: int = 1) -> void:
 	_municion_actual = maxi(_municion_actual - cantidad, 0)
 	_emitir_municion_cambiada()
 
+# Emite la senal de municion cambiada
 func _emitir_municion_cambiada() -> void:
 	if _tiene_municion_infinita():
 		municion_cambiada.emit(-1, -1)
 	else:
-		# Siempre emitir: (balas restantes, balas máximas del arma)
-		# municion_maxima es FIJO, nunca se modifica
 		municion_cambiada.emit(_municion_actual, municion_maxima)
 
-## Emite el estado actual de munición (para sincronizar HUD al equipar)
+# Emite el estado actual de municion para sincronizar HUD
 func emitir_estado_municion() -> void:
 	_emitir_municion_cambiada()
 
-## Devuelve la munición restante
+# Devuelve la municion restante
 func obtener_municion_actual() -> int:
 	return _municion_actual
 
-## Verifica si el arma se quedó completamente sin munición
+# Devuelve si el arma esta sin municion
 func esta_sin_municion() -> bool:
 	if _tiene_municion_infinita():
 		return false
 	return _municion_actual <= 0
 
-# === SISTEMA DE SOLTAR ===
-
+# Verifica si el dueno pulsa accion para soltar
 func _verificar_input_soltar() -> void:
 	var controles := _obtener_controles_dueno()
 	if controles.is_empty():
 		return
-	
+
 	if Input.is_action_just_pressed(controles["action"]):
 		soltar()
 
+# Suelta o lanza el arma segun la direccion pulsada
 func soltar() -> void:
-	# Detectar direcciones pulsadas
 	var controles := _obtener_controles_dueno()
 	var mantiene_abajo := false
 	var mantiene_arriba := false
@@ -362,12 +325,10 @@ func soltar() -> void:
 
 	var direccion_lanzamiento := _obtener_direccion_lanzamiento()
 
-	# Liberar referencia en el personaje antes de soltar
 	var dueno_actual := _obtener_dueno_personaje()
 	if dueno_actual and dueno_actual.has_method("liberar_arma"):
 		dueno_actual.liberar_arma()
 
-	# Guardar referencia al dueño antes de soltar
 	_ultimo_dueno_id = _id_jugador
 	_esta_recogida = false
 
@@ -380,22 +341,15 @@ func soltar() -> void:
 	global_position = pos_mundial
 	rotation = 0
 
-	# Configurar modo según input del jugador (prioridad: abajo > arriba > horizontal)
 	if mantiene_abajo:
-		# MODO SOLTAR: caída natural por gravedad, sin impulso inicial
 		_fue_lanzada = false
 		_velocidad_arma = Vector2(0, VELOCIDAD_INICIAL_SOLTAR)
-		print("Arma soltada (caída natural)")
 	elif mantiene_arriba:
-		# MODO LANZAR ARRIBA: proyectil hacia arriba con ligero ángulo
 		_fue_lanzada = true
 		_velocidad_arma = Vector2(IMPULSO_HORIZONTAL_ARRIBA * direccion_lanzamiento, IMPULSO_VERTICAL_ARRIBA)
-		print("Arma lanzada hacia arriba")
 	else:
-		# MODO LANZAR HORIZONTAL: proyectil con arco parabólico
 		_fue_lanzada = true
 		_velocidad_arma = Vector2(VELOCIDAD_LANZAMIENTO * direccion_lanzamiento, IMPULSO_VERTICAL_LANZAR)
-		print("Arma lanzada (proyectil)")
 
 	_esta_en_vuelo = true
 	_desaparicion_activa = false
@@ -403,30 +357,25 @@ func soltar() -> void:
 	if _area_recogida:
 		_area_recogida.monitoring = true
 
-	# Sonido de soltar
 	if _sfx_player:
 		_sfx_player.stream = SFX_SOLTAR
 		_sfx_player.play()
 
 	arma_soltada.emit()
 
+# Inicia temporizador de desaparicion con fade out
 func _iniciar_temporizador_desaparicion(tiempo: float = 3.0) -> void:
-	# Incrementar ID para invalidar cualquier timer anterior en curso
 	_id_desaparicion += 1
 	var id_actual := _id_desaparicion
 	_desaparicion_activa = true
 
 	await get_tree().create_timer(tiempo).timeout
 
-	# Verificaciones de seguridad (incluye check de ID para cancelación)
 	if not is_instance_valid(self):
 		return
 	if _esta_recogida or not _desaparicion_activa or id_actual != _id_desaparicion:
 		return
 
-	print("Arma desapareciendo después de %.1f segundos en el suelo" % tiempo)
-
-	# Animación de desvanecimiento
 	var tween := create_tween()
 	tween.tween_property(self, "modulate:a", 0.0, 0.5)
 	await tween.finished
@@ -434,28 +383,22 @@ func _iniciar_temporizador_desaparicion(tiempo: float = 3.0) -> void:
 	if is_instance_valid(self) and not _esta_recogida:
 		queue_free()
 
+# Devuelve la direccion de lanzamiento segun la escala del padre
 func _obtener_direccion_lanzamiento() -> int:
 	var padre := get_parent()
 	if not padre:
 		return 1
 	return -1 if padre.scale.x < 0 else 1
 
-# === SISTEMA DE VUELO ===
-
+# Detecta colision con el suelo usando raycast
 func _detectar_suelo() -> Dictionary:
-	## Detecta si el arma tocó el suelo usando raycast
-	## Retorna el punto de colisión o diccionario vacío si no hay colisión
 	var space_state := get_world_2d().direct_space_state
 	if not space_state:
 		return {}
 
-	# Solo detectar suelo cuando el arma está cayendo o estática
-	# Si está subiendo (velocidad Y negativa), no buscar colisión con suelo
 	if _velocidad_arma.y < 0:
 		return {}
 
-	# Calcular distancia del raycast proporcional a la velocidad de caída
-	# Esto evita que el arma "atraviese" el suelo a alta velocidad
 	var delta := get_physics_process_delta_time()
 	var distancia_por_velocidad := _velocidad_arma.y * delta + 10.0
 	var distancia_raycast := maxf(DISTANCIA_RAYCAST_MINIMA, distancia_por_velocidad)
@@ -463,12 +406,12 @@ func _detectar_suelo() -> Dictionary:
 	var query := PhysicsRayQueryParameters2D.create(
 		global_position,
 		global_position + Vector2(0, distancia_raycast),
-		0b100000  # Layer 6: Escenario
+		0b100000
 	)
 	return space_state.intersect_ray(query)
 
+# Detiene el vuelo y gestiona desaparicion al tocar suelo
 func _al_tocar_suelo() -> void:
-	## Comportamiento al tocar el suelo
 	_esta_en_vuelo = false
 	_velocidad_arma = Vector2.ZERO
 	rotation = 0
@@ -477,23 +420,15 @@ func _al_tocar_suelo() -> void:
 	_ultimo_dueno_id = 0
 	_id_jugador = 0
 
-	# Desaparición condicional basada en munición
 	if esta_sin_municion():
-		# Sin munición: desaparece rápido (2 segundos)
-		print("Arma sin munición en el suelo, desaparecerá en %.1fs" % TIEMPO_DESAPARICION_SIN_MUNICION)
 		_iniciar_temporizador_desaparicion(TIEMPO_DESAPARICION_SIN_MUNICION)
 	elif _tiene_municion_infinita():
-		# Munición infinita: comportamiento original (desaparece tras 3s)
-		print("Arma en el suelo, puede recogerse")
 		_iniciar_temporizador_desaparicion(3.0)
 	else:
-		# Tiene munición restante: permanece en el suelo hasta cambio de ronda
-		print("Arma con munición (%d) en el suelo, permanece hasta cambio de ronda" % _municion_actual)
+		pass
 
-# === UTILIDADES ===
-
+# Obtiene el personaje dueno buscando en la jerarquia
 func _obtener_dueno_personaje() -> CharacterBody2D:
-	## Obtiene el personaje dueño buscando en la jerarquía de padres
 	var nodo := get_parent()
 	while nodo:
 		if nodo is CharacterBody2D and nodo.is_in_group("jugadores"):
@@ -501,15 +436,16 @@ func _obtener_dueno_personaje() -> CharacterBody2D:
 		nodo = nodo.get_parent()
 	return null
 
+# Obtiene los controles del jugador dueno
 func _obtener_controles_dueno() -> Dictionary:
 	if _id_jugador == 0:
 		return {}
 	return Global.obtener_controles(_id_jugador)
 
-## Obtiene el ID del jugador que tiene el arma
+# Devuelve el id del jugador que tiene el arma
 func obtener_id_dueno() -> int:
 	return _id_jugador
 
-## Verifica si el arma está equipada
+# Devuelve si el arma esta equipada
 func esta_equipada() -> bool:
 	return _esta_recogida

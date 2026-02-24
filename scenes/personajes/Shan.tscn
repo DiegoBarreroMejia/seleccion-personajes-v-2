@@ -1,0 +1,95 @@
+[gd_scene load_steps=14 format=3 uid="uid://d3shancharscn"]
+
+[ext_resource type="Script" uid="uid://dv6ems0ybw6v1" path="res://scripts/personajes/PersonajeBase.gd" id="1_script"]
+[ext_resource type="Texture2D" path="res://assets/sprites/personajes/Shan/ShanReposo.png" id="2_reposo"]
+[ext_resource type="Texture2D" path="res://assets/sprites/personajes/Shan/ShanCaminar1.png" id="3_cam1"]
+[ext_resource type="Texture2D" path="res://assets/sprites/personajes/Shan/ShanCaminar2.png" id="4_cam2"]
+[ext_resource type="Texture2D" path="res://assets/sprites/personajes/Shan/ShanCorrer1.png" id="5_cor1"]
+[ext_resource type="Texture2D" path="res://assets/sprites/personajes/Shan/ShanCorrer2.png" id="6_cor2"]
+[ext_resource type="Texture2D" path="res://assets/sprites/personajes/Shan/ShanSaltar.png" id="7_salto"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_shan"]
+size = Vector2(34, 68)
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_shan"]
+radius = 40.0
+
+[sub_resource type="Animation" id="Animation_reposo"]
+resource_name = "Reposo"
+length = 0.1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite:texture")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [ExtResource("2_reposo")]
+}
+
+[sub_resource type="Animation" id="Animation_correr"]
+resource_name = "correr"
+length = 0.4
+loop_mode = 1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite:texture")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.1, 0.2, 0.3),
+"transitions": PackedFloat32Array(1, 1, 1, 1),
+"update": 1,
+"values": [ExtResource("3_cam1"), ExtResource("4_cam2"), ExtResource("5_cor1"), ExtResource("6_cor2")]
+}
+
+[sub_resource type="Animation" id="Animation_saltar"]
+resource_name = "saltar"
+length = 0.1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite:texture")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [ExtResource("7_salto")]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_shan"]
+_data = {
+&"Reposo": SubResource("Animation_reposo"),
+&"correr": SubResource("Animation_correr"),
+&"saltar": SubResource("Animation_saltar")
+}
+
+[node name="Shan" type="CharacterBody2D"]
+script = ExtResource("1_script")
+
+[node name="Sprite" type="Sprite2D" parent="."]
+position = Vector2(-1, -1)
+scale = Vector2(0.35, 0.35)
+texture = ExtResource("2_reposo")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("RectangleShape2D_shan")
+
+[node name="Mano" type="Marker2D" parent="."]
+position = Vector2(19, 6)
+
+[node name="AreaRecogida" type="Area2D" parent="."]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="AreaRecogida"]
+shape = SubResource("CircleShape2D_shan")
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+libraries = {
+&"": SubResource("AnimationLibrary_shan")
+}

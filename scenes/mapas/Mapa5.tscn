@@ -1,4 +1,4 @@
-[gd_scene load_steps=32 format=3 uid="uid://0g5p4wl53lpf"]
+[gd_scene load_steps=36 format=3 uid="uid://0g5p4wl53lpf"]
 
 [ext_resource type="Script" uid="uid://cb3rk5evlw376" path="res://scripts/mapas/MapaController.gd" id="1_mapa5"]
 [ext_resource type="Script" uid="uid://byk0a5r8sgysr" path="res://scripts/ui/CamaraInteligente.gd" id="2_mapa5"]
@@ -20,6 +20,8 @@
 [ext_resource type="Texture2D" uid="uid://bbd0pl2o33t0i" path="res://assets/sprites/mapas/spriteurban3.png" id="18_2nvs5"]
 [ext_resource type="Texture2D" uid="uid://bl0ga6h751kh4" path="res://assets/sprites/mapas/spriteurban5.png" id="19_urduw"]
 [ext_resource type="Texture2D" uid="uid://dlyjx5k4if7c8" path="res://assets/sprites/mapas/spriteurban2.png" id="20_ml3ol"]
+[ext_resource type="PackedScene" path="res://scenes/armas/daga_sanyu/daga_sanyu.tscn" id="21_daga"]
+[ext_resource type="PackedScene" path="res://scenes/armas/espada_mulan/espada_mulan.tscn" id="22_espmulan"]
 
 [sub_resource type="RectangleShape2D" id="suelo_col"]
 size = Vector2(1689.5, 40)
@@ -54,6 +56,12 @@ size = Vector2(217.5, 20)
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_8e6gv"]
 size = Vector2(217.5, 20)
 
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_jo74u"]
+size = Vector2(134.75, 16)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_2nvs5"]
+size = Vector2(134, 13)
+
 [node name="Mapa5" type="Node2D"]
 script = ExtResource("1_mapa5")
 
@@ -73,24 +81,24 @@ position = Vector2(562, 611)
 shape = SubResource("suelo_col")
 
 [node name="SpawnJ1" parent="." instance=ExtResource("4_mapa5")]
-position = Vector2(104, 512)
+position = Vector2(290, 510)
 
 [node name="SpawnJ2" parent="." instance=ExtResource("5_mapa5")]
 position = Vector2(1064, 531)
 
 [node name="SpawnerArmas" parent="." instance=ExtResource("6_mapa5")]
 position = Vector2(318, 524)
-lista_armas = Array[PackedScene]([ExtResource("8_mapa5"), ExtResource("9_mapa5"), ExtResource("10_mapa5"), ExtResource("11_mapa5"), ExtResource("12_mapa5"), ExtResource("13_mapa5"), ExtResource("14_mapa5"), ExtResource("15_mapa5"), ExtResource("16_mapa5")])
+lista_armas = Array[PackedScene]([ExtResource("8_mapa5"), ExtResource("9_mapa5"), ExtResource("10_mapa5"), ExtResource("11_mapa5"), ExtResource("12_mapa5"), ExtResource("13_mapa5"), ExtResource("14_mapa5"), ExtResource("15_mapa5"), ExtResource("16_mapa5"), ExtResource("21_daga"), ExtResource("22_espmulan")])
 tiempo_respawn = 3.0
 
 [node name="SpawnerArmas2" parent="." instance=ExtResource("6_mapa5")]
 position = Vector2(858, 522)
-lista_armas = Array[PackedScene]([ExtResource("8_mapa5"), ExtResource("9_mapa5"), ExtResource("10_mapa5"), ExtResource("11_mapa5"), ExtResource("12_mapa5"), ExtResource("13_mapa5"), ExtResource("14_mapa5"), ExtResource("15_mapa5"), ExtResource("16_mapa5")])
+lista_armas = Array[PackedScene]([ExtResource("8_mapa5"), ExtResource("9_mapa5"), ExtResource("10_mapa5"), ExtResource("11_mapa5"), ExtResource("12_mapa5"), ExtResource("13_mapa5"), ExtResource("14_mapa5"), ExtResource("15_mapa5"), ExtResource("16_mapa5"), ExtResource("21_daga"), ExtResource("22_espmulan")])
 tiempo_respawn = 3.0
 
 [node name="SpawnerArmas3" parent="." instance=ExtResource("6_mapa5")]
 position = Vector2(556, 335)
-lista_armas = Array[PackedScene]([ExtResource("8_mapa5"), ExtResource("9_mapa5"), ExtResource("10_mapa5"), ExtResource("11_mapa5"), ExtResource("12_mapa5"), ExtResource("13_mapa5"), ExtResource("14_mapa5"), ExtResource("15_mapa5"), ExtResource("16_mapa5")])
+lista_armas = Array[PackedScene]([ExtResource("8_mapa5"), ExtResource("9_mapa5"), ExtResource("10_mapa5"), ExtResource("11_mapa5"), ExtResource("12_mapa5"), ExtResource("13_mapa5"), ExtResource("14_mapa5"), ExtResource("15_mapa5"), ExtResource("16_mapa5"), ExtResource("21_daga"), ExtResource("22_espmulan")])
 tiempo_respawn = 3.0
 
 [node name="ZonaMuerte" type="Area2D" parent="."]
@@ -179,4 +187,28 @@ texture = ExtResource("20_ml3ol")
 [node name="CollisionShape2D" type="CollisionShape2D" parent="PlataformaPeque2"]
 position = Vector2(149, 207)
 shape = SubResource("RectangleShape2D_8e6gv")
+one_way_collision = true
+
+[node name="PlataformaPeque3" type="StaticBody2D" parent="."]
+
+[node name="Sprite2D" type="Sprite2D" parent="PlataformaPeque3"]
+position = Vector2(122, 392.99997)
+scale = Vector2(0.56666666, 0.7888914)
+texture = ExtResource("20_ml3ol")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="PlataformaPeque3"]
+position = Vector2(123.625, 382)
+shape = SubResource("RectangleShape2D_jo74u")
+one_way_collision = true
+
+[node name="PlataformaPeque4" type="StaticBody2D" parent="."]
+
+[node name="Sprite2D" type="Sprite2D" parent="PlataformaPeque4"]
+position = Vector2(4.999998, 487.99997)
+scale = Vector2(0.56666666, 0.7888914)
+texture = ExtResource("20_ml3ol")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="PlataformaPeque4"]
+position = Vector2(7, 473)
+shape = SubResource("RectangleShape2D_2nvs5")
 one_way_collision = true

@@ -1,4 +1,4 @@
-[gd_scene load_steps=19 format=3 uid="uid://cbfced1vxyvca"]
+[gd_scene load_steps=21 format=3 uid="uid://cbfced1vxyvca"]
 
 [ext_resource type="Script" uid="uid://cb3rk5evlw376" path="res://scripts/mapas/MapaController.gd" id="1_p2vsq"]
 [ext_resource type="Script" uid="uid://byk0a5r8sgysr" path="res://scripts/ui/CamaraInteligente.gd" id="2_brhov"]
@@ -16,6 +16,8 @@
 [ext_resource type="PackedScene" uid="uid://c836gegkrdy5e" path="res://scenes/armas/snipers/M24.tscn" id="13_kja68"]
 [ext_resource type="PackedScene" uid="uid://bgw5p8tncfeqq" path="res://scenes/armas/rifles/M15.tscn" id="13_tykhx"]
 [ext_resource type="PackedScene" uid="uid://mqim3a8e2605" path="res://scenes/armas/arco_steve/Arco.tscn" id="14_arco"]
+[ext_resource type="PackedScene" path="res://scenes/armas/daga_sanyu/daga_sanyu.tscn" id="15_daga"]
+[ext_resource type="PackedScene" path="res://scenes/armas/espada_mulan/espada_mulan.tscn" id="16_espmulan"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_ihfxy"]
 size = Vector2(1081, 75.5)
@@ -51,17 +53,17 @@ id_jugador = 2
 
 [node name="SpawnerArmas" parent="." instance=ExtResource("5_llawa")]
 position = Vector2(321, 433)
-lista_armas = Array[PackedScene]([ExtResource("9_hjcey"), ExtResource("8_pe3cu"), ExtResource("6_pe3cu"), ExtResource("10_1tvxr"), ExtResource("11_kja68"), ExtResource("7_llawa"), ExtResource("13_tykhx"), ExtResource("13_kja68"), ExtResource("12_go0br"), ExtResource("14_arco")])
+lista_armas = Array[PackedScene]([ExtResource("9_hjcey"), ExtResource("8_pe3cu"), ExtResource("6_pe3cu"), ExtResource("10_1tvxr"), ExtResource("11_kja68"), ExtResource("7_llawa"), ExtResource("13_tykhx"), ExtResource("13_kja68"), ExtResource("12_go0br"), ExtResource("14_arco"), ExtResource("15_daga"), ExtResource("16_espmulan")])
 tiempo_respawn = 3.0
 
 [node name="SpawnerArmas2" parent="." instance=ExtResource("5_llawa")]
 position = Vector2(857, 434)
-lista_armas = Array[PackedScene]([ExtResource("9_hjcey"), ExtResource("8_pe3cu"), ExtResource("6_pe3cu"), ExtResource("10_1tvxr"), ExtResource("11_kja68"), ExtResource("7_llawa"), ExtResource("13_tykhx"), ExtResource("13_kja68"), ExtResource("12_go0br"), ExtResource("14_arco")])
+lista_armas = Array[PackedScene]([ExtResource("9_hjcey"), ExtResource("8_pe3cu"), ExtResource("6_pe3cu"), ExtResource("10_1tvxr"), ExtResource("11_kja68"), ExtResource("7_llawa"), ExtResource("13_tykhx"), ExtResource("13_kja68"), ExtResource("12_go0br"), ExtResource("14_arco"), ExtResource("15_daga"), ExtResource("16_espmulan")])
 tiempo_respawn = 3.0
 
 [node name="SpawnerArmas3" parent="." instance=ExtResource("5_llawa")]
 position = Vector2(579, 442)
-lista_armas = Array[PackedScene]([ExtResource("9_hjcey"), ExtResource("8_pe3cu"), ExtResource("6_pe3cu"), ExtResource("10_1tvxr"), ExtResource("11_kja68"), ExtResource("7_llawa"), ExtResource("13_tykhx"), ExtResource("13_kja68"), ExtResource("12_go0br"), ExtResource("14_arco")])
+lista_armas = Array[PackedScene]([ExtResource("9_hjcey"), ExtResource("8_pe3cu"), ExtResource("6_pe3cu"), ExtResource("10_1tvxr"), ExtResource("11_kja68"), ExtResource("7_llawa"), ExtResource("13_tykhx"), ExtResource("13_kja68"), ExtResource("12_go0br"), ExtResource("14_arco"), ExtResource("15_daga"), ExtResource("16_espmulan")])
 tiempo_respawn = 3.0
 
 [node name="ZonaMuerte" type="Area2D" parent="."]

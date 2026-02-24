@@ -1,4 +1,4 @@
-[gd_scene load_steps=31 format=3 uid="uid://c6fhqak74hhfx"]
+[gd_scene load_steps=26 format=3 uid="uid://ba2x8g40q4aj3"]
 
 [ext_resource type="Script" uid="uid://cb3rk5evlw376" path="res://scripts/mapas/MapaController.gd" id="1_mapa4"]
 [ext_resource type="Script" uid="uid://byk0a5r8sgysr" path="res://scripts/ui/CamaraInteligente.gd" id="2_mapa4"]
@@ -7,18 +7,11 @@
 [ext_resource type="PackedScene" uid="uid://76714ktwsqns" path="res://scenes/mapas/componentes/SpawnJ2.tscn" id="5_mapa4"]
 [ext_resource type="PackedScene" uid="uid://b25ptj7tt26qn" path="res://scenes/mapas/componentes/SpawnerArmas.tscn" id="6_mapa4"]
 [ext_resource type="Script" uid="uid://b56olwpbo4lcl" path="res://scripts/mapas/ZonaMuerte.gd" id="7_mapa4"]
-[ext_resource type="PackedScene" uid="uid://c30nrefunu7kt" path="res://scenes/armas/pistolas/Luger.tscn" id="8_mapa4"]
-[ext_resource type="PackedScene" uid="uid://dbdym27q1ixdl" path="res://scenes/armas/escopetas/M24.tscn" id="9_mapa4"]
-[ext_resource type="PackedScene" uid="uid://dw06gm2b1vud7" path="res://scenes/armas/rifles/AK47.tscn" id="10_mapa4"]
-[ext_resource type="PackedScene" uid="uid://blfwly6c2khjp" path="res://scenes/armas/espada_steve/espada.tscn" id="11_mapa4"]
-[ext_resource type="PackedScene" uid="uid://bot3qm2wvoeqq" path="res://scenes/armas/pistolas/M92.tscn" id="12_mapa4"]
-[ext_resource type="PackedScene" uid="uid://buum6hxidh4w5" path="res://scenes/armas/pistolas/Revolver.tscn" id="13_mapa4"]
-[ext_resource type="PackedScene" uid="uid://cvcy0aocxkmfo" path="res://scenes/armas/subfusiles/MP5.tscn" id="14_mapa4"]
-[ext_resource type="PackedScene" uid="uid://c836gegkrdy5e" path="res://scenes/armas/snipers/M24.tscn" id="15_mapa4"]
-[ext_resource type="PackedScene" uid="uid://bgw5p8tncfeqq" path="res://scenes/armas/rifles/M15.tscn" id="16_mapa4"]
 [ext_resource type="Texture2D" uid="uid://blp5kvufwwh2u" path="res://assets/sprites/mapas/sprite1.png" id="17_1wpe3"]
 [ext_resource type="Texture2D" uid="uid://dqdhmc5tglaqw" path="res://assets/sprites/mapas/sprite2.png" id="18_oc7py"]
 [ext_resource type="Texture2D" uid="uid://conce6lqaohar" path="res://assets/sprites/mapas/sprite3.png" id="19_tka38"]
+[ext_resource type="PackedScene" path="res://scenes/armas/daga_sanyu/daga_sanyu.tscn" id="20_daga"]
+[ext_resource type="PackedScene" uid="uid://djrs5m0xodssk" path="res://scenes/armas/espada_mulan/espada_mulan.tscn" id="21_espmulan"]
 
 [sub_resource type="RectangleShape2D" id="suelo_col"]
 size = Vector2(635.5, 44.5)
@@ -36,10 +29,16 @@ size = Vector2(99.79042, 17.69574)
 size = Vector2(104.542816, 14.351166)
 
 [sub_resource type="RectangleShape2D" id="zona_muerte_shape"]
-size = Vector2(1802, 8)
+size = Vector2(3522, 2)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_qkhq7"]
 size = Vector2(312, 10)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_wvv01"]
+size = Vector2(235, 12)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_7oeph"]
+size = Vector2(171.375, 16)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_b5up1"]
 size = Vector2(142.5, 10.5)
@@ -57,6 +56,10 @@ size = Vector2(167, 11)
 script = ExtResource("1_mapa4")
 
 [node name="Camera2D" type="Camera2D" parent="."]
+limit_left = -38
+limit_top = -30
+limit_right = 1306
+limit_bottom = 738
 script = ExtResource("2_mapa4")
 
 [node name="Fondo" type="Sprite2D" parent="."]
@@ -110,13 +113,13 @@ position = Vector2(317, 485)
 position = Vector2(642, 341)
 
 [node name="SpawnerArmas" parent="." instance=ExtResource("6_mapa4")]
-position = Vector2(224, 567)
-lista_armas = Array[PackedScene]([ExtResource("8_mapa4"), ExtResource("9_mapa4"), ExtResource("10_mapa4"), ExtResource("11_mapa4"), ExtResource("12_mapa4"), ExtResource("13_mapa4"), ExtResource("14_mapa4"), ExtResource("15_mapa4"), ExtResource("16_mapa4")])
+position = Vector2(398, 461)
+lista_armas = Array[PackedScene]([ExtResource("21_espmulan"), ExtResource("20_daga")])
 tiempo_respawn = 3.0
 
 [node name="SpawnerArmas2" parent="." instance=ExtResource("6_mapa4")]
-position = Vector2(957, 566)
-lista_armas = Array[PackedScene]([ExtResource("8_mapa4"), ExtResource("9_mapa4"), ExtResource("10_mapa4"), ExtResource("11_mapa4"), ExtResource("12_mapa4"), ExtResource("13_mapa4"), ExtResource("14_mapa4"), ExtResource("15_mapa4"), ExtResource("16_mapa4")])
+position = Vector2(836, 461)
+lista_armas = Array[PackedScene]([ExtResource("20_daga"), ExtResource("21_espmulan")])
 tiempo_respawn = 3.0
 
 [node name="ZonaMuerte" type="Area2D" parent="."]
@@ -124,7 +127,7 @@ position = Vector2(570, 750)
 script = ExtResource("7_mapa4")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="ZonaMuerte"]
-position = Vector2(30, -39)
+position = Vector2(14, -44)
 shape = SubResource("zona_muerte_shape")
 
 [node name="PlataformaDerecha" type="StaticBody2D" parent="."]
@@ -134,9 +137,24 @@ position = Vector2(1102, 420.99997)
 scale = Vector2(0.73443586, 0.8027211)
 texture = ExtResource("17_1wpe3")
 
+[node name="Sprite2D" type="Sprite2D" parent="PlataformaDerecha/Sprite2D"]
+position = Vector2(-183.81456, -125.82199)
+scale = Vector2(0.73443586, 0.8027211)
+texture = ExtResource("17_1wpe3")
+
 [node name="CollisionShape2D" type="CollisionShape2D" parent="PlataformaDerecha"]
 position = Vector2(1106, 420)
 shape = SubResource("RectangleShape2D_qkhq7")
+one_way_collision = true
+
+[node name="CollisionShape2D2" type="CollisionShape2D" parent="PlataformaDerecha"]
+position = Vector2(968.5, 318)
+shape = SubResource("RectangleShape2D_wvv01")
+one_way_collision = true
+
+[node name="CollisionShape2D3" type="CollisionShape2D" parent="PlataformaDerecha"]
+position = Vector2(1160.3125, 230)
+shape = SubResource("RectangleShape2D_7oeph")
 one_way_collision = true
 
 [node name="PlataformasIzquierdas" type="StaticBody2D" parent="."]
@@ -172,3 +190,9 @@ texture = ExtResource("19_tka38")
 [node name="CollisionShape2D" type="CollisionShape2D" parent="PlataformaCentral"]
 position = Vector2(652.5, 406.5)
 shape = SubResource("RectangleShape2D_404bi")
+one_way_collision = true
+
+[node name="Sprite2D2" type="Sprite2D" parent="PlataformaCentral"]
+position = Vector2(1182, 226.99998)
+scale = Vector2(1.0170509, 0.37799725)
+texture = ExtResource("19_tka38")

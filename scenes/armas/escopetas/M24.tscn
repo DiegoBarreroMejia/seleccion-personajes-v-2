@@ -1,7 +1,7 @@
 [gd_scene load_steps=6 format=3 uid="uid://dbdym27q1ixdl"]
 
 [ext_resource type="Script" uid="uid://6t54j3pscxni" path="res://scripts/armas/Escopeta.gd" id="1_6s400"]
-[ext_resource type="PackedScene" uid="uid://bqjkouyrpyfr1" path="res://scenes/armas/Bala.tscn" id="2_ap4rh"]
+[ext_resource type="PackedScene" uid="uid://bxgahmbnvhxic" path="res://scenes/armas/Bala_escopeta.tscn" id="2_qd640"]
 [ext_resource type="Texture2D" uid="uid://x0jssyoc2oym" path="res://assets/sprites/armas/guns/SawedOffShotgun.png" id="3_0w55a"]
 [ext_resource type="AudioStream" uid="uid://gyge51gg37qb" path="res://assets/sonidos/Armas/sonido_escopeta.ogg" id="3_qd640"]
 
@@ -10,9 +10,10 @@ radius = 13.0
 
 [node name="Pistola" type="Node2D"]
 script = ExtResource("1_6s400")
-bala_scene = ExtResource("2_ap4rh")
+bala_scene = ExtResource("2_qd640")
 velocidad_disparo = 1.0
 sfx_disparo = ExtResource("3_qd640")
+municion_maxima = 2
 
 [node name="SawedOffShotgun" type="Sprite2D" parent="."]
 texture = ExtResource("3_0w55a")

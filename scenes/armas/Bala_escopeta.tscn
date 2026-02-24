@@ -1,0 +1,21 @@
+[gd_scene load_steps=4 format=3 uid="uid://bxgahmbnvhxic"]
+
+[ext_resource type="Script" uid="uid://fdy33aovnwjh" path="res://scripts/armas/Bala.gd" id="1_cvtth"]
+[ext_resource type="Texture2D" uid="uid://days1gk8l57v3" path="res://assets/sprites/armas/Bullets/escopeta.png" id="2_cvtth"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_knxyy"]
+size = Vector2(6, 4)
+
+[node name="Bala" type="Area2D"]
+script = ExtResource("1_cvtth")
+
+[node name="Escopeta" type="Sprite2D" parent="."]
+texture = ExtResource("2_cvtth")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("RectangleShape2D_knxyy")
+
+[node name="VisibleOnScreenNotifier2D" type="VisibleOnScreenNotifier2D" parent="."]
+rect = Rect2(-4, -3, 8, 6)
+
+[connection signal="body_entered" from="." to="." method="_on_body_entered"]

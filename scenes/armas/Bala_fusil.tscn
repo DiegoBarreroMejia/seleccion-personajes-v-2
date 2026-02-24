@@ -1,0 +1,22 @@
+[gd_scene load_steps=4 format=3 uid="uid://5kqi7lakniin"]
+
+[ext_resource type="Script" uid="uid://fdy33aovnwjh" path="res://scripts/armas/Bala.gd" id="1_hrc2w"]
+[ext_resource type="Texture2D" uid="uid://yfxd7pjylfig" path="res://assets/sprites/armas/Bullets/fusiles.png" id="2_hrc2w"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_knxyy"]
+size = Vector2(6, 4)
+
+[node name="Bala" type="Area2D"]
+script = ExtResource("1_hrc2w")
+
+[node name="Fusiles" type="Sprite2D" parent="."]
+position = Vector2(0, -1)
+texture = ExtResource("2_hrc2w")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("RectangleShape2D_knxyy")
+
+[node name="VisibleOnScreenNotifier2D" type="VisibleOnScreenNotifier2D" parent="."]
+rect = Rect2(-4, -3, 8, 6)
+
+[connection signal="body_entered" from="." to="." method="_on_body_entered"]

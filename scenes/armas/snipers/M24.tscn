@@ -1,7 +1,7 @@
 [gd_scene load_steps=6 format=3 uid="uid://c836gegkrdy5e"]
 
 [ext_resource type="Script" uid="uid://dm10rva2ja187" path="res://scripts/armas/ArmaBase.gd" id="1_script"]
-[ext_resource type="PackedScene" uid="uid://bqjkouyrpyfr1" path="res://scenes/armas/Bala.tscn" id="2_bala"]
+[ext_resource type="PackedScene" uid="uid://5kqi7lakniin" path="res://scenes/armas/Bala_fusil.tscn" id="2_wysb2"]
 [ext_resource type="Texture2D" uid="uid://djl1yqd0lpoon" path="res://assets/sprites/armas/guns/M24.png" id="3_sprite"]
 [ext_resource type="AudioStream" uid="uid://holuy7bq6t7c" path="res://assets/sonidos/Armas/sonido_sniper.ogg" id="3_wysb2"]
 
@@ -10,10 +10,11 @@ radius = 13.0
 
 [node name="M24" type="Node2D"]
 script = ExtResource("1_script")
-bala_scene = ExtResource("2_bala")
+bala_scene = ExtResource("2_wysb2")
 velocidad_disparo = 1.2
 dano = 3
 sfx_disparo = ExtResource("3_wysb2")
+municion_maxima = 4
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
 position = Vector2(5, 0)

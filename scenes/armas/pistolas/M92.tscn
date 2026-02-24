@@ -13,6 +13,7 @@ script = ExtResource("1_script")
 bala_scene = ExtResource("2_bala")
 velocidad_disparo = 0.25
 sfx_disparo = ExtResource("3_y8cvo")
+municion_maxima = 6
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
 texture = ExtResource("3_sprite")

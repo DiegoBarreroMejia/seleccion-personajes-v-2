@@ -1,0 +1,124 @@
+[gd_scene load_steps=9 format=3 uid="uid://xf0jq47rlpor"]
+
+[ext_resource type="Script" uid="uid://datorr02cu0w4" path="res://scripts/armas/daga_sanyu.gd" id="1_daga"]
+[ext_resource type="AudioStream" uid="uid://cg0wcmqf5oio4" path="res://assets/sonidos/Armas/sonido_espadas.wav" id="2_71np0"]
+[ext_resource type="Texture2D" uid="uid://bjvblyg6e2f2s" path="res://assets/sprites/armas/daga_sanyu/SpriteDagaSanyu.png" id="2_daga"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_recogida"]
+radius = 25.0
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_filo"]
+
+[sub_resource type="Animation" id="Animation_RESET"]
+resource_name = "RESET"
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite2D:rotation")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [0.0]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("AreaDano/CollisionFilo:disabled")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [true]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("AreaDano:rotation")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [0.0]
+}
+
+[sub_resource type="Animation" id="Animation_atacar"]
+resource_name = "atacar"
+length = 0.35
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite2D:rotation")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.08, 0.2, 0.35),
+"transitions": PackedFloat32Array(1, 1, 1, 1),
+"update": 0,
+"values": [-1.2, -0.5, 0.9, 0.0]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("AreaDano/CollisionFilo:disabled")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 0.06, 0.3, 0.35),
+"transitions": PackedFloat32Array(1, 1, 1, 1),
+"update": 1,
+"values": [true, false, false, true]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("AreaDano:rotation")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0, 0.08, 0.2, 0.35),
+"transitions": PackedFloat32Array(1, 1, 1, 1),
+"update": 0,
+"values": [-1.2, -0.5, 0.9, 0.0]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_daga"]
+_data = {
+&"RESET": SubResource("Animation_RESET"),
+&"atacar": SubResource("Animation_atacar")
+}
+
+[node name="DagaSanyu" type="Node2D"]
+script = ExtResource("1_daga")
+sfx_ataque = ExtResource("2_71np0")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+scale = Vector2(0.1, 0.1)
+texture = ExtResource("2_daga")
+offset = Vector2(60, -80)
+
+[node name="AreaRecogida" type="Area2D" parent="."]
+collision_layer = 0
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="AreaRecogida"]
+shape = SubResource("CircleShape2D_recogida")
+
+[node name="AreaDano" type="Area2D" parent="."]
+collision_layer = 0
+
+[node name="CollisionFilo" type="CollisionShape2D" parent="AreaDano"]
+position = Vector2(14, -14)
+shape = SubResource("RectangleShape2D_filo")
+disabled = true
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+libraries = {
+&"": SubResource("AnimationLibrary_daga")
+}

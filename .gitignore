@@ -5,3 +5,7 @@ export_presets.cfg
 
 # Herramientas externas
 .claude/
+
+# Copias de seguridad
+_backup_seguridad/
+_backup_antes_refactor/

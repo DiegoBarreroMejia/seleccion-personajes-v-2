@@ -1,7 +1,7 @@
 [gd_scene load_steps=6 format=3 uid="uid://bgw5p8tncfeqq"]
 
 [ext_resource type="Script" uid="uid://dm10rva2ja187" path="res://scripts/armas/ArmaBase.gd" id="1_script"]
-[ext_resource type="PackedScene" uid="uid://bqjkouyrpyfr1" path="res://scenes/armas/Bala.tscn" id="2_bala"]
+[ext_resource type="PackedScene" uid="uid://5kqi7lakniin" path="res://scenes/armas/Bala_fusil.tscn" id="2_ku0ny"]
 [ext_resource type="AudioStream" uid="uid://c75msprh6fk0a" path="res://assets/sonidos/Armas/sonido_fusil.ogg" id="3_ku0ny"]
 [ext_resource type="Texture2D" uid="uid://clj0oueqn0w42" path="res://assets/sprites/armas/guns/M15.png" id="3_sprite"]
 
@@ -10,10 +10,11 @@ radius = 13.0
 
 [node name="M15" type="Node2D"]
 script = ExtResource("1_script")
-bala_scene = ExtResource("2_bala")
+bala_scene = ExtResource("2_ku0ny")
 velocidad_disparo = 0.15
 es_automatica = true
 sfx_disparo = ExtResource("3_ku0ny")
+municion_maxima = 10
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
 texture = ExtResource("3_sprite")

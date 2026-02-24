@@ -1,28 +1,29 @@
 extends CanvasLayer
 
-## Pantalla de victoria que se superpone sobre el mapa como overlay.
-##
-## Se instancia desde MapaController para que el fondo sea transparente
-## y se vea el estado final de la partida detrás.
-
-# === CONSTANTES ===
 const RUTA_MENU_INICIO: String = "res://scenes/ui/MenuInicio.tscn"
 const RUTA_SELECCION: String = "res://scenes/ui/CharacterSelect.tscn"
+const SFX_VICTORIA: AudioStream = preload("res://assets/sonidos/partida/sonido_victoria.wav")
 
-# === NODOS ===
 @onready var _label_ganador: Label = $Control/VBoxCentral/MarcoTexto/MargenMarco/VBoxInfo/LabelGanador
 @onready var _label_marcador: Label = $Control/VBoxCentral/MarcoTexto/MargenMarco/VBoxInfo/LabelMarcador
 @onready var _btn_revancha: TextureButton = $Control/VBoxCentral/BotonesContainer/BtnRevancha
 
-# === MÉTODOS DE CICLO DE VIDA ===
-
+# Muestra resultado y reproduce sonido de victoria
 func _ready() -> void:
 	get_tree().paused = false
 	_mostrar_resultado()
+	_reproducir_sonido_victoria()
 	_btn_revancha.grab_focus()
 
-# === MÉTODOS PRIVADOS ===
+# Reproduce el sfx de victoria
+func _reproducir_sonido_victoria() -> void:
+	var sfx := AudioStreamPlayer.new()
+	sfx.stream = SFX_VICTORIA
+	sfx.bus = "SFX"
+	add_child(sfx)
+	sfx.play()
 
+# Muestra el ganador y marcador final
 func _mostrar_resultado() -> void:
 	var id_ganador := Global.ultimo_ganador
 	var p1 := Global.obtener_puntuacion(1)
@@ -30,12 +31,12 @@ func _mostrar_resultado() -> void:
 	_label_ganador.text = "Jugador %d gana!" % id_ganador
 	_label_marcador.text = "%d  -  %d" % [p1, p2]
 
-# === SEÑALES DE BOTONES ===
-
+# Vuelve al menu principal
 func _on_btn_volver_menu_pressed() -> void:
 	Global.reiniciar_puntuaciones()
 	get_tree().change_scene_to_file(RUTA_MENU_INICIO)
 
+# Reinicia puntuaciones y va a seleccion de personajes
 func _on_btn_revancha_pressed() -> void:
 	Global.reiniciar_puntuaciones()
 	get_tree().change_scene_to_file(RUTA_SELECCION)

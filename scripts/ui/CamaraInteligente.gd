@@ -1,24 +1,23 @@
 extends Camera2D
 
-## Cámara que sigue a ambos jugadores y ajusta el zoom según la distancia
-
 @export var zoom_minimo: float = 0.5
 @export var zoom_maximo: float = 1.5
 @export var margen: float = 200.0
 
 var _jugadores: Array = []
 
+# Desactiva smoothing y busca jugadores
 func _ready() -> void:
-	# Sin smoothing - asignación directa como el código original
 	position_smoothing_enabled = false
 	_encontrar_jugadores()
 
+# Busca los jugadores en el grupo despues de un frame
 func _encontrar_jugadores() -> void:
 	await get_tree().process_frame
 	_jugadores = get_tree().get_nodes_in_group("jugadores")
 
+# Sigue el punto medio entre jugadores y ajusta zoom por distancia
 func _process(_delta: float) -> void:
-	# Limpiar jugadores inválidos solo si alguno fue liberado
 	var necesita_limpiar := false
 	for j in _jugadores:
 		if not is_instance_valid(j):
@@ -33,32 +32,25 @@ func _process(_delta: float) -> void:
 	var j1: Node2D = _jugadores[0]
 	var j2: Node2D = _jugadores[1]
 
-	# Punto medio exacto entre los dos
 	var punto_medio := (j1.global_position + j2.global_position) / 2.0
 
-	# Cálculo de distancia para el zoom dinámico
 	var distancia := j1.global_position.distance_to(j2.global_position)
 	var factor_zoom := clampf(1000.0 / (distancia + margen), zoom_minimo, zoom_maximo)
 
-	# Si hay límites configurados, asegurar que el zoom no muestre fuera del mapa
 	var tiene_limites := limit_left > -10000000 or limit_right < 10000000
 	if tiene_limites:
 		var viewport_size := get_viewport_rect().size
 		var ancho_mapa := float(limit_right - limit_left)
 		var alto_mapa := float(limit_bottom - limit_top)
 
-		# Zoom mínimo para que la cámara quepa dentro del mapa
 		var zoom_min_x := viewport_size.x / ancho_mapa
 		var zoom_min_y := viewport_size.y / alto_mapa
 		var zoom_minimo_real := maxf(zoom_min_x, zoom_min_y)
 
-		# No permitir que el zoom sea menor que lo que cabe en el mapa
 		factor_zoom = maxf(factor_zoom, zoom_minimo_real)
 
-		# Aplicar zoom
 		zoom = Vector2(factor_zoom, factor_zoom)
 
-		# Ahora clampear la posición
 		var medio_ancho := (viewport_size.x / 2.0) / factor_zoom
 		var medio_alto := (viewport_size.y / 2.0) / factor_zoom
 

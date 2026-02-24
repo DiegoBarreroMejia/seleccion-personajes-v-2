@@ -1,0 +1,93 @@
+[gd_scene load_steps=12 format=3 uid="uid://bvqd7w1e8s5j8"]
+
+[ext_resource type="Script" uid="uid://dv6ems0ybw6v1" path="res://scripts/personajes/PersonajeBase.gd" id="1_uyeyr"]
+[ext_resource type="Texture2D" uid="uid://du6ecku5xdity" path="res://assets/sprites/personajes/mushu/MushuCaminar.png" id="2_7t8hw"]
+[ext_resource type="Texture2D" uid="uid://bf3yjutf8nv8k" path="res://assets/sprites/personajes/mushu/MushuCaminar2.png" id="2_uyeyr"]
+[ext_resource type="Texture2D" uid="uid://ulafm4ft4gni" path="res://assets/sprites/personajes/mushu/Mushucorrer.png" id="4_5kvkt"]
+[ext_resource type="Texture2D" uid="uid://bib36xr8x1bcw" path="res://assets/sprites/personajes/mushu/MushuSaltar.png" id="5_7t8hw"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_mulan"]
+size = Vector2(34, 68)
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_mulan"]
+radius = 40.0
+
+[sub_resource type="Animation" id="Animation_reposo"]
+resource_name = "Reposo"
+length = 0.1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite:texture")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [ExtResource("2_7t8hw")]
+}
+
+[sub_resource type="Animation" id="Animation_correr"]
+resource_name = "correr"
+length = 0.4
+loop_mode = 1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite:texture")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.2),
+"transitions": PackedFloat32Array(1, 1),
+"update": 1,
+"values": [ExtResource("2_7t8hw"), ExtResource("2_uyeyr")]
+}
+
+[sub_resource type="Animation" id="Animation_saltar"]
+resource_name = "saltar"
+length = 0.4
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite:texture")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.2),
+"transitions": PackedFloat32Array(1, 1),
+"update": 1,
+"values": [ExtResource("4_5kvkt"), ExtResource("5_7t8hw")]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_mulan"]
+_data = {
+&"Reposo": SubResource("Animation_reposo"),
+&"correr": SubResource("Animation_correr"),
+&"saltar": SubResource("Animation_saltar")
+}
+
+[node name="Mushu" type="CharacterBody2D"]
+script = ExtResource("1_uyeyr")
+
+[node name="Sprite" type="Sprite2D" parent="."]
+position = Vector2(-1, -3)
+scale = Vector2(0.5, 0.5)
+texture = ExtResource("2_7t8hw")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("RectangleShape2D_mulan")
+
+[node name="Mano" type="Marker2D" parent="."]
+position = Vector2(22, 20)
+
+[node name="AreaRecogida" type="Area2D" parent="."]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="AreaRecogida"]
+shape = SubResource("CircleShape2D_mulan")
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+libraries = {
+&"": SubResource("AnimationLibrary_mulan")
+}

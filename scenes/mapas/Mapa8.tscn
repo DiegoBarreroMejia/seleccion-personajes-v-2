@@ -1,0 +1,97 @@
+[gd_scene load_steps=12 format=3 uid="uid://b5ykmstamg0mh"]
+
+[ext_resource type="Script" uid="uid://cb3rk5evlw376" path="res://scripts/mapas/MapaController.gd" id="1_phoqm"]
+[ext_resource type="Script" uid="uid://byk0a5r8sgysr" path="res://scripts/ui/CamaraInteligente.gd" id="2_w0wdw"]
+[ext_resource type="Texture2D" uid="uid://crhavq0ppsy73" path="res://assets/sprites/mapas/Background_mapa_cuadradox4.png" id="3_8jakl"]
+[ext_resource type="PackedScene" uid="uid://m3s3cyuu17fu" path="res://scenes/mapas/componentes/SpawnJugador.tscn" id="4_vqfor"]
+[ext_resource type="Texture2D" uid="uid://dadclipnu8rd7" path="res://assets/sprites/mapas/Fondo_mapa_cuadradox2.png" id="4_ypxyb"]
+[ext_resource type="PackedScene" uid="uid://76714ktwsqns" path="res://scenes/mapas/componentes/SpawnJ2.tscn" id="5_cocch"]
+[ext_resource type="PackedScene" uid="uid://b25ptj7tt26qn" path="res://scenes/mapas/componentes/SpawnerArmas.tscn" id="6_krmiv"]
+[ext_resource type="PackedScene" uid="uid://b580o3nn2kxk4" path="res://scenes/armas/granada/Granada.tscn" id="8_mftmh"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_hj54h"]
+size = Vector2(864.5, 20)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_hjj7e"]
+size = Vector2(21, 420)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_mwb2l"]
+size = Vector2(185, 11)
+
+[node name="Mapa5" type="Node2D"]
+script = ExtResource("1_phoqm")
+
+[node name="Camera2D" type="Camera2D" parent="."]
+script = ExtResource("2_w0wdw")
+
+[node name="BackgroundMapaCuadradox4" type="Sprite2D" parent="."]
+scale = Vector2(0.8, 0.8)
+texture = ExtResource("3_8jakl")
+
+[node name="FondoMapaCuadradox2" type="Sprite2D" parent="."]
+scale = Vector2(1.2, 1.2)
+texture = ExtResource("4_ypxyb")
+
+[node name="SpawnJ1" parent="." instance=ExtResource("4_vqfor")]
+position = Vector2(-342, 149)
+
+[node name="SpawnJ2" parent="." instance=ExtResource("5_cocch")]
+position = Vector2(334, 151)
+
+[node name="SpawnerArmas" parent="." instance=ExtResource("6_krmiv")]
+position = Vector2(-340, -2)
+lista_armas = Array[PackedScene]([ExtResource("8_mftmh")])
+tiempo_respawn = 1.0
+
+[node name="SpawnerArmas2" parent="." instance=ExtResource("6_krmiv")]
+position = Vector2(332, 0)
+lista_armas = Array[PackedScene]([ExtResource("8_mftmh")])
+tiempo_respawn = 1.0
+
+[node name="SpawnerArmas3" parent="." instance=ExtResource("6_krmiv")]
+position = Vector2(-1, 166)
+lista_armas = Array[PackedScene]([ExtResource("8_mftmh")])
+tiempo_respawn = 1.0
+
+[node name="Node2D" type="Node2D" parent="."]
+
+[node name="StaticBody2D" type="StaticBody2D" parent="Node2D"]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Node2D/StaticBody2D"]
+position = Vector2(-0.75, 222)
+shape = SubResource("RectangleShape2D_hj54h")
+
+[node name="StaticBody2D2" type="StaticBody2D" parent="Node2D"]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Node2D/StaticBody2D2"]
+position = Vector2(-445.5, 0)
+shape = SubResource("RectangleShape2D_hjj7e")
+
+[node name="StaticBody2D3" type="StaticBody2D" parent="Node2D"]
+position = Vector2(883, 0)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Node2D/StaticBody2D3"]
+position = Vector2(-445.5, 0)
+shape = SubResource("RectangleShape2D_hjj7e")
+
+[node name="StaticBody2D4" type="StaticBody2D" parent="Node2D"]
+position = Vector2(-2, -444)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Node2D/StaticBody2D4"]
+position = Vector2(-0.75, 222)
+shape = SubResource("RectangleShape2D_hj54h")
+
+[node name="StaticBody2D5" type="StaticBody2D" parent="Node2D"]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Node2D/StaticBody2D5"]
+position = Vector2(-340.5, 46)
+shape = SubResource("RectangleShape2D_mwb2l")
+one_way_collision = true
+
+[node name="StaticBody2D6" type="StaticBody2D" parent="Node2D"]
+position = Vector2(671, -3)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Node2D/StaticBody2D6"]
+position = Vector2(-340.5, 46)
+shape = SubResource("RectangleShape2D_mwb2l")
+one_way_collision = true

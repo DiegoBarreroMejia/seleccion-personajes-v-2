@@ -13,6 +13,7 @@ script = ExtResource("1_xupck")
 bala_scene = ExtResource("2_xkb5i")
 velocidad_disparo = 0.3
 sfx_disparo = ExtResource("3_mxwt1")
+municion_maxima = 6
 
 [node name="Luger" type="Sprite2D" parent="."]
 texture = ExtResource("3_opwvx")

@@ -1,0 +1,81 @@
+[gd_scene load_steps=13 format=3 uid="uid://dnyvf2fic0v66"]
+
+[ext_resource type="Script" uid="uid://cb3rk5evlw376" path="res://scripts/mapas/MapaController.gd" id="1_ctrl"]
+[ext_resource type="Script" uid="uid://byk0a5r8sgysr" path="res://scripts/ui/CamaraInteligente.gd" id="2_cam"]
+[ext_resource type="Texture2D" uid="uid://4a02i6obl8um" path="res://assets/sprites/mapas/Mapa_Kratos_fondo_completox2.jpeg" id="3_fondo"]
+[ext_resource type="PackedScene" uid="uid://m3s3cyuu17fu" path="res://scenes/mapas/componentes/SpawnJugador.tscn" id="4_spawn"]
+[ext_resource type="PackedScene" uid="uid://b25ptj7tt26qn" path="res://scenes/mapas/componentes/SpawnerArmas.tscn" id="5_spawner"]
+[ext_resource type="Script" uid="uid://b56olwpbo4lcl" path="res://scripts/mapas/ZonaMuerte.gd" id="6_muerte"]
+[ext_resource type="PackedScene" uid="uid://besaiok7b0dsf" path="res://scenes/armas/hacha_kratos/hacha_kratos.tscn" id="7_hacha"]
+[ext_resource type="PackedScene" uid="uid://dktvgy4ac4dn6" path="res://scenes/armas/bola_fuego/BolaDeFuego.tscn" id="8_bola"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_t1tod"]
+size = Vector2(1088, 20)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_icxr5"]
+size = Vector2(20, 630)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_bo85x"]
+size = Vector2(20, 484)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_zmuer"]
+size = Vector2(1500, 8)
+
+[node name="Mapa6" type="Node2D"]
+script = ExtResource("1_ctrl")
+
+[node name="Camera2D" type="Camera2D" parent="."]
+script = ExtResource("2_cam")
+
+[node name="MapaKratosFondoCompletox2" type="Sprite2D" parent="."]
+texture = ExtResource("3_fondo")
+
+[node name="SuelosyParedes" type="Node2D" parent="."]
+
+[node name="StaticBody2D" type="StaticBody2D" parent="SuelosyParedes"]
+collision_layer = 33
+collision_mask = 0
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="SuelosyParedes/StaticBody2D"]
+position = Vector2(-32, 320)
+shape = SubResource("RectangleShape2D_t1tod")
+
+[node name="StaticBody2D2" type="StaticBody2D" parent="SuelosyParedes"]
+collision_layer = 33
+collision_mask = 0
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="SuelosyParedes/StaticBody2D2"]
+position = Vector2(-578, 9)
+shape = SubResource("RectangleShape2D_icxr5")
+
+[node name="StaticBody2D3" type="StaticBody2D" parent="SuelosyParedes"]
+collision_layer = 33
+collision_mask = 0
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="SuelosyParedes/StaticBody2D3"]
+position = Vector2(501, 77)
+shape = SubResource("RectangleShape2D_bo85x")
+
+[node name="SpawnJ1" parent="." instance=ExtResource("4_spawn")]
+position = Vector2(-300, 290)
+
+[node name="SpawnJ2" parent="." instance=ExtResource("4_spawn")]
+position = Vector2(300, 290)
+id_jugador = 2
+
+[node name="SpawnerArmas" parent="." instance=ExtResource("5_spawner")]
+position = Vector2(-150, 290)
+lista_armas = Array[PackedScene]([ExtResource("7_hacha"), ExtResource("8_bola")])
+tiempo_respawn = 3.0
+
+[node name="SpawnerArmas2" parent="." instance=ExtResource("5_spawner")]
+position = Vector2(150, 290)
+lista_armas = Array[PackedScene]([ExtResource("7_hacha"), ExtResource("8_bola")])
+tiempo_respawn = 3.0
+
+[node name="ZonaMuerte" type="Area2D" parent="."]
+position = Vector2(0, 550)
+script = ExtResource("6_muerte")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="ZonaMuerte"]
+shape = SubResource("RectangleShape2D_zmuer")

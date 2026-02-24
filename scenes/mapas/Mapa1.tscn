@@ -1,24 +1,31 @@
-[gd_scene load_steps=19 format=3 uid="uid://xx2kqyei0veq"]
+[gd_scene load_steps=26 format=3 uid="uid://xx2kqyei0veq"]
 
 [ext_resource type="Script" uid="uid://cb3rk5evlw376" path="res://scripts/mapas/MapaController.gd" id="1_i17oa"]
 [ext_resource type="Script" uid="uid://byk0a5r8sgysr" path="res://scripts/ui/CamaraInteligente.gd" id="2_emxrc"]
 [ext_resource type="Texture2D" uid="uid://rjj3c4b4k58o" path="res://assets/sprites/mapas/rectan_azul.png" id="2_p2j07"]
 [ext_resource type="PackedScene" uid="uid://m3s3cyuu17fu" path="res://scenes/mapas/componentes/SpawnJugador.tscn" id="3_emxrc"]
-[ext_resource type="PackedScene" uid="uid://c30nrefunu7kt" path="res://scenes/armas/pistolas/Luger.tscn" id="5_b3brl"]
-[ext_resource type="PackedScene" uid="uid://dbdym27q1ixdl" path="res://scenes/armas/escopetas/M24.tscn" id="6_4hoji"]
 [ext_resource type="PackedScene" uid="uid://b25ptj7tt26qn" path="res://scenes/mapas/componentes/SpawnerArmas.tscn" id="6_5f6nd"]
-[ext_resource type="PackedScene" uid="uid://dw06gm2b1vud7" path="res://scenes/armas/rifles/AK47.tscn" id="8_4hoji"]
-[ext_resource type="PackedScene" uid="uid://blfwly6c2khjp" path="res://scenes/armas/espada_steve/espada.tscn" id="8_emxrc"]
 [ext_resource type="Script" uid="uid://b56olwpbo4lcl" path="res://scripts/mapas/ZonaMuerte.gd" id="8_i17oa"]
-[ext_resource type="PackedScene" uid="uid://bot3qm2wvoeqq" path="res://scenes/armas/pistolas/M92.tscn" id="8_oyyrh"]
-[ext_resource type="PackedScene" uid="uid://buum6hxidh4w5" path="res://scenes/armas/pistolas/Revolver.tscn" id="9_4hoji"]
-[ext_resource type="PackedScene" uid="uid://c836gegkrdy5e" path="res://scenes/armas/snipers/M24.tscn" id="10_vau7j"]
-[ext_resource type="PackedScene" uid="uid://bgw5p8tncfeqq" path="res://scenes/armas/rifles/M15.tscn" id="11_ekd0n"]
-[ext_resource type="PackedScene" uid="uid://cvcy0aocxkmfo" path="res://scenes/armas/subfusiles/MP5.tscn" id="13_etde7"]
-[ext_resource type="PackedScene" uid="uid://mqim3a8e2605" path="res://scenes/armas/arco_steve/Arco.tscn" id="14_arco"]
+[ext_resource type="PackedScene" uid="uid://bcd7xyltdotyn" path="res://scenes/objetos/BarrilExplosivo.tscn" id="19_7oced"]
+[ext_resource type="PackedScene" uid="uid://dw06gm2b1vud7" path="res://scenes/armas/rifles/AK47.tscn" id="arma_ak47"]
+[ext_resource type="PackedScene" uid="uid://mqim3a8e2605" path="res://scenes/armas/arco_steve/Arco.tscn" id="arma_arco"]
+[ext_resource type="PackedScene" uid="uid://dktvgy4ac4dn6" path="res://scenes/armas/bola_fuego/BolaDeFuego.tscn" id="arma_bola"]
+[ext_resource type="PackedScene" uid="uid://xf0jq47rlpor" path="res://scenes/armas/daga_sanyu/daga_sanyu.tscn" id="arma_daga"]
+[ext_resource type="PackedScene" uid="uid://dbdym27q1ixdl" path="res://scenes/armas/escopetas/M24.tscn" id="arma_escopeta"]
+[ext_resource type="PackedScene" path="res://scenes/armas/escudo_kratos/escudo_kratos.tscn" id="arma_escudo"]
+[ext_resource type="PackedScene" uid="uid://blfwly6c2khjp" path="res://scenes/armas/espada_steve/espada.tscn" id="arma_espada"]
+[ext_resource type="PackedScene" uid="uid://djrs5m0xodssk" path="res://scenes/armas/espada_mulan/espada_mulan.tscn" id="arma_espada_mulan"]
+[ext_resource type="PackedScene" uid="uid://b580o3nn2kxk4" path="res://scenes/armas/granada/Granada.tscn" id="arma_granada"]
+[ext_resource type="PackedScene" uid="uid://besaiok7b0dsf" path="res://scenes/armas/hacha_kratos/hacha_kratos.tscn" id="arma_hacha"]
+[ext_resource type="PackedScene" uid="uid://c30nrefunu7kt" path="res://scenes/armas/pistolas/Luger.tscn" id="arma_luger"]
+[ext_resource type="PackedScene" uid="uid://bgw5p8tncfeqq" path="res://scenes/armas/rifles/M15.tscn" id="arma_m15"]
+[ext_resource type="PackedScene" uid="uid://bot3qm2wvoeqq" path="res://scenes/armas/pistolas/M92.tscn" id="arma_m92"]
+[ext_resource type="PackedScene" uid="uid://cvcy0aocxkmfo" path="res://scenes/armas/subfusiles/MP5.tscn" id="arma_mp5"]
+[ext_resource type="PackedScene" uid="uid://buum6hxidh4w5" path="res://scenes/armas/pistolas/Revolver.tscn" id="arma_revolver"]
+[ext_resource type="PackedScene" uid="uid://c836gegkrdy5e" path="res://scenes/armas/snipers/M24.tscn" id="arma_sniper"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_ihfxy"]
-size = Vector2(1081, 75.5)
+size = Vector2(2333, 75.5)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_p2j07"]
 size = Vector2(1508, 8)
@@ -39,7 +46,7 @@ scale = Vector2(3.0699997, 0.364)
 texture = ExtResource("2_p2j07")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="StaticBody2D"]
-position = Vector2(569.5, 494.75)
+position = Vector2(572.5, 494.75)
 shape = SubResource("RectangleShape2D_ihfxy")
 
 [node name="SpawnJ2" parent="." instance=ExtResource("3_emxrc")]
@@ -49,14 +56,84 @@ id_jugador = 2
 [node name="SpawnJ1" parent="." instance=ExtResource("3_emxrc")]
 position = Vector2(109, 400)
 
-[node name="SpawnerArmas" parent="." instance=ExtResource("6_5f6nd")]
-position = Vector2(258, 435)
-lista_armas = Array[PackedScene]([ExtResource("6_4hoji"), ExtResource("8_emxrc"), ExtResource("5_b3brl"), ExtResource("8_oyyrh"), ExtResource("9_4hoji"), ExtResource("8_4hoji"), ExtResource("11_ekd0n"), ExtResource("10_vau7j"), ExtResource("13_etde7"), ExtResource("14_arco")])
+[node name="SpawnerBolaDeFuego" parent="." instance=ExtResource("6_5f6nd")]
+position = Vector2(60, 435)
+lista_armas = Array[PackedScene]([ExtResource("arma_bola")])
 tiempo_respawn = 3.0
 
-[node name="SpawnerArmas2" parent="." instance=ExtResource("6_5f6nd")]
-position = Vector2(755, 432)
-lista_armas = Array[PackedScene]([ExtResource("10_vau7j"), ExtResource("8_emxrc"), ExtResource("5_b3brl"), ExtResource("8_oyyrh"), ExtResource("9_4hoji"), ExtResource("8_4hoji"), ExtResource("11_ekd0n"), ExtResource("10_vau7j"), ExtResource("13_etde7"), ExtResource("14_arco")])
+[node name="SpawnerHacha" parent="." instance=ExtResource("6_5f6nd")]
+position = Vector2(128, 435)
+lista_armas = Array[PackedScene]([ExtResource("arma_hacha")])
+tiempo_respawn = 3.0
+
+[node name="SpawnerEscudo" parent="." instance=ExtResource("6_5f6nd")]
+position = Vector2(196, 435)
+lista_armas = Array[PackedScene]([ExtResource("arma_escudo")])
+tiempo_respawn = 3.0
+
+[node name="SpawnerLuger" parent="." instance=ExtResource("6_5f6nd")]
+position = Vector2(264, 435)
+lista_armas = Array[PackedScene]([ExtResource("arma_luger")])
+tiempo_respawn = 3.0
+
+[node name="SpawnerM92" parent="." instance=ExtResource("6_5f6nd")]
+position = Vector2(332, 435)
+lista_armas = Array[PackedScene]([ExtResource("arma_m92")])
+tiempo_respawn = 3.0
+
+[node name="SpawnerRevolver" parent="." instance=ExtResource("6_5f6nd")]
+position = Vector2(400, 435)
+lista_armas = Array[PackedScene]([ExtResource("arma_revolver")])
+tiempo_respawn = 3.0
+
+[node name="SpawnerAK47" parent="." instance=ExtResource("6_5f6nd")]
+position = Vector2(468, 435)
+lista_armas = Array[PackedScene]([ExtResource("arma_ak47")])
+tiempo_respawn = 3.0
+
+[node name="SpawnerM15" parent="." instance=ExtResource("6_5f6nd")]
+position = Vector2(536, 435)
+lista_armas = Array[PackedScene]([ExtResource("arma_m15")])
+tiempo_respawn = 3.0
+
+[node name="SpawnerEscopeta" parent="." instance=ExtResource("6_5f6nd")]
+position = Vector2(604, 435)
+lista_armas = Array[PackedScene]([ExtResource("arma_escopeta")])
+tiempo_respawn = 3.0
+
+[node name="SpawnerMP5" parent="." instance=ExtResource("6_5f6nd")]
+position = Vector2(672, 435)
+lista_armas = Array[PackedScene]([ExtResource("arma_mp5")])
+tiempo_respawn = 3.0
+
+[node name="SpawnerSniper" parent="." instance=ExtResource("6_5f6nd")]
+position = Vector2(740, 435)
+lista_armas = Array[PackedScene]([ExtResource("arma_sniper")])
+tiempo_respawn = 3.0
+
+[node name="SpawnerArco" parent="." instance=ExtResource("6_5f6nd")]
+position = Vector2(808, 435)
+lista_armas = Array[PackedScene]([ExtResource("arma_arco")])
+tiempo_respawn = 3.0
+
+[node name="SpawnerEspada" parent="." instance=ExtResource("6_5f6nd")]
+position = Vector2(876, 435)
+lista_armas = Array[PackedScene]([ExtResource("arma_espada")])
+tiempo_respawn = 3.0
+
+[node name="SpawnerEspadaMulan" parent="." instance=ExtResource("6_5f6nd")]
+position = Vector2(944, 435)
+lista_armas = Array[PackedScene]([ExtResource("arma_espada_mulan")])
+tiempo_respawn = 3.0
+
+[node name="SpawnerDaga" parent="." instance=ExtResource("6_5f6nd")]
+position = Vector2(1012, 435)
+lista_armas = Array[PackedScene]([ExtResource("arma_daga")])
+tiempo_respawn = 3.0
+
+[node name="SpawnerGranada" parent="." instance=ExtResource("6_5f6nd")]
+position = Vector2(1080, 435)
+lista_armas = Array[PackedScene]([ExtResource("arma_granada")])
 tiempo_respawn = 3.0
 
 [node name="ZonaMuerte" type="Area2D" parent="."]
@@ -66,3 +143,6 @@ script = ExtResource("8_i17oa")
 [node name="CollisionShape2D" type="CollisionShape2D" parent="ZonaMuerte"]
 position = Vector2(2, 1)
 shape = SubResource("RectangleShape2D_p2j07")
+
+[node name="BarrilExplosivo" parent="." instance=ExtResource("19_7oced")]
+position = Vector2(497, 470)

@@ -1,13 +1,5 @@
 extends Node
 
-## Gestor de configuración del juego
-##
-## Maneja:
-## - Configuración de video (resolución, modo pantalla)
-## - Configuración de controles (reasignación de teclas)
-## - Persistencia con ConfigFile
-
-# === CONSTANTES ===
 const RUTA_CONFIG: String = "user://config.cfg"
 
 const RESOLUCIONES: Array[Vector2i] = [
@@ -18,7 +10,6 @@ const RESOLUCIONES: Array[Vector2i] = [
 
 const RESOLUCION_DEFECTO: Vector2i = Vector2i(1280, 720)
 
-## Acciones de cada jugador que se pueden reasignar
 const ACCIONES_J1: Array[String] = [
 	"j1_arriba", "j1_abajo", "j1_izquierda", "j1_derecha",
 	"j1_salto", "j1_disparo", "j1_accion"
@@ -29,7 +20,6 @@ const ACCIONES_J2: Array[String] = [
 	"j2_salto", "j2_disparo", "j2_accion"
 ]
 
-## Nombres legibles para mostrar en UI
 const NOMBRES_ACCIONES: Dictionary = {
 	"j1_arriba": "Arriba",
 	"j1_abajo": "Abajo",
@@ -47,50 +37,38 @@ const NOMBRES_ACCIONES: Dictionary = {
 	"j2_accion": "Acción"
 }
 
-# === SEÑALES ===
 signal configuracion_cambiada()
 signal control_reasignado(accion: String, tecla: String)
 
-# === VARIABLES DE CONFIGURACIÓN ===
 var resolucion_actual: Vector2i = RESOLUCION_DEFECTO
 var pantalla_completa: bool = false
 
-# === VARIABLES DE AUDIO ===
-var volumen_musica: float = 0.8  ## Volumen de música (0.0 a 1.0)
-var volumen_sfx: float = 0.8  ## Volumen de efectos de sonido (0.0 a 1.0)
-var soundtrack_seleccionado: int = 0  ## Índice del soundtrack activo
+var volumen_musica: float = 0.8
+var volumen_sfx: float = 0.8
+var soundtrack_seleccionado: int = 0
 
-# === VARIABLES DE CAMBIOS PENDIENTES (VIDEO) ===
 var _resolucion_pendiente: Vector2i = RESOLUCION_DEFECTO
 var _pantalla_completa_pendiente: bool = false
 var _hay_cambios_pendientes: bool = false
 
-# === VARIABLES DE ESTADO PREVIO (AUDIO) ===
-## Snapshot de los valores de audio al abrir ajustes, para revertir con "Volver"
 var _volumen_musica_previo: float = 0.8
 var _volumen_sfx_previo: float = 0.8
 var _soundtrack_previo: int = 0
 
-# === VARIABLES DE ESTADO PREVIO (CONTROLES) ===
-## Snapshot de los controles al abrir ajustes, para revertir con "Volver"
 var _controles_previos: Dictionary = {}
 
-# === VARIABLES PRIVADAS ===
 var _config: ConfigFile
-var _controles_defecto: Dictionary = {}  # Guarda los controles originales
+var _controles_defecto: Dictionary = {}
 
-# === MÉTODOS DE CICLO DE VIDA ===
-
+# Carga configuracion y aplica video
 func _ready() -> void:
 	_config = ConfigFile.new()
 	_guardar_controles_defecto()
 	cargar_config()
 	_aplicar_configuracion_video()
 
-# === MÉTODOS PRIVADOS ===
-
+# Guarda los controles originales de project.godot
 func _guardar_controles_defecto() -> void:
-	## Guarda los controles definidos en project.godot como referencia
 	for accion in ACCIONES_J1 + ACCIONES_J2:
 		var eventos := InputMap.action_get_events(accion)
 		if eventos.size() > 0:
@@ -98,8 +76,8 @@ func _guardar_controles_defecto() -> void:
 			if evento:
 				_controles_defecto[accion] = evento.physical_keycode
 
+# Aplica resolucion y modo pantalla
 func _aplicar_configuracion_video() -> void:
-	## Aplica la configuración de video actual
 	if pantalla_completa:
 		DisplayServer.window_set_mode(DisplayServer.WINDOW_MODE_FULLSCREEN)
 	else:
@@ -107,17 +85,15 @@ func _aplicar_configuracion_video() -> void:
 		DisplayServer.window_set_size(resolucion_actual)
 		_centrar_ventana()
 
+# Centra la ventana en la pantalla
 func _centrar_ventana() -> void:
-	## Centra la ventana en la pantalla
 	var pantalla_size := DisplayServer.screen_get_size()
 	var ventana_size := DisplayServer.window_get_size()
 	var pos := (pantalla_size - ventana_size) / 2
 	DisplayServer.window_set_position(pos)
 
-# === MÉTODOS PÚBLICOS - VIDEO ===
-
+# Cambia la resolucion de la ventana
 func cambiar_resolucion(nueva_res: Vector2i) -> void:
-	## Cambia la resolución de la ventana
 	if nueva_res not in RESOLUCIONES:
 		push_warning("ConfigManager: Resolución no válida: %s" % str(nueva_res))
 		return
@@ -130,10 +106,9 @@ func cambiar_resolucion(nueva_res: Vector2i) -> void:
 
 	guardar_config()
 	configuracion_cambiada.emit()
-	print("Resolución cambiada a: %dx%d" % [nueva_res.x, nueva_res.y])
 
+# Cambia entre pantalla completa y ventana
 func cambiar_modo_pantalla(completa: bool) -> void:
-	## Cambia entre pantalla completa y ventana
 	pantalla_completa = completa
 
 	if pantalla_completa:
@@ -145,32 +120,29 @@ func cambiar_modo_pantalla(completa: bool) -> void:
 
 	guardar_config()
 	configuracion_cambiada.emit()
-	print("Modo pantalla: %s" % ("Completa" if completa else "Ventana"))
 
+# Devuelve el indice de la resolucion actual
 func obtener_indice_resolucion() -> int:
-	## Devuelve el índice de la resolución actual en RESOLUCIONES
 	for i in range(RESOLUCIONES.size()):
 		if RESOLUCIONES[i] == resolucion_actual:
 			return i
 	return 0
 
-# === MÉTODOS PÚBLICOS - CAMBIOS PENDIENTES VIDEO ===
-
+# Establece resolucion pendiente sin aplicar
 func establecer_resolucion_pendiente(nueva_res: Vector2i) -> void:
-	## Establece una resolución pendiente (no se aplica hasta llamar aplicar_cambios_video)
 	if nueva_res not in RESOLUCIONES:
 		push_warning("ConfigManager: Resolución no válida: %s" % str(nueva_res))
 		return
 	_resolucion_pendiente = nueva_res
 	_hay_cambios_pendientes = true
 
+# Establece modo pantalla pendiente sin aplicar
 func establecer_pantalla_completa_pendiente(completa: bool) -> void:
-	## Establece modo pantalla pendiente (no se aplica hasta llamar aplicar_cambios_video)
 	_pantalla_completa_pendiente = completa
 	_hay_cambios_pendientes = true
 
+# Aplica los cambios de video pendientes
 func aplicar_cambios_video() -> void:
-	## Aplica todos los cambios de video pendientes
 	if not _hay_cambios_pendientes:
 		return
 
@@ -179,62 +151,47 @@ func aplicar_cambios_video() -> void:
 
 	_aplicar_configuracion_video()
 	_hay_cambios_pendientes = false
-	print("Cambios de video aplicados")
 
+# Descarta cambios pendientes de video
 func descartar_cambios_video() -> void:
-	## Descarta los cambios pendientes y restaura los valores actuales
 	_resolucion_pendiente = resolucion_actual
 	_pantalla_completa_pendiente = pantalla_completa
 	_hay_cambios_pendientes = false
 
+# Inicializa valores pendientes y previos al abrir ajustes
 func inicializar_pendientes() -> void:
-	## Inicializa los valores pendientes/previos con los valores actuales.
-	## Llamar al abrir la pantalla de ajustes.
-	# Video
 	_resolucion_pendiente = resolucion_actual
 	_pantalla_completa_pendiente = pantalla_completa
 	_hay_cambios_pendientes = false
-	# Audio
 	_volumen_musica_previo = volumen_musica
 	_volumen_sfx_previo = volumen_sfx
 	_soundtrack_previo = soundtrack_seleccionado
-	# Controles
 	_guardar_snapshot_controles()
 
+# Devuelve si hay cambios sin aplicar
 func hay_cambios_pendientes() -> bool:
-	## Devuelve true si hay cambios sin aplicar
 	return _hay_cambios_pendientes
 
-# === MÉTODOS PÚBLICOS - APLICAR / DESCARTAR TODO ===
-
+# Aplica y guarda todos los cambios pendientes
 func aplicar_todos_los_cambios() -> void:
-	## Aplica y guarda TODOS los cambios pendientes (video + audio + controles)
 	aplicar_cambios_video()
 	guardar_config()
-	# Actualizar snapshots para que "Volver" no revierta lo ya aplicado
 	_volumen_musica_previo = volumen_musica
 	_volumen_sfx_previo = volumen_sfx
 	_soundtrack_previo = soundtrack_seleccionado
 	_guardar_snapshot_controles()
 	configuracion_cambiada.emit()
-	print("Todos los cambios aplicados y guardados")
 
+# Descarta todos los cambios no aplicados
 func descartar_todos_los_cambios() -> void:
-	## Descarta TODOS los cambios no aplicados y revierte a valores guardados
-	# Video
 	descartar_cambios_video()
-	# Audio: revertir a valores previos
 	volumen_musica = _volumen_musica_previo
 	volumen_sfx = _volumen_sfx_previo
 	soundtrack_seleccionado = _soundtrack_previo
-	# Controles: revertir InputMap al snapshot previo
 	_restaurar_snapshot_controles()
-	print("Todos los cambios descartados")
 
-# === MÉTODOS PRIVADOS - SNAPSHOTS DE CONTROLES ===
-
+# Guarda estado actual del InputMap
 func _guardar_snapshot_controles() -> void:
-	## Guarda el estado actual del InputMap para poder revertir
 	_controles_previos.clear()
 	for accion in ACCIONES_J1 + ACCIONES_J2:
 		var eventos := InputMap.action_get_events(accion)
@@ -243,36 +200,31 @@ func _guardar_snapshot_controles() -> void:
 			if evento:
 				_controles_previos[accion] = evento.physical_keycode
 
+# Restaura el InputMap al snapshot previo
 func _restaurar_snapshot_controles() -> void:
-	## Restaura el InputMap al estado guardado en el snapshot
 	for accion in _controles_previos:
 		InputMap.action_erase_events(accion)
 		var evento := InputEventKey.new()
 		evento.physical_keycode = _controles_previos[accion] as Key
 		InputMap.action_add_event(accion, evento)
 
+# Devuelve el indice de la resolucion pendiente
 func obtener_indice_resolucion_pendiente() -> int:
-	## Devuelve el índice de la resolución pendiente en RESOLUCIONES
 	for i in range(RESOLUCIONES.size()):
 		if RESOLUCIONES[i] == _resolucion_pendiente:
 			return i
 	return 0
 
+# Devuelve el estado pendiente de pantalla completa
 func obtener_pantalla_completa_pendiente() -> bool:
-	## Devuelve el estado pendiente de pantalla completa
 	return _pantalla_completa_pendiente
 
-# === MÉTODOS PÚBLICOS - CONTROLES ===
-
+# Reasigna una accion a una nueva tecla
 func reasignar_control(accion: String, nuevo_evento: InputEventKey) -> bool:
-	## Reasigna una acción a una nueva tecla
-	## Devuelve true si se reasignó correctamente
-
 	if accion not in ACCIONES_J1 + ACCIONES_J2:
 		push_warning("ConfigManager: Acción no válida: %s" % accion)
 		return false
 
-	# Verificar si la tecla ya está asignada a otra acción del mismo jugador
 	var es_j1 := accion in ACCIONES_J1
 	var acciones_jugador := ACCIONES_J1 if es_j1 else ACCIONES_J2
 
@@ -286,19 +238,16 @@ func reasignar_control(accion: String, nuevo_evento: InputEventKey) -> bool:
 					push_warning("ConfigManager: Tecla ya asignada a %s" % otra_accion)
 					return false
 
-	# Limpiar eventos anteriores y añadir el nuevo (preview)
 	InputMap.action_erase_events(accion)
 	InputMap.action_add_event(accion, nuevo_evento)
 
 	var nombre_tecla := OS.get_keycode_string(nuevo_evento.physical_keycode)
 	control_reasignado.emit(accion, nombre_tecla)
-	print("Control reasignado: %s -> %s" % [accion, nombre_tecla])
 
 	return true
 
+# Restaura controles a valores por defecto
 func restablecer_controles() -> void:
-	## Restaura todos los controles a sus valores por defecto (preview).
-	## No guarda hasta llamar aplicar_todos_los_cambios().
 	for accion in _controles_defecto:
 		InputMap.action_erase_events(accion)
 
@@ -307,10 +256,9 @@ func restablecer_controles() -> void:
 		InputMap.action_add_event(accion, evento)
 
 	configuracion_cambiada.emit()
-	print("Controles restablecidos a valores por defecto (pendiente de aplicar)")
 
+# Devuelve el nombre de la tecla asignada a una accion
 func obtener_tecla_accion(accion: String) -> String:
-	## Devuelve el nombre de la tecla asignada a una acción
 	var eventos := InputMap.action_get_events(accion)
 	for evento in eventos:
 		if evento is InputEventKey:
@@ -321,39 +269,32 @@ func obtener_tecla_accion(accion: String) -> String:
 			return OS.get_keycode_string(keycode)
 	return "?"
 
+# Devuelve el nombre legible de una accion
 func obtener_nombre_accion(accion: String) -> String:
-	## Devuelve el nombre legible de una acción
 	return NOMBRES_ACCIONES.get(accion, accion)
 
-# === MÉTODOS PÚBLICOS - AUDIO ===
-
+# Cambia el volumen de musica (preview)
 func cambiar_volumen_musica(valor: float) -> void:
-	## Cambia el volumen de música (preview). No guarda hasta llamar aplicar_todos_los_cambios().
 	volumen_musica = clampf(valor, 0.0, 1.0)
 
+# Cambia el volumen de sfx (preview)
 func cambiar_volumen_sfx(valor: float) -> void:
-	## Cambia el volumen de SFX (preview). No guarda hasta llamar aplicar_todos_los_cambios().
 	volumen_sfx = clampf(valor, 0.0, 1.0)
 
+# Cambia el soundtrack seleccionado (preview)
 func cambiar_soundtrack(indice: int) -> void:
-	## Cambia el soundtrack seleccionado (preview). No guarda hasta llamar aplicar_todos_los_cambios().
 	soundtrack_seleccionado = indice
 
-# === PERSISTENCIA ===
-
+# Guarda la configuracion en archivo
 func guardar_config() -> void:
-	## Guarda la configuración actual en archivo
-	# Video
 	_config.set_value("video", "resolucion_x", resolucion_actual.x)
 	_config.set_value("video", "resolucion_y", resolucion_actual.y)
 	_config.set_value("video", "pantalla_completa", pantalla_completa)
 
-	# Audio
 	_config.set_value("audio", "volumen_musica", volumen_musica)
 	_config.set_value("audio", "volumen_sfx", volumen_sfx)
 	_config.set_value("audio", "soundtrack_seleccionado", soundtrack_seleccionado)
 
-	# Controles
 	for accion in ACCIONES_J1 + ACCIONES_J2:
 		var eventos := InputMap.action_get_events(accion)
 		if eventos.size() > 0:
@@ -368,26 +309,22 @@ func guardar_config() -> void:
 	if error != OK:
 		push_error("ConfigManager: Error al guardar config: %d" % error)
 	else:
-		print("Configuración guardada en %s" % RUTA_CONFIG)
+		pass
 
+# Carga la configuracion desde archivo
 func cargar_config() -> void:
-	## Carga la configuración desde archivo
 	var error := _config.load(RUTA_CONFIG)
 
 	if error != OK:
-		print("ConfigManager: No existe config, usando valores por defecto")
 		return
 
-	# Video
 	resolucion_actual.x = _config.get_value("video", "resolucion_x", RESOLUCION_DEFECTO.x)
 	resolucion_actual.y = _config.get_value("video", "resolucion_y", RESOLUCION_DEFECTO.y)
 	pantalla_completa = _config.get_value("video", "pantalla_completa", false)
 
-	# Validar resolución
 	if resolucion_actual not in RESOLUCIONES:
 		resolucion_actual = RESOLUCION_DEFECTO
 
-	# Audio
 	volumen_musica = _config.get_value("audio", "volumen_musica", 0.8)
 	volumen_sfx = _config.get_value("audio", "volumen_sfx", 0.8)
 	soundtrack_seleccionado = _config.get_value("audio", "soundtrack_seleccionado", 0)
@@ -396,7 +333,6 @@ func cargar_config() -> void:
 	if soundtrack_seleccionado < 0:
 		soundtrack_seleccionado = 0
 
-	# Controles
 	for accion in ACCIONES_J1 + ACCIONES_J2:
 		if _config.has_section_key("controles", accion):
 			var keycode_valor = _config.get_value("controles", accion)
@@ -407,5 +343,3 @@ func cargar_config() -> void:
 				InputMap.action_add_event(accion, evento)
 			else:
 				push_warning("ConfigManager: Keycode inválido para '%s', usando valor por defecto" % accion)
-
-	print("Configuración cargada desde %s" % RUTA_CONFIG)
